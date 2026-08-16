@@ -1,6 +1,6 @@
 {
   "sections": {
-    "main": {
+    "product": {
       "type": "main-product",
       "blocks": {
         "marque-0": {
@@ -78,6 +78,6 @@
     }
   },
   "order": [
-    "main"
+    "product"
   ]
 }
