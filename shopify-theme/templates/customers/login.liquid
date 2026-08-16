@@ -4,7 +4,7 @@
 
     {%- form 'customer_login' -%}
       {%- if form.errors -%}
-        <div class="alert alert--error">{{ form.errors | default_errors }}</div>
+        <div class="alerte alerte--err">{{ form.errors | default_errors }}</div>
       {%- endif -%}
 
       <div class="field">
@@ -35,10 +35,10 @@
       <summary>Réinitialiser mon mot de passe</summary>
       {%- form 'recover_customer_password' -%}
         {%- if form.posted_successfully? -%}
-          <div class="alert alert--ok">Un e-mail vient de vous être envoyé.</div>
+          <div class="alerte alerte--ok">Un e-mail vient de vous être envoyé.</div>
         {%- endif -%}
         {%- if form.errors -%}
-          <div class="alert alert--error">{{ form.errors | default_errors }}</div>
+          <div class="alerte alerte--err">{{ form.errors | default_errors }}</div>
         {%- endif -%}
         <div class="field">
           <label for="recover-email">Votre e-mail</label>

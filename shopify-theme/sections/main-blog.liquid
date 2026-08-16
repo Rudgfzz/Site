@@ -1,22 +1,23 @@
 <div class="container">
-  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+  <nav class="fil" aria-label="Fil d'Ariane">
     <a href="{{ routes.root_url }}">Accueil</a><span>/</span>{{ blog.title }}
   </nav>
 </div>
 
-<section class="section" style="padding-top:32px">
+<section class="section" style="padding-top:26px">
   <div class="container">
     <div class="section-head">
       <div>
-        <p class="eyebrow">Journal</p>
-        <h1 style="font-size:clamp(1.6rem,3.4vw,2.3rem)">{{ blog.title }}</h1>
+        {%- if section.settings.surtitre != blank -%}<p class="eyebrow">{{ section.settings.surtitre }}</p>{%- endif -%}
+        <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">{{ blog.title }}</h1>
+        {%- if section.settings.texte != blank -%}<p>{{ section.settings.texte }}</p>{%- endif -%}
       </div>
     </div>
 
-    {% paginate blog.articles by 9 %}
+    {% paginate blog.articles by section.settings.par_page %}
       <div class="article-grid">
         {%- for article in blog.articles -%}
-          <article class="article-card">
+          <article class="article-card reveal">
             <a href="{{ article.url }}">
               <div class="article-card__media">
                 {%- if article.image -%}
@@ -27,15 +28,19 @@
                   {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                 {%- endif -%}
               </div>
-              <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
-                {{ article.published_at | date: '%d %B %Y' }}
-              </time>
+              {%- if section.settings.afficher_date -%}
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                  {{ article.published_at | date: '%d %B %Y' }}
+                </time>
+              {%- endif -%}
               <h3>{{ article.title }}</h3>
             </a>
-            <p>{{ article.excerpt_or_content | strip_html | truncate: 120 }}</p>
+            {%- if section.settings.afficher_extrait -%}
+              <p>{{ article.excerpt_or_content | strip_html | truncate: 120 }}</p>
+            {%- endif -%}
           </article>
         {%- else -%}
-          <p class="empty-state">Aucun article publié pour le moment.</p>
+          <div class="vide"><h3>Aucun article</h3><p>Publiez votre premier article depuis l'admin.</p></div>
         {%- endfor -%}
       </div>
 
@@ -47,6 +52,12 @@
 {% schema %}
 {
   "name": "Blog",
-  "settings": []
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Journal" },
+    { "type": "text", "id": "texte", "label": "Texte" },
+    { "type": "range", "id": "par_page", "min": 3, "max": 24, "step": 3, "label": "Articles par page", "default": 9 },
+    { "type": "checkbox", "id": "afficher_date", "label": "Afficher la date", "default": true },
+    { "type": "checkbox", "id": "afficher_extrait", "label": "Afficher l'extrait", "default": true }
+  ]
 }
 {% endschema %}

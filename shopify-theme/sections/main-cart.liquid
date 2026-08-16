@@ -4,7 +4,7 @@
   </nav>
 
   <div style="padding:26px 0 24px">
-    <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">Votre panier</h1>
+    <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">{{ section.settings.titre }}</h1>
     {%- if section.settings.sous_titre != blank -%}
       <p class="lead" style="margin:0">{{ section.settings.sous_titre }}</p>
     {%- endif -%}
@@ -12,9 +12,9 @@
 
   {%- if cart.item_count == 0 -%}
     <div class="vide" style="margin:20px 0 60px">
-      <h3>Votre panier est vide</h3>
-      <p>Découvrez les produits les plus demandés du moment.</p>
-      <a class="btn" href="{{ routes.all_products_collection_url }}">Voir la boutique</a>
+      <h3>{{ section.settings.titre_vide }}</h3>
+      <p>{{ section.settings.texte_vide }}</p>
+      <a class="btn" href="{{ routes.all_products_collection_url }}">{{ section.settings.bouton_vide }}</a>
     </div>
 
     {%- if section.settings.collection_suggestions != blank -%}
@@ -123,7 +123,7 @@
           </div>
 
           <button class="btn btn--block btn--lg" type="submit" name="checkout" style="margin-top:20px">
-            Passer commande
+            {{ section.settings.bouton_commander }}
           </button>
 
           {{ content_for_additional_checkout_buttons }}
@@ -132,9 +132,12 @@
             Frais de port et remises calculés au paiement.
           </p>
 
-          <div class="paiements">
-            <span>CB</span><span>VISA</span><span>MASTERCARD</span><span>PAYPAL</span>
-          </div>
+          {%- if section.settings.moyens_paiement != blank -%}
+            <div class="paiements">
+              {%- assign moyens = section.settings.moyens_paiement | split: ',' -%}
+              {%- for moyen in moyens -%}<span>{{ moyen | strip }}</span>{%- endfor -%}
+            </div>
+          {%- endif -%}
         </aside>
       </div>
     </form>
@@ -156,7 +159,13 @@
       "type": "collection",
       "id": "collection_suggestions",
       "label": "Suggestions si le panier est vide"
-    }
+    },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Votre panier" },
+    { "type": "text", "id": "titre_vide", "label": "Titre si panier vide", "default": "Votre panier est vide" },
+    { "type": "text", "id": "texte_vide", "label": "Texte si panier vide", "default": "Découvrez les produits les plus demandés du moment." },
+    { "type": "text", "id": "bouton_vide", "label": "Bouton si panier vide", "default": "Voir la boutique" },
+    { "type": "text", "id": "bouton_commander", "label": "Bouton de commande", "default": "Passer commande" },
+    { "type": "text", "id": "moyens_paiement", "label": "Moyens de paiement affichés", "info": "Séparés par des virgules. Vide pour masquer.", "default": "CB, VISA, MASTERCARD, PAYPAL" }
   ]
 }
 {% endschema %}

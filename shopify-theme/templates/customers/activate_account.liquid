@@ -5,7 +5,7 @@
 
     {%- form 'activate_customer_password' -%}
       {%- if form.errors -%}
-        <div class="alert alert--error">{{ form.errors | default_errors }}</div>
+        <div class="alerte alerte--err">{{ form.errors | default_errors }}</div>
       {%- endif -%}
 
       <div class="field">

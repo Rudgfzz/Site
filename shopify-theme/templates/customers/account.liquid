@@ -15,7 +15,7 @@
 
     {%- paginate customer.orders by 20 -%}
       {%- if customer.orders.size > 0 -%}
-        <table class="specs" style="margin-top:10px">
+        <table class="tableau-compte" style="margin-top:10px">
           <thead>
             <tr>
               <th scope="col" style="width:auto">Commande</th>
@@ -38,7 +38,7 @@
 
         {% render 'pagination', paginate: paginate %}
       {%- else -%}
-        <p class="empty-state" style="margin-top:16px">Vous n'avez pas encore passé de commande.</p>
+        <p class="vide" style="margin-top:16px">Vous n'avez pas encore passé de commande.</p>
       {%- endif -%}
     {%- endpaginate -%}
   </div>

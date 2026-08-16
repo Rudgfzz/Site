@@ -1,15 +1,14 @@
 <div class="container">
   <nav class="fil" aria-label="Fil d'Ariane">
-    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>{{ page.title | default: 'Comparateur' }}
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>{{ page.title | default: section.settings.titre }}
   </nav>
 
   <div style="padding:26px 0 24px">
-    <p class="eyebrow">Aide à la décision</p>
-    <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">{{ page.title | default: 'Comparateur' }}</h1>
-    <p class="lead" style="margin:0">
-      Jusqu'à quatre produits côte à côte. Les meilleures valeurs de chaque ligne
-      sont mises en évidence.
-    </p>
+    {%- if section.settings.surtitre != blank -%}<p class="eyebrow">{{ section.settings.surtitre }}</p>{%- endif -%}
+    <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">{{ page.title | default: section.settings.titre }}</h1>
+    {%- if section.settings.texte != blank -%}
+      <div class="lead" style="margin:0">{{ section.settings.texte }}</div>
+    {%- endif -%}
   </div>
 
   {%- if page.content != blank -%}<div class="prose">{{ page.content }}</div>{%- endif -%}
@@ -55,8 +54,8 @@
 
       if (!handles.length) {
         zone.innerHTML =
-          '<div class="vide" style="margin:30px 0"><h3>Aucun produit à comparer</h3>' +
-          '<p>Ajoutez jusqu\'à 4 produits depuis la boutique avec l\'icône de comparaison.</p>' +
+          '<div class="vide" style="margin:30px 0"><h3>{{ section.settings.titre_vide | escape }}</h3>' +
+          '<p>{{ section.settings.texte_vide | escape }}</p>' +
           '<a class="btn" href="{{ routes.all_products_collection_url }}">Voir la boutique</a></div>';
         return;
       }
@@ -185,5 +184,19 @@
 </script>
 
 {% schema %}
-{ "name": "Page comparateur", "settings": [] }
+{
+  "name": "Page comparateur",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Aide à la décision" },
+    { "type": "text", "id": "titre", "label": "Titre si la page n'en a pas", "default": "Comparateur" },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte d'introduction",
+      "default": "<p>Jusqu'à quatre produits côte à côte. Les meilleures valeurs de chaque ligne sont mises en évidence.</p>"
+    },
+    { "type": "text", "id": "titre_vide", "label": "Titre si vide", "default": "Aucun produit à comparer" },
+    { "type": "text", "id": "texte_vide", "label": "Texte si vide", "default": "Ajoutez jusqu'à 4 produits depuis la boutique avec l'icône de comparaison." }
+  ]
+}
 {% endschema %}

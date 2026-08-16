@@ -1,6 +1,6 @@
 <section class="section">
   <div class="container" style="max-width:720px">
-    <nav class="breadcrumb" aria-label="Fil d'Ariane" style="padding-top:0">
+    <nav class="fil" aria-label="Fil d'Ariane" style="padding-top:0">
       <a href="{{ routes.account_url }}">Mon compte</a><span>/</span>Mes adresses
     </nav>
 
@@ -8,7 +8,7 @@
 
     {%- paginate customer.addresses by 10 -%}
       {%- for address in customer.addresses -%}
-        <div class="info-card" style="margin-bottom:16px">
+        <div class="carte-info" style="margin-bottom:16px">
           {%- if address == customer.default_address -%}
             <p class="eyebrow" style="margin-bottom:8px">Adresse par défaut</p>
           {%- endif -%}
@@ -21,7 +21,7 @@
           {%- endform -%}
         </div>
       {%- else -%}
-        <p class="empty-state">Aucune adresse enregistrée.</p>
+        <p class="vide">Aucune adresse enregistrée.</p>
       {%- endfor -%}
 
       {% render 'pagination', paginate: paginate %}

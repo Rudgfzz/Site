@@ -14,15 +14,16 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <p class="eyebrow">Catalogue</p>
+        {%- if section.settings.surtitre != blank -%}<p class="eyebrow">{{ section.settings.surtitre }}</p>{%- endif -%}
         <h1 style="font-size:clamp(1.8rem,3.6vw,2.6rem)">{{ collection.title }}</h1>
-        {%- if collection.description != blank -%}
+        {%- if collection.description != blank and section.settings.afficher_description -%}
           <div>{{ collection.description }}</div>
         {%- endif -%}
       </div>
     </div>
 
     <div class="boutique">
+      {%- if section.settings.afficher_filtres -%}
       <aside class="facettes" aria-label="Filtres">
         <form id="form-filtres" method="get">
           {%- comment -%} Conserve la recherche en cours lors du filtrage. {%- endcomment -%}
@@ -115,6 +116,7 @@
           {%- endif -%}
         </form>
       </aside>
+      {%- endif -%}
 
       <div>
         <div class="barre-outils">
@@ -151,6 +153,7 @@
               <noscript><button class="btn btn--soft btn--sm" type="submit">Trier</button></noscript>
             </form>
 
+            {%- if section.settings.afficher_vue -%}
             <div class="bascule-vue" role="group" aria-label="Affichage">
               <button type="button" data-vue="grille" aria-pressed="true" aria-label="Vue grille">
                 {% render 'icon', nom: 'grille' %}
@@ -159,6 +162,7 @@
                 {% render 'icon', nom: 'liste' %}
               </button>
             </div>
+            {%- endif -%}
           </div>
         </div>
 
@@ -181,8 +185,8 @@
               {% render 'product-card', product: product %}
             {%- else -%}
               <div class="vide">
-                <h3>Aucun produit</h3>
-                <p>Essayez d'élargir vos critères ou effacez les filtres.</p>
+                <h3>{{ section.settings.titre_vide }}</h3>
+                <p>{{ section.settings.texte_vide }}</p>
                 <a class="btn btn--ghost" href="{{ collection.url }}">Tout effacer</a>
               </div>
             {%- endfor -%}
@@ -207,7 +211,13 @@
       "step": 4,
       "label": "Produits par page",
       "default": 12
-    }
+    },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Catalogue" },
+    { "type": "checkbox", "id": "afficher_description", "label": "Afficher la description de la collection", "default": true },
+    { "type": "checkbox", "id": "afficher_filtres", "label": "Afficher la colonne de filtres", "default": true },
+    { "type": "checkbox", "id": "afficher_vue", "label": "Afficher le choix grille / liste", "default": true },
+    { "type": "text", "id": "titre_vide", "label": "Titre si aucun produit", "default": "Aucun produit" },
+    { "type": "text", "id": "texte_vide", "label": "Texte si aucun produit", "default": "Essayez d'élargir vos critères ou effacez les filtres." }
   ]
 }
 {% endschema %}

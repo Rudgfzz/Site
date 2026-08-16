@@ -9,6 +9,7 @@
         {%- if section.settings.baseline != blank -%}
           <p>{{ section.settings.baseline }}</p>
         {%- endif -%}
+        {%- if section.settings.afficher_reseaux -%}
         <div class="reseaux">
           {%- if settings.social_instagram != blank -%}
             <a href="{{ settings.social_instagram }}" aria-label="Instagram" target="_blank" rel="noopener">
@@ -23,6 +24,7 @@
               {% render 'icon', nom: 'x' %}</a>
           {%- endif -%}
         </div>
+        {%- endif -%}
       </div>
 
       {%- for block in section.blocks -%}
@@ -61,7 +63,8 @@
       "id": "mention",
       "label": "Mention de droite",
       "default": "Paiement sécurisé · CB · Visa · Mastercard · PayPal"
-    }
+    },
+    { "type": "checkbox", "id": "afficher_reseaux", "label": "Afficher les réseaux sociaux", "default": true }
   ],
   "blocks": [
     {

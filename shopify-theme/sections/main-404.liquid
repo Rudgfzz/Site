@@ -1,11 +1,22 @@
 <section class="section">
   <div class="container">
-    <div class="empty-state" style="margin:40px 0">
-      <h1 style="font-size:1.6rem">Page introuvable</h1>
-      <p>La page que vous cherchez n'existe pas ou a été déplacée.</p>
-      <div class="btn-row" style="justify-content:center;margin-top:18px">
-        <a class="btn" href="{{ routes.all_products_collection_url }}">Voir la boutique</a>
-        <a class="btn btn--ghost" href="{{ routes.root_url }}">Retour à l'accueil</a>
+    <div class="vide" style="margin:60px auto;max-width:640px">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="eyebrow eyebrow--plain" style="justify-content:center">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+      <h1 style="font-size:clamp(1.8rem,4vw,2.6rem)">{{ section.settings.titre }}</h1>
+      {%- if section.settings.texte != blank -%}<p>{{ section.settings.texte }}</p>{%- endif -%}
+      <div class="btn-row" style="justify-content:center;margin-top:22px">
+        {%- if section.settings.bouton_1 != blank -%}
+          <a class="btn" href="{{ section.settings.lien_1 | default: routes.all_products_collection_url }}">
+            {{ section.settings.bouton_1 }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.bouton_2 != blank -%}
+          <a class="btn btn--ghost" href="{{ section.settings.lien_2 | default: routes.root_url }}">
+            {{ section.settings.bouton_2 }}
+          </a>
+        {%- endif -%}
       </div>
     </div>
   </div>
@@ -14,6 +25,14 @@
 {% schema %}
 {
   "name": "Page 404",
-  "settings": []
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Erreur 404" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Cette page n'existe pas" },
+    { "type": "text", "id": "texte", "label": "Texte", "default": "Le lien est peut-être erroné, ou la page a été déplacée." },
+    { "type": "text", "id": "bouton_1", "label": "Bouton principal", "default": "Voir la boutique" },
+    { "type": "url", "id": "lien_1", "label": "Lien du bouton principal" },
+    { "type": "text", "id": "bouton_2", "label": "Bouton secondaire", "default": "Retour à l'accueil" },
+    { "type": "url", "id": "lien_2", "label": "Lien du bouton secondaire" }
+  ]
 }
 {% endschema %}
