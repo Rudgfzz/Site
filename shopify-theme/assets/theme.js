@@ -545,7 +545,7 @@
       var prixBarreAchat = $('#barre-achat-prix');
       if (prixBarreAchat) prixBarreAchat.textContent = argent(v.price * qte);
 
-      if (v.featured_image && v.featured_image.src) changerImage(v.featured_image.src);
+      changerImage(imageDeVariante(v));
 
       marquerIndisponibles();
 
@@ -578,11 +578,54 @@
 
     function changerImage(src) {
       var principale = $('#image-produit');
-      if (!principale) return;
+      if (!principale || !src) return;
+
+      /* Le navigateur privilégie srcset sur src : sans le vider, la photo
+         d'origine resterait affichée malgré le changement de src. */
+      principale.removeAttribute('srcset');
+      principale.removeAttribute('sizes');
       principale.src = src;
+
+      /* La vignette correspondante est mise en avant. On compare sans les
+         paramètres d'URL, que Shopify fait varier selon la largeur. */
+      var base = sansParametres(src);
       $$('[data-image-vignette]').forEach(function (b) {
-        b.setAttribute('aria-current', String(b.dataset.imageVignette === src));
+        b.setAttribute('aria-current', String(sansParametres(b.dataset.imageVignette) === base));
       });
+    }
+
+    /* Retire la query string d'une URL d'image Shopify. */
+    function sansParametres(url) {
+      return String(url || '').split('?')[0].replace(/^https?:/, '');
+    }
+
+    /* Photo à afficher pour une variante donnée :
+         1. l'image assignée à la variante dans l'admin ;
+         2. à défaut, un média dont le texte alternatif contient la valeur
+            choisie (« Deep Blue », « Silver »…). */
+    function imageDeVariante(variante) {
+      if (variante.featured_image && variante.featured_image.src) {
+        return variante.featured_image.src;
+      }
+
+      var choix = choixCourants();
+      var valeurs = Object.keys(choix)
+        .map(function (i) { return String(choix[i] || '').toLowerCase().trim(); })
+        .filter(Boolean);
+      if (!valeurs.length) return null;
+
+      var medias = produit.media || produit.images || [];
+      for (var i = 0; i < medias.length; i++) {
+        var m = medias[i];
+        var alt = String((m && m.alt) || '').toLowerCase();
+        if (!alt) continue;
+        for (var j = 0; j < valeurs.length; j++) {
+          if (alt.indexOf(valeurs[j]) !== -1) {
+            return m.src || (m.preview_image && m.preview_image.src) || null;
+          }
+        }
+      }
+      return null;
     }
 
     fiche.addEventListener('click', function (e) {
