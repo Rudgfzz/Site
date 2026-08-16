@@ -24,6 +24,20 @@
     "newsletter": {
       "submit": "Je m'inscris",
       "success": "Merci ! Votre inscription est enregistrée."
+    },
+    "navigation": {
+      "accueil": "Accueil",
+      "boutique": "Boutique",
+      "tout_le_catalogue": "Tout le catalogue",
+      "fil_ariane": "Fil d'Ariane",
+      "aller_au_contenu": "Aller au contenu",
+      "fermer": "Fermer",
+      "echap": "Échap"
+    },
+    "recherche_barre": {
+      "ouvrir": "Rechercher",
+      "placeholder": "Rechercher un produit, une marque…",
+      "label": "Rechercher un produit"
     }
   },
   "products": {
@@ -35,7 +49,25 @@
       "included": "Ce qui est inclus",
       "specs": "Caractéristiques",
       "related": "Produits similaires",
-      "from_price": "À partir de {{ price }}"
+      "from_price": "À partir de {{ price }}",
+      "quantite": "Quantité",
+      "diminuer": "Diminuer la quantité",
+      "augmenter": "Augmenter la quantité",
+      "aucune_description": "Aucune description pour ce produit.",
+      "choisir_version": "Choisir une version",
+      "favoris": "Favoris",
+      "comparer": "Comparer",
+      "ajouter": "Ajouter",
+      "indisponible": "Indisponible",
+      "en_stock": "En stock",
+      "rupture": "Rupture de stock",
+      "etiquette_rupture": "Rupture",
+      "etiquette_nouveau": "Nouveau",
+      "etiquette_best_seller": "Best-seller",
+      "avis_suffixe": "avis",
+      "sur_cinq": "sur 5",
+      "voir": "Voir",
+      "apercu_image": "Aperçu"
     }
   },
   "cart": {
@@ -50,7 +82,25 @@
       "update": "Mettre à jour le panier",
       "remove": "Retirer",
       "note": "Instructions pour la commande",
-      "taxes_note": "Taxes et remises calculées au paiement."
+      "taxes_note": "Taxes et remises calculées au paiement.",
+      "titre_tiroir": "Votre panier",
+      "ouvrir": "Voir le panier",
+      "fermer_tiroir": "Fermer le panier",
+      "vide_titre": "Votre panier est vide",
+      "vide_texte": "Parcourez le catalogue pour le remplir.",
+      "vide_bouton": "Voir la boutique",
+      "voir_panier": "Voir le panier",
+      "commander_tiroir": "Commander",
+      "sous_total_tiroir": "Sous-total",
+      "livraison_offerte_ok": "Livraison offerte",
+      "livraison_reste_avant": "Plus que",
+      "livraison_reste_apres": "pour la livraison offerte.",
+      "retirer": "Retirer",
+      "ajoute_au_panier": "ajouté au panier",
+      "ajout_impossible": "Ajout impossible, réessayez",
+      "comparaison_limite": "Comparaison limitée à 4 produits",
+      "favori_ajoute": "Ajouté aux favoris",
+      "favori_retire": "Retiré des favoris"
     }
   },
   "contact": {

@@ -24,6 +24,20 @@
     "newsletter": {
       "submit": "Subscribe",
       "success": "Thanks! Your subscription is confirmed."
+    },
+    "navigation": {
+      "accueil": "Home",
+      "boutique": "Shop",
+      "tout_le_catalogue": "Browse everything",
+      "fil_ariane": "Breadcrumb",
+      "aller_au_contenu": "Skip to content",
+      "fermer": "Close",
+      "echap": "Esc"
+    },
+    "recherche_barre": {
+      "ouvrir": "Search",
+      "placeholder": "Search for a product, a brand…",
+      "label": "Search for a product"
     }
   },
   "products": {
@@ -35,7 +49,25 @@
       "included": "What's included",
       "specs": "Specifications",
       "related": "Related products",
-      "from_price": "From {{ price }}"
+      "from_price": "From {{ price }}",
+      "quantite": "Quantity",
+      "diminuer": "Decrease quantity",
+      "augmenter": "Increase quantity",
+      "aucune_description": "No description for this product.",
+      "choisir_version": "Choose a version",
+      "favoris": "Wishlist",
+      "comparer": "Compare",
+      "ajouter": "Add",
+      "indisponible": "Unavailable",
+      "en_stock": "In stock",
+      "rupture": "Out of stock",
+      "etiquette_rupture": "Sold out",
+      "etiquette_nouveau": "New",
+      "etiquette_best_seller": "Best seller",
+      "avis_suffixe": "reviews",
+      "sur_cinq": "out of 5",
+      "voir": "View",
+      "apercu_image": "Preview"
     }
   },
   "cart": {
@@ -50,7 +82,25 @@
       "update": "Update cart",
       "remove": "Remove",
       "note": "Order instructions",
-      "taxes_note": "Taxes and discounts calculated at checkout."
+      "taxes_note": "Taxes and discounts calculated at checkout.",
+      "titre_tiroir": "Your cart",
+      "ouvrir": "View cart",
+      "fermer_tiroir": "Close cart",
+      "vide_titre": "Your cart is empty",
+      "vide_texte": "Browse the catalogue to fill it.",
+      "vide_bouton": "Browse the shop",
+      "voir_panier": "View cart",
+      "commander_tiroir": "Check out",
+      "sous_total_tiroir": "Subtotal",
+      "livraison_offerte_ok": "Free delivery unlocked",
+      "livraison_reste_avant": "Only",
+      "livraison_reste_apres": "away from free delivery.",
+      "retirer": "Remove",
+      "ajoute_au_panier": "added to cart",
+      "ajout_impossible": "Could not add, please retry",
+      "comparaison_limite": "Compare up to 4 products",
+      "favori_ajoute": "Added to wishlist",
+      "favori_retire": "Removed from wishlist"
     }
   },
   "contact": {

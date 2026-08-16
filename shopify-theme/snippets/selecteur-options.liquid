@@ -89,7 +89,7 @@
   {%- endcomment -%}
   <noscript>
     <div class="option">
-      <label for="variante-secours">Choisir une version</label>
+      <label for="variante-secours">{{ 'products.product.choisir_version' | t }}</label>
       <select class="select" id="variante-secours" name="id">
         {%- for variante in product.variants -%}
           <option value="{{ variante.id }}"

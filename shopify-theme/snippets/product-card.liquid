@@ -27,26 +27,26 @@
 
   <div class="etiquettes">
     {%- if product.available == false -%}
-      <span class="etiquette etiquette--rupture">Rupture</span>
+      <span class="etiquette etiquette--rupture">{{ 'products.product.etiquette_rupture' | t }}</span>
     {%- elsif v.compare_at_price > v.price -%}
       {%- assign remise = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round -%}
       <span class="etiquette etiquette--promo">−{{ remise }} %</span>
     {%- endif -%}
     {%- if product.tags contains 'nouveau' -%}
-      <span class="etiquette etiquette--neuf">Nouveau</span>
+      <span class="etiquette etiquette--neuf">{{ 'products.product.etiquette_nouveau' | t }}</span>
     {%- endif -%}
     {%- if product.tags contains 'best-seller' -%}
-      <span class="etiquette">Best-seller</span>
+      <span class="etiquette">{{ 'products.product.etiquette_best_seller' | t }}</span>
     {%- endif -%}
   </div>
 
   <div class="actions-flottantes">
     <button class="action-ronde" type="button" data-favori="{{ product.handle }}"
             aria-pressed="false" aria-label="Ajouter {{ product.title | escape }} aux favoris"
-            title="Favoris">{% render 'icon', nom: 'coeur' %}</button>
+            title="{{ 'products.product.favoris' | t }}">{% render 'icon', nom: 'coeur' %}</button>
     <button class="action-ronde" type="button" data-comparer="{{ product.handle }}"
             aria-pressed="false" aria-label="Comparer {{ product.title | escape }}"
-            title="Comparer">{% render 'icon', nom: 'compare' %}</button>
+            title="{{ 'products.product.comparer' | t }}">{% render 'icon', nom: 'compare' %}</button>
   </div>
 
   <div class="produit__corps">
@@ -84,9 +84,9 @@
     {%- endfor -%}
 
     {%- if product.available -%}
-      <p class="stock stock--ok" style="margin-bottom:12px">En stock</p>
+      <p class="stock stock--ok" style="margin-bottom:12px">{{ 'products.product.en_stock' | t }}</p>
     {%- else -%}
-      <p class="stock stock--non" style="margin-bottom:12px">Rupture de stock</p>
+      <p class="stock stock--non" style="margin-bottom:12px">{{ 'products.product.rupture' | t }}</p>
     {%- endif -%}
 
     <div class="produit__pied">
@@ -95,10 +95,10 @@
       {%- if product.available -%}
         {%- form 'product', product -%}
           <input type="hidden" name="id" value="{{ v.id }}">
-          <button class="btn btn--soft btn--sm" type="submit" name="add">Ajouter</button>
+          <button class="btn btn--soft btn--sm" type="submit" name="add">{{ 'products.product.ajouter' | t }}</button>
         {%- endform -%}
       {%- else -%}
-        <span class="form-note">Indisponible</span>
+        <span class="form-note">{{ 'products.product.indisponible' | t }}</span>
       {%- endif -%}
     </div>
   </div>

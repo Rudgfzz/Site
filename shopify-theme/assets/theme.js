@@ -16,6 +16,9 @@
   'use strict';
 
   var CFG = window.ORBIT || {};
+  /* Textes modifiables depuis Thèmes → Modifier le contenu par défaut. */
+  var T = CFG.textes || {};
+  function t(cle, repli) { return T[cle] || repli; }
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) {
     return Array.prototype.slice.call((c || document).querySelectorAll(s));
@@ -184,9 +187,10 @@
     if (!panier.items.length) {
       corps.innerHTML =
         '<div class="vide" style="margin:24px 0;border:0">' +
-        '<h3>Votre panier est vide</h3>' +
-        '<p>Parcourez le catalogue pour le remplir.</p>' +
-        '<a class="btn" href="/collections/all">Voir la boutique</a></div>';
+        '<h3>' + esc(t('panierVideTitre', 'Votre panier est vide')) + '</h3>' +
+        '<p>' + esc(t('panierVideTexte', 'Parcourez le catalogue pour le remplir.')) + '</p>' +
+        '<a class="btn" href="/collections/all">' +
+        esc(t('panierVideBouton', 'Voir la boutique')) + '</a></div>';
       pied.innerHTML = '';
       return;
     }
@@ -206,13 +210,15 @@
             (options ? '<p class="ligne__meta">' + options + '</p>' : '') +
             '<div style="display:flex;align-items:center;gap:12px;margin-top:9px">' +
               '<div class="quantite quantite--sm">' +
-                '<button type="button" data-ligne="' + item.key + '" data-delta="-1" aria-label="Diminuer">−</button>' +
+                '<button type="button" data-ligne="' + item.key + '" data-delta="-1" aria-label="' +
+                  esc(t('diminuer', 'Diminuer la quantité')) + '">−</button>' +
                 '<span>' + item.quantity + '</span>' +
-                '<button type="button" data-ligne="' + item.key + '" data-delta="1" aria-label="Augmenter">+</button>' +
+                '<button type="button" data-ligne="' + item.key + '" data-delta="1" aria-label="' +
+                  esc(t('augmenter', 'Augmenter la quantité')) + '">+</button>' +
               '</div>' +
               '<strong class="prix" style="font-size:.94rem">' + argent(item.final_line_price) + '</strong>' +
               '<button type="button" class="lien-supprimer" data-ligne="' + item.key + '" data-vider="1" ' +
-                      'style="margin-left:auto">Retirer</button>' +
+                      'style="margin-left:auto">' + esc(t('retirer', 'Retirer')) + '</button>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -225,16 +231,21 @@
       jauge = restant > 0
         ? '<div class="jauge-livraison"><div class="piste"><div class="jauge" style="width:' +
           Math.min(100, (panier.total_price / seuil) * 100) + '%"></div></div>' +
-          '<p>Plus que <strong>' + argent(restant) + '</strong> pour la livraison offerte.</p></div>'
-        : '<p class="form-note" style="color:var(--success);margin-bottom:12px">✓ Livraison offerte</p>';
+          '<p>' + esc(t('resteAvant', 'Plus que')) + ' <strong>' + argent(restant) + '</strong> ' +
+          esc(t('resteApres', 'pour la livraison offerte.')) + '</p></div>'
+        : '<p class="form-note" style="color:var(--success);margin-bottom:12px">✓ ' +
+          esc(t('livraisonOfferte', 'Livraison offerte')) + '</p>';
     }
 
     pied.innerHTML = jauge +
       '<div class="recap__total" style="border:0;padding:0;margin:0 0 14px">' +
-        '<span>Sous-total</span><span>' + argent(panier.total_price) + '</span></div>' +
-      '<a class="btn btn--block btn--lg" href="' + CFG.routes.cart + '">Voir le panier</a>' +
+        '<span>' + esc(t('sousTotal', 'Sous-total')) + '</span><span>' +
+        argent(panier.total_price) + '</span></div>' +
+      '<a class="btn btn--block btn--lg" href="' + CFG.routes.cart + '">' +
+      esc(t('voirPanier', 'Voir le panier')) + '</a>' +
       '<form action="' + CFG.routes.cart + '" method="post" style="margin-top:9px">' +
-        '<button class="btn btn--ghost btn--block" type="submit" name="checkout">Commander</button>' +
+        '<button class="btn btn--ghost btn--block" type="submit" name="checkout">' +
+        esc(t('commander', 'Commander')) + '</button>' +
       '</form>';
   }
 
@@ -251,10 +262,11 @@
           notifier(res.data.description || res.data.message || 'Ajout impossible', 'err');
           return;
         }
-        notifier('« ' + (res.data.items ? res.data.items[0].product_title : 'Produit') + ' » ajouté au panier');
+        notifier('« ' + (res.data.items ? res.data.items[0].product_title : '') + ' » ' +
+                 t('ajouteAuPanier', 'ajouté au panier'));
         return chargerPanier().then(ouvrirTiroir);
       })
-      .catch(function () { notifier('Ajout impossible, réessayez', 'err'); })
+      .catch(function () { notifier(t('ajoutImpossible', 'Ajout impossible, réessayez'), 'err'); })
       .then(function () { if (bouton) bouton.removeAttribute('aria-disabled'); });
   }
 
@@ -433,7 +445,8 @@
         $$('[data-favori="' + handle + '"]').forEach(function (b) {
           b.setAttribute('aria-pressed', String(i < 0));
         });
-        notifier(i >= 0 ? 'Retiré des favoris' : 'Ajouté aux favoris');
+        notifier(i >= 0 ? t('favoriRetire', 'Retiré des favoris')
+                        : t('favoriAjoute', 'Ajouté aux favoris'));
         document.dispatchEvent(new CustomEvent('favoris:maj'));
         return;
       }
@@ -448,7 +461,7 @@
           l.splice(j, 1);
         } else {
           if (l.length >= MAX_COMPARE) {
-            notifier('Comparaison limitée à ' + MAX_COMPARE + ' produits', 'err');
+            notifier(t('comparaisonLimite', 'Comparaison limitée à 4 produits'), 'err');
             return;
           }
           l.push(h);
@@ -534,7 +547,7 @@
       var stock = $('#etat-stock');
       if (stock) {
         stock.className = 'stock ' + (v.available ? 'stock--ok' : 'stock--non');
-        stock.textContent = v.available ? 'En stock' : 'Rupture de stock';
+        stock.textContent = v.available ? t('enStock', 'En stock') : t('rupture', 'Rupture de stock');
       }
 
       if (bouton) {
