@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact — STUDIO</title>
+<meta name="description" content="Une question sur un produit, une commande ou une licence ? Écrivez-nous, réponse sous 24 h ouvrées.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="logo" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+        <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
+      </svg>
+      STUDIO
+    </a>
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="boutique.html">Boutique</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="contact.html" aria-current="page">Contact</a>
+    </nav>
+    <div class="header__actions">
+      <a class="icon-btn" href="panier.html" aria-label="Voir le panier">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 7h12l-1 12a2 2 0 01-2 2H9a2 2 0 01-2-2L6 7z"/><path d="M9 7V5.5a3 3 0 016 0V7"/>
+        </svg>
+        <span class="cart-count" data-cart-count hidden>0</span>
+      </a>
+      <button class="icon-btn burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="index.html">Accueil</a><span>/</span>Contact
+    </nav>
+  </div>
+
+  <section class="section" style="padding-top:36px">
+    <div class="container">
+      <div style="max-width:640px;margin-bottom:44px">
+        <p class="eyebrow">Nous écrire</p>
+        <h1>Une question ? On vous répond.</h1>
+        <p class="lead">
+          Problème d'installation, choix d'un pack, licence pour un client :
+          décrivez votre situation, la réponse arrive sous 24 h ouvrées.
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <form data-form-demo="Message envoyé. Nous revenons vers vous sous 24 h ouvrées." novalidate>
+          <div data-form-message></div>
+
+          <div class="field">
+            <label for="nom">Votre nom</label>
+            <input class="input" id="nom" name="nom" type="text" autocomplete="name" placeholder="Camille Durand" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Votre e-mail</label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" placeholder="vous@exemple.fr" required>
+          </div>
+
+          <div class="field">
+            <label for="sujet">Sujet</label>
+            <select class="select" id="sujet" name="sujet">
+              <option>Question avant achat</option>
+              <option>Problème d'installation</option>
+              <option>Commande ou téléchargement</option>
+              <option>Licence &amp; usage commercial</option>
+              <option>Autre</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="message">Votre message</label>
+            <textarea class="textarea" id="message" name="message" placeholder="Décrivez votre besoin en quelques lignes…" required></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn--lg" type="submit">Envoyer le message</button>
+          </div>
+          <p class="form-note" style="margin-top:14px">
+            Vos données servent uniquement à traiter votre demande.
+          </p>
+        </form>
+
+        <aside>
+          <div class="info-card">
+            <h3>E-mail</h3>
+            <p><a href="mailto:contact@exemple.fr">contact@exemple.fr</a></p>
+
+            <h3>Délai de réponse</h3>
+            <p>Sous 24 h ouvrées, du lundi au vendredi.</p>
+
+            <h3>Réseaux</h3>
+            <p><a href="https://instagram.com/" target="_blank" rel="noopener">Instagram</a> · <a href="https://youtube.com/" target="_blank" rel="noopener">YouTube</a></p>
+          </div>
+
+          <div class="info-card" style="margin-top:18px">
+            <h3>Avant d'écrire</h3>
+            <p>La plupart des questions d'installation trouvent leur réponse dans la FAQ de l'accueil.</p>
+            <a class="btn btn--ghost btn--sm" href="index.html#comment">Consulter la FAQ</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="logo" href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
+          </svg>
+          STUDIO
+        </a>
+        <p>Produits numériques pour la photo mobile. Conçus, testés et mis à jour depuis la France.</p>
+      </div>
+      <div>
+        <h4>Boutique</h4>
+        <ul>
+          <li><a href="boutique.html?categorie=presets">Presets Lightroom</a></li>
+          <li><a href="boutique.html?categorie=packs">Packs photo</a></li>
+          <li><a href="boutique.html?categorie=luts">LUTs vidéo</a></li>
+          <li><a href="boutique.html?categorie=overlays">Overlays</a></li>
+          <li><a href="boutique.html?categorie=guides">Guides</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Le site</h4>
+        <ul>
+          <li><a href="a-propos.html">À propos</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="panier.html">Panier</a></li>
+          <li><a href="index.html#comment">Comment ça marche</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Informations</h4>
+        <ul>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="mentions-legales.html#cgv">Conditions de vente</a></li>
+          <li><a href="mentions-legales.html#confidentialite">Confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© <span data-annee>2026</span> STUDIO. Tous droits réservés.</p>
+      <p>Paiement sécurisé · Téléchargement immédiat</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/products.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boutique — STUDIO</title>
+<meta name="description" content="Tout le catalogue : presets Lightroom, packs photo, LUTs vidéo, overlays et guides pour la photo mobile.">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<header class="header">
+  <div class="container header__inner">
+    <a class="logo" href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+        <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
+      </svg>
+      STUDIO
+    </a>
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="boutique.html" aria-current="page">Boutique</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header__actions">
+      <a class="icon-btn" href="panier.html" aria-label="Voir le panier">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 7h12l-1 12a2 2 0 01-2 2H9a2 2 0 01-2-2L6 7z"/><path d="M9 7V5.5a3 3 0 016 0V7"/>
+        </svg>
+        <span class="cart-count" data-cart-count hidden>0</span>
+      </a>
+      <button class="icon-btn burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Fil d'Ariane">
+      <a href="index.html">Accueil</a><span>/</span>Boutique
+    </nav>
+  </div>
+
+  <section class="section" style="padding-top:32px">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Catalogue complet</p>
+          <h2>Boutique</h2>
+          <p>Presets, packs photo, LUTs, overlays et guides. Téléchargement immédiat après paiement.</p>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="chips" id="filtres-categories" role="group" aria-label="Filtrer par catégorie"></div>
+        <div class="filters__right">
+          <label class="sr-only" for="recherche">Rechercher un produit</label>
+          <input class="input" id="recherche" type="search" placeholder="Rechercher…" autocomplete="off">
+          <label class="sr-only" for="tri">Trier les produits</label>
+          <select class="select" id="tri">
+            <option value="defaut">Tri : par défaut</option>
+            <option value="prix-asc">Prix croissant</option>
+            <option value="prix-desc">Prix décroissant</option>
+            <option value="nom">Nom (A–Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="result-count" id="compteur-resultats" aria-live="polite"></p>
+      <div class="grid-products" id="grille-boutique"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="cta-band">
+        <h2>Une question sur un produit ?</h2>
+        <p class="lead" style="margin-inline:auto">
+          Dites-nous ce que vous cherchez, nous vous orientons vers le pack adapté.
+        </p>
+        <div class="btn-row" style="justify-content:center;margin-top:20px">
+          <a class="btn" href="contact.html">Nous écrire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="logo" href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
+          </svg>
+          STUDIO
+        </a>
+        <p>Produits numériques pour la photo mobile. Conçus, testés et mis à jour depuis la France.</p>
+      </div>
+      <div>
+        <h4>Boutique</h4>
+        <ul>
+          <li><a href="boutique.html?categorie=presets">Presets Lightroom</a></li>
+          <li><a href="boutique.html?categorie=packs">Packs photo</a></li>
+          <li><a href="boutique.html?categorie=luts">LUTs vidéo</a></li>
+          <li><a href="boutique.html?categorie=overlays">Overlays</a></li>
+          <li><a href="boutique.html?categorie=guides">Guides</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Le site</h4>
+        <ul>
+          <li><a href="a-propos.html">À propos</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="panier.html">Panier</a></li>
+          <li><a href="index.html#comment">Comment ça marche</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Informations</h4>
+        <ul>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="mentions-legales.html#cgv">Conditions de vente</a></li>
+          <li><a href="mentions-legales.html#confidentialite">Confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© <span data-annee>2026</span> STUDIO. Tous droits réservés.</p>
+      <p>Paiement sécurisé · Téléchargement immédiat</p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/products.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
