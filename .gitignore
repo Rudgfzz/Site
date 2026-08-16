@@ -1,0 +1,13 @@
+# Archives générées pour téléchargement.
+# Le dépôt est déjà le site : une archive versionnée ferait doublon et
+# se désynchroniserait à chaque modification. GitHub propose « Download ZIP ».
+*.zip
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
