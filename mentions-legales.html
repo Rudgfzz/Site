@@ -1,41 +1,60 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mentions légales — STUDIO</title>
+<title>Mentions légales — ORBIT</title>
 <meta name="description" content="Mentions légales, conditions générales de vente et politique de confidentialité.">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/style.css">
+<script>
+  /* Applique le thème avant le premier rendu, pour éviter que la page
+     n'apparaisse une fraction de seconde dans la mauvaise couleur. */
+  (function () {
+    try {
+      var t = JSON.parse(localStorage.getItem('orbit_theme'));
+      if (t !== 'clair' && t !== 'sombre') {
+        t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'clair' : 'sombre';
+      }
+      document.documentElement.setAttribute('data-theme', t === 'clair' ? 'light' : 'dark');
+    } catch (e) { /* stockage indisponible : on garde le thème par défaut */ }
+  })();
+</script>
 </head>
-<body>
+<body class="page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<div class="annonce">
+  <span>Livraison offerte dès 60 € · Retour gratuit sous 30 jours</span>
+</div>
 
 <header class="header">
   <div class="container header__inner">
     <a class="logo" href="index.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-        <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
-      </svg>
-      STUDIO
+      <span class="logo__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="5" r="2.2" fill="currentColor" stroke="none"/></svg></span>
+      ORBIT
     </a>
-    <nav class="nav" id="nav" aria-label="Navigation principale">
-      <a href="index.html">Accueil</a>
-      <a href="boutique.html">Boutique</a>
-      <a href="a-propos.html">À propos</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+
+    <nav class="nav" id="nav" aria-label="Navigation principale"><a href="boutique.html">Boutique</a><a href="boutique.html?tri=nouveaute">Nouveautés</a><a href="comparateur.html">Comparateur</a><a href="a-propos.html">À propos</a><a href="faq.html">Aide</a></nav>
+
     <div class="header__actions">
-      <a class="icon-btn" href="panier.html" aria-label="Voir le panier">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M6 7h12l-1 12a2 2 0 01-2 2H9a2 2 0 01-2-2L6 7z"/><path d="M9 7V5.5a3 3 0 016 0V7"/>
-        </svg>
-        <span class="cart-count" data-cart-count hidden>0</span>
+      <button class="icon-btn" type="button" data-ouvrir-recherche aria-label="Rechercher (Ctrl+K)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+      </button>
+      <button class="icon-btn" type="button" data-bascule-theme aria-pressed="false" aria-label="Changer de thème">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <a class="icon-btn" href="favoris.html" aria-label="Mes favoris">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-9.2A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 7 2.8C19 15.5 12 20 12 20Z"/></svg>
+        <span class="pastille" data-compteur-favoris hidden>0</span>
       </a>
-      <button class="icon-btn burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16"/>
-        </svg>
+      <button class="icon-btn" type="button" data-ouvrir-panier aria-label="Voir le panier">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 12.1A2 2 0 0 1 14.8 21H9.2a2 2 0 0 1-2-1.9L6 7Z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/></svg>
+        <span class="pastille" data-compteur-panier hidden>0</span>
+      </button>
+      <button class="icon-btn burger" id="burger" type="button"
+              aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
   </div>
@@ -43,113 +62,131 @@
 
 <main id="contenu">
   <div class="container">
-    <nav class="breadcrumb" aria-label="Fil d'Ariane">
-      <a href="index.html">Accueil</a><span>/</span>Mentions légales
-    </nav>
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="index.html">Accueil</a><span>/</span>Mentions légales</nav>
   </div>
 
-  <section class="section" style="padding-top:36px">
+  <section class="section" style="padding-top:30px">
     <div class="container">
       <div class="prose">
         <p class="eyebrow">Informations légales</p>
-        <h1 style="font-size:clamp(1.8rem,3.6vw,2.4rem)">Mentions légales</h1>
-        <p class="lead">
-          Ce document est un modèle à compléter. Remplacez les mentions entre crochets
-          par vos informations réelles avant la mise en ligne.
-        </p>
+        <h1 style="font-size:clamp(1.8rem,3.6vw,2.5rem)">Mentions légales</h1>
+
+        <div class="alerte alerte--info">
+          Ce site est une démonstration. Les mentions ci-dessous constituent un modèle :
+          remplacez chaque valeur entre crochets par vos informations réelles avant toute
+          mise en ligne commerciale.
+        </div>
 
         <h2>Éditeur du site</h2>
         <ul>
-          <li>Dénomination : [Nom de votre entreprise ou nom et prénom]</li>
-          <li>Statut juridique : [Micro-entreprise, SASU, SARL…]</li>
-          <li>Adresse : [Adresse postale complète]</li>
-          <li>E-mail : [contact@votredomaine.fr]</li>
-          <li>SIRET : [Numéro SIRET]</li>
-          <li>N° TVA intracommunautaire : [le cas échéant]</li>
+          <li>Dénomination sociale : [Raison sociale]</li>
+          <li>Forme juridique : [SAS, SARL, micro-entreprise…]</li>
+          <li>Capital social : [Montant]</li>
+          <li>Siège social : [Adresse complète]</li>
+          <li>RCS : [Ville et numéro] · SIRET : [Numéro]</li>
+          <li>TVA intracommunautaire : [Numéro]</li>
           <li>Directeur de la publication : [Nom et prénom]</li>
+          <li>Contact : [email] · [téléphone]</li>
         </ul>
 
-        <h2>Hébergement</h2>
+        <h2>Hébergeur</h2>
         <ul>
-          <li>Hébergeur : [Nom de l'hébergeur]</li>
-          <li>Adresse : [Adresse de l'hébergeur]</li>
+          <li>[Nom de l'hébergeur]</li>
+          <li>[Adresse et téléphone]</li>
         </ul>
 
         <h2>Propriété intellectuelle</h2>
         <p>
-          L'ensemble des contenus présents sur ce site (textes, photographies, presets,
-          fichiers numériques, éléments graphiques) est protégé par le droit d'auteur.
-          Toute reproduction ou redistribution, totale ou partielle, sans autorisation
-          écrite préalable est interdite.
+          L'ensemble des contenus de ce site (textes, visuels, éléments graphiques,
+          structure) est protégé par le droit d'auteur. Toute reproduction, totale ou
+          partielle, sans autorisation écrite préalable est interdite.
         </p>
 
         <h2 id="cgv">Conditions générales de vente</h2>
 
-        <h3>Produits</h3>
+        <h3>1. Objet</h3>
         <p>
-          Les produits vendus sont des biens numériques livrés par téléchargement :
-          presets, fichiers photo, LUTs, overlays et documents PDF. Aucun bien physique
-          n'est expédié.
+          Les présentes conditions régissent les ventes conclues sur ce site entre
+          [Raison sociale] et tout acheteur, professionnel ou consommateur.
         </p>
 
-        <h3>Prix et paiement</h3>
+        <h3>2. Prix</h3>
         <p>
-          Les prix sont indiqués en euros, toutes taxes comprises. Le paiement s'effectue
-          en ligne au moment de la commande via [votre prestataire de paiement].
+          Les prix sont indiqués en euros toutes taxes comprises, hors frais de livraison
+          précisés avant validation de la commande. Le prix barré correspond au prix le plus
+          bas pratiqué au cours des trente derniers jours, conformément à la réglementation
+          sur les annonces de réduction de prix.
         </p>
 
-        <h3>Livraison</h3>
+        <h3>3. Commande</h3>
         <p>
-          Le lien de téléchargement est fourni immédiatement après validation du paiement
-          et envoyé à l'adresse e-mail communiquée lors de la commande.
+          La vente est réputée conclue à la validation du paiement. Un e-mail de confirmation
+          récapitule les articles, le montant et l'adresse de livraison.
         </p>
 
-        <h3>Droit de rétractation</h3>
+        <h3>4. Livraison</h3>
         <p>
-          Conformément à l'article L221-28 du Code de la consommation, le droit de
-          rétractation ne s'applique pas aux contenus numériques fournis sur support
-          immatériel dont l'exécution a commencé après accord exprès du consommateur.
-          [Précisez ici votre propre politique commerciale de remboursement.]
+          Les délais et tarifs figurent sur la page « Livraison &amp; retours ». En cas de
+          retard supérieur à sept jours par rapport au délai annoncé, l'acheteur peut annuler
+          la commande et obtenir un remboursement intégral.
         </p>
 
-        <h3>Licence d'utilisation</h3>
+        <h3>5. Droit de rétractation</h3>
         <p>
-          L'achat confère un droit d'usage personnel et commercial des fichiers, dans le
-          cadre de vos propres créations. Sont exclus : la revente, le partage, la
-          redistribution ou l'intégration des fichiers dans un produit concurrent.
+          Conformément aux articles L221-18 et suivants du Code de la consommation,
+          l'acheteur consommateur dispose de quatorze jours pour se rétracter sans motif.
+          [Raison sociale] étend ce délai à trente jours. Les frais de retour sont pris en
+          charge par le vendeur.
+        </p>
+
+        <h3>6. Garanties</h3>
+        <p>
+          Tous les produits bénéficient de la garantie légale de conformité (articles L217-3
+          et suivants du Code de la consommation) et de la garantie contre les vices cachés
+          (articles 1641 et suivants du Code civil), indépendamment de toute garantie
+          commerciale.
+        </p>
+
+        <h3>7. Médiation</h3>
+        <p>
+          En cas de litige non résolu, l'acheteur peut recourir gratuitement au médiateur de
+          la consommation [Nom du médiateur], ou à la plateforme européenne de règlement en
+          ligne des litiges.
         </p>
 
         <h2 id="confidentialite">Politique de confidentialité</h2>
 
         <h3>Données collectées</h3>
         <p>
-          Les données recueillies via le formulaire de contact et lors d'une commande
-          (nom, adresse e-mail, informations de facturation) servent uniquement à traiter
-          la demande ou la commande concernée.
+          Nous collectons les données nécessaires au traitement des commandes : identité,
+          adresse de livraison et de facturation, adresse e-mail, téléphone. Les données
+          bancaires sont traitées directement par notre prestataire de paiement et ne
+          transitent pas par nos serveurs.
         </p>
 
-        <h3>Conservation</h3>
+        <h3>Finalités et durée</h3>
         <p>
-          Les données de commande sont conservées pendant la durée légale applicable en
-          matière comptable. Les messages de contact sont supprimés [durée à préciser]
-          après traitement.
+          Ces données servent exclusivement à exécuter la commande, assurer le service
+          après-vente et respecter nos obligations comptables. Elles sont conservées dix ans
+          pour les pièces comptables, trois ans après le dernier contact pour les données de
+          prospection.
         </p>
 
         <h3>Vos droits</h3>
         <p>
           Conformément au RGPD, vous disposez d'un droit d'accès, de rectification,
-          d'effacement et de portabilité de vos données. Adressez votre demande à
-          [contact@votredomaine.fr].
+          d'effacement, de limitation, d'opposition et de portabilité. Adressez votre demande
+          à [email]. Vous pouvez également introduire une réclamation auprès de la CNIL.
         </p>
 
-        <h3>Cookies</h3>
+        <h2 id="cookies">Cookies</h2>
         <p>
-          Ce site n'utilise aucun cookie publicitaire ni traceur tiers. Le panier est
-          conservé localement dans votre navigateur (stockage local) et n'est jamais
-          transmis à un serveur tant que la commande n'est pas validée.
+          Ce site n'utilise aucun cookie publicitaire ni traceur tiers. Les informations
+          nécessaires à son fonctionnement — panier, favoris, comparateur, thème choisi —
+          sont conservées dans le stockage local de votre navigateur et ne sont transmises
+          à aucun serveur. Vous pouvez les effacer à tout moment depuis les réglages de
+          votre navigateur.
         </p>
-
-        <p style="margin-top:36px"><a class="btn btn--ghost" href="index.html">Retour à l'accueil</a></p>
       </div>
     </div>
   </section>
@@ -158,51 +195,100 @@
 <footer class="footer">
   <div class="container">
     <div class="footer__grid">
-      <div class="footer__brand">
+      <div class="footer__marque">
         <a class="logo" href="index.html">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-            <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
-          </svg>
-          STUDIO
+          <span class="logo__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="5" r="2.2" fill="currentColor" stroke="none"/></svg></span>
+          ORBIT
         </a>
-        <p>Produits numériques pour la photo mobile. Conçus, testés et mis à jour depuis la France.</p>
+        <p>L'écosystème mobile, sans compromis. Sélection resserrée, conseils honnêtes, service après-vente qui répond.</p>
+        <div class="reseaux">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.4"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="6" width="18" height="12" rx="3.5"/><path d="M11 10l4 2-4 2v-4Z" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></a>
+        </div>
       </div>
+
       <div>
         <h4>Boutique</h4>
         <ul>
-          <li><a href="boutique.html?categorie=presets">Presets Lightroom</a></li>
-          <li><a href="boutique.html?categorie=packs">Packs photo</a></li>
-          <li><a href="boutique.html?categorie=luts">LUTs vidéo</a></li>
-          <li><a href="boutique.html?categorie=overlays">Overlays</a></li>
-          <li><a href="boutique.html?categorie=guides">Guides</a></li>
+          <li><a href="boutique.html?categorie=smartphones">Smartphones</a></li>
+          <li><a href="boutique.html?categorie=tablettes">Tablettes</a></li>
+          <li><a href="boutique.html?categorie=audio">Audio</a></li>
+          <li><a href="boutique.html?categorie=montres">Montres</a></li>
+          <li><a href="boutique.html?categorie=ordinateurs">Ordinateurs</a></li>
+          <li><a href="boutique.html?categorie=accessoires">Accessoires</a></li>
         </ul>
       </div>
+
       <div>
-        <h4>Le site</h4>
+        <h4>Aide</h4>
+        <ul>
+          <li><a href="faq.html">Questions fréquentes</a></li>
+          <li><a href="livraison-retours.html">Livraison &amp; retours</a></li>
+          <li><a href="suivi.html">Suivre ma commande</a></li>
+          <li><a href="contact.html">Nous contacter</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Société</h4>
         <ul>
           <li><a href="a-propos.html">À propos</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="panier.html">Panier</a></li>
-          <li><a href="index.html#comment">Comment ça marche</a></li>
+          <li><a href="comparateur.html">Comparateur</a></li>
+          <li><a href="favoris.html">Mes favoris</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
         </ul>
       </div>
+
       <div>
-        <h4>Informations</h4>
+        <h4>Légal</h4>
         <ul>
-          <li><a href="mentions-legales.html">Mentions légales</a></li>
           <li><a href="mentions-legales.html#cgv">Conditions de vente</a></li>
           <li><a href="mentions-legales.html#confidentialite">Confidentialité</a></li>
+          <li><a href="mentions-legales.html#cookies">Cookies</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer__bottom">
-      <p>© <span data-annee>2026</span> STUDIO. Tous droits réservés.</p>
-      <p>Paiement sécurisé · Téléchargement immédiat</p>
+
+    <div class="footer__bas">
+      <p>© <span data-annee>2026</span> ORBIT — site de démonstration.</p>
+      <p>Paiement sécurisé · CB · Visa · Mastercard · PayPal · 3× sans frais</p>
     </div>
   </div>
 </footer>
 
-<script src="assets/js/products.js"></script>
+<div class="voile" id="voile"></div>
+
+<aside class="tiroir" id="tiroir-panier" aria-label="Panier">
+  <div class="tiroir__head">
+    <h2>Votre panier</h2>
+    <button class="icon-btn" type="button" data-fermer-tiroir aria-label="Fermer le panier">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="tiroir__corps" id="tiroir-corps"></div>
+  <div class="tiroir__pied" id="tiroir-pied"></div>
+</aside>
+
+<div class="recherche" id="recherche" role="dialog" aria-modal="true" aria-label="Recherche">
+  <div class="recherche__boite">
+    <div class="recherche__champ">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+      <label class="sr-only" for="champ-recherche">Rechercher un produit</label>
+      <input id="champ-recherche" type="search" placeholder="Rechercher un produit, une marque…" autocomplete="off">
+      <span class="kbd">Échap</span>
+    </div>
+    <div class="recherche__resultats" id="resultats-recherche"></div>
+  </div>
+</div>
+
+<div class="barre-comparateur" id="barre-comparateur" data-visible="false">
+  <div class="barre-comparateur__vignettes"></div>
+  <span data-compare-texte></span>
+  <a class="btn btn--sm" href="comparateur.html">Comparer</a>
+</div>
+
+<script src="assets/js/data.js"></script>
 <script src="assets/js/app.js"></script>
 </body>
 </html>

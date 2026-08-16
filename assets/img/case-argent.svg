@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="case argent">
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#f7f8fa"/>
+      <stop offset="100%" stop-color="#e4e7ec"/>
+    </linearGradient>
+    <linearGradient id="corps" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eef0f3"/>
+      <stop offset="45%" stop-color="#ced2d9"/>
+      <stop offset="100%" stop-color="#a8adb6"/>
+    </linearGradient>
+    <linearGradient id="ecran" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#20242c"/>
+      <stop offset="55%" stop-color="#0d1015"/>
+      <stop offset="100%" stop-color="#171b22"/>
+    </linearGradient>
+    <linearGradient id="lueur" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".22"/>
+      <stop offset="42%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="ombre" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0b0d12" stop-opacity=".26"/>
+      <stop offset="100%" stop-color="#0b0d12" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#fond)"/>
+  <ellipse cx="400" cy="552" rx="150" ry="26" fill="url(#ombre)"/>
+  
+  <g transform="translate(400 300)">
+    <rect x="-128" y="-238" width="256" height="476" rx="46" fill="url(#corps)"/>
+    <rect x="-128" y="-238" width="256" height="476" rx="46" fill="url(#lueur)"/>
+    <rect x="-112" y="-222" width="224" height="444" rx="34" fill="#0b0d12" opacity=".13"/>
+    <circle cx="0" cy="46" r="52" fill="none" stroke="#ffffff" stroke-width="12" opacity=".26"/>
+    <circle cx="0" cy="46" r="26" fill="#ffffff" opacity=".13"/>
+    <g transform="translate(-62 -172)">
+      <rect x="-8" y="-8" width="120" height="120" rx="34" fill="#0b0d12" opacity=".16"/>
+    </g>
+  </g>
+
+</svg>

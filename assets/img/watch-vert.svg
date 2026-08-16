@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="watch vert">
+  <defs>
+    <linearGradient id="fond" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#f7f8fa"/>
+      <stop offset="100%" stop-color="#e4e7ec"/>
+    </linearGradient>
+    <linearGradient id="corps" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#71a68c"/>
+      <stop offset="45%" stop-color="#4c7d66"/>
+      <stop offset="100%" stop-color="#375c4a"/>
+    </linearGradient>
+    <linearGradient id="ecran" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#20242c"/>
+      <stop offset="55%" stop-color="#0d1015"/>
+      <stop offset="100%" stop-color="#171b22"/>
+    </linearGradient>
+    <linearGradient id="lueur" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".22"/>
+      <stop offset="42%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="ombre" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0b0d12" stop-opacity=".26"/>
+      <stop offset="100%" stop-color="#0b0d12" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#fond)"/>
+  <ellipse cx="400" cy="548" rx="120" ry="26" fill="url(#ombre)"/>
+  
+  <g transform="translate(400 300)">
+    <path d="M-72 -104 L-58 -212 Q-56 -232 -36 -232 L36 -232 Q56 -232 58 -212 L72 -104 Z" fill="url(#corps)" opacity=".85"/>
+    <path d="M-72 104 L-58 212 Q-56 232 -36 232 L36 232 Q56 232 58 212 L72 104 Z" fill="url(#corps)" opacity=".85"/>
+    <rect x="-104" y="-124" width="208" height="248" rx="60" fill="url(#corps)"/>
+    <rect x="-91" y="-111" width="182" height="222" rx="50" fill="url(#ecran)"/>
+    <rect x="-91" y="-111" width="182" height="222" rx="50" fill="url(#lueur)"/>
+    <rect x="104" y="-50" width="12" height="42" rx="6" fill="url(#corps)"/>
+    <rect x="104" y="4" width="10" height="28" rx="5" fill="url(#corps)"/>
+    <g opacity=".5" fill="#8fb4ff">
+      <rect x="-52" y="-56" width="104" height="10" rx="5"/>
+      <rect x="-52" y="-32" width="72" height="10" rx="5" opacity=".7"/>
+      <circle cx="0" cy="34" r="30" fill="none" stroke="#8fb4ff" stroke-width="9" opacity=".8"/>
+    </g>
+  </g>
+
+</svg>

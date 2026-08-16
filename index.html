@@ -1,254 +1,263 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>STUDIO — Produits numériques pour la photo mobile</title>
-<meta name="description" content="Presets, packs photo, LUTs et guides pour tirer le meilleur de vos photos prises au smartphone. Téléchargement immédiat.">
+<title>ORBIT — L'écosystème mobile, sans compromis</title>
+<meta name="description" content="Smartphones, tablettes, montres et audio sélectionnés et testés. Livraison offerte dès 60 €, retour gratuit sous 30 jours.">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/style.css">
+<script>
+  /* Applique le thème avant le premier rendu, pour éviter que la page
+     n'apparaisse une fraction de seconde dans la mauvaise couleur. */
+  (function () {
+    try {
+      var t = JSON.parse(localStorage.getItem('orbit_theme'));
+      if (t !== 'clair' && t !== 'sombre') {
+        t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'clair' : 'sombre';
+      }
+      document.documentElement.setAttribute('data-theme', t === 'clair' ? 'light' : 'dark');
+    } catch (e) { /* stockage indisponible : on garde le thème par défaut */ }
+  })();
+</script>
 </head>
-<body>
+<body class="page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 
-<!-- ================= EN-TÊTE ================= -->
+<div class="annonce">
+  <span>Livraison offerte dès 60 € · Retour gratuit sous 30 jours</span>
+</div>
+
 <header class="header">
   <div class="container header__inner">
     <a class="logo" href="index.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-        <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
-      </svg>
-      STUDIO
+      <span class="logo__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="5" r="2.2" fill="currentColor" stroke="none"/></svg></span>
+      ORBIT
     </a>
 
-    <nav class="nav" id="nav" aria-label="Navigation principale">
-      <a href="index.html" aria-current="page">Accueil</a>
-      <a href="boutique.html">Boutique</a>
-      <a href="a-propos.html">À propos</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+    <nav class="nav" id="nav" aria-label="Navigation principale"><a href="boutique.html">Boutique</a><a href="boutique.html?tri=nouveaute">Nouveautés</a><a href="comparateur.html">Comparateur</a><a href="a-propos.html">À propos</a><a href="faq.html">Aide</a></nav>
 
     <div class="header__actions">
-      <a class="icon-btn" href="panier.html" aria-label="Voir le panier">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M6 7h12l-1 12a2 2 0 01-2 2H9a2 2 0 01-2-2L6 7z"/><path d="M9 7V5.5a3 3 0 016 0V7"/>
-        </svg>
-        <span class="cart-count" data-cart-count hidden>0</span>
+      <button class="icon-btn" type="button" data-ouvrir-recherche aria-label="Rechercher (Ctrl+K)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+      </button>
+      <button class="icon-btn" type="button" data-bascule-theme aria-pressed="false" aria-label="Changer de thème">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <a class="icon-btn" href="favoris.html" aria-label="Mes favoris">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-9.2A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 7 2.8C19 15.5 12 20 12 20Z"/></svg>
+        <span class="pastille" data-compteur-favoris hidden>0</span>
       </a>
-      <button class="icon-btn burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16"/>
-        </svg>
+      <button class="icon-btn" type="button" data-ouvrir-panier aria-label="Voir le panier">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 12.1A2 2 0 0 1 14.8 21H9.2a2 2 0 0 1-2-1.9L6 7Z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/></svg>
+        <span class="pastille" data-compteur-panier hidden>0</span>
+      </button>
+      <button class="icon-btn burger" id="burger" type="button"
+              aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
   </div>
 </header>
 
 <main id="contenu">
-
-  <!-- ================= HERO ================= -->
   <section class="hero">
     <div class="container hero__grid">
       <div>
-        <p class="eyebrow">Téléchargement immédiat</p>
-        <h1>Vos photos d'iPhone méritent mieux que le mode automatique.</h1>
+        <div class="hero__puces">
+          <span class="puce"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/></svg> Livraison offerte dès 60 €</span>
+          <span class="puce"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5L4 10l5 5"/><path d="M4 10h10a6 6 0 0 1 0 12h-3"/></svg> 30 jours pour changer d'avis</span>
+        </div>
+        <h1>L'écosystème mobile, <span class="grad-text">sans compromis.</span></h1>
         <p class="lead">
-          Presets, packs d'images, LUTs vidéo et guides pratiques — conçus pour
-          la photo mobile, prêts à l'emploi en moins d'une minute.
+          Une sélection resserrée de smartphones, tablettes, montres et audio.
+          Pas de catalogue interminable : seulement les modèles que nous
+          recommanderions à un proche.
         </p>
         <div class="btn-row">
-          <a class="btn btn--lg" href="boutique.html">Voir la boutique</a>
-          <a class="btn btn--ghost btn--lg" href="#comment">Comment ça marche</a>
+          <a class="btn btn--lg" href="boutique.html">Découvrir la boutique</a>
+          <a class="btn btn--ghost btn--lg" href="comparateur.html">Comparer les modèles</a>
         </div>
-
         <div class="hero__stats">
-          <div><strong>180+</strong><span>fichiers disponibles</span></div>
-          <div><strong>4 800</strong><span>clients satisfaits</span></div>
-          <div><strong>4,9/5</strong><span>note moyenne</span></div>
+          <div><strong>16</strong><span>produits sélectionnés</span></div>
+          <div><strong>4,7/5</strong><span>note moyenne</span></div>
+          <div><strong>24 h</strong><span>expédition</span></div>
         </div>
       </div>
-
       <div class="hero__media">
-        <img src="assets/img/hero.svg" alt="Aperçu d'une photo retouchée" width="800" height="600" fetchpriority="high">
+        <img src="assets/img/hero.svg" alt="Smartphone, tablette et montre connectée" width="900" height="720" fetchpriority="high">
       </div>
     </div>
   </section>
 
-  <!-- ================= AVANTAGES ================= -->
-  <section class="section section--line">
-    <div class="container">
-      <div class="features">
-        <div class="feature reveal">
-          <div class="feature__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3L5 14h6l-1 7 8-11h-6l1-7z"/></svg>
-          </div>
-          <h3>Livraison instantanée</h3>
-          <p>Le lien de téléchargement arrive dès le paiement validé. Aucun délai, aucune attente.</p>
-        </div>
-        <div class="feature reveal">
-          <div class="feature__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></svg>
-          </div>
-          <h3>Pensé pour le mobile</h3>
-          <p>Tout s'installe et s'utilise depuis le téléphone. L'ordinateur reste optionnel.</p>
-        </div>
-        <div class="feature reveal">
-          <div class="feature__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0113.7-5.7L20 8M20 4v4h-4M20 12a8 8 0 01-13.7 5.7L4 16M4 20v-4h4"/></svg>
-          </div>
-          <h3>Mises à jour offertes</h3>
-          <p>Chaque enrichissement d'un pack acheté vous est envoyé sans supplément.</p>
-        </div>
-        <div class="feature reveal">
-          <div class="feature__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/></svg>
-          </div>
-          <h3>Licence commerciale</h3>
-          <p>Utilisez les fichiers pour vos projets clients, sans redevance ni mention obligatoire.</p>
-        </div>
-      </div>
+  <div class="container">
+    <div class="bandeau-confiance">
+      <div class="confiance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/></svg><span><strong>Expédition sous 24 h</strong><span>Depuis notre entrepôt en France</span></span></div>
+      <div class="confiance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5L4 10l5 5"/><path d="M4 10h10a6 6 0 0 1 0 12h-3"/></svg><span><strong>Retour gratuit 30 jours</strong><span>Étiquette prépayée incluse</span></span></div>
+      <div class="confiance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v6c0 4.4-3.2 7.6-7.5 9-4.3-1.4-7.5-4.6-7.5-9V6L12 3Z"/></svg><span><strong>Garantie 2 ans minimum</strong><span>Extension jusqu'à 4 ans</span></span></div>
+      <div class="confiance"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16v-4a7 7 0 0 1 14 0v4"/><rect x="3" y="14" width="4" height="6" rx="2"/><rect x="17" y="14" width="4" height="6" rx="2"/></svg><span><strong>Conseil humain</strong><span>Du lundi au samedi</span></span></div>
     </div>
-  </section>
+  </div>
 
-  <!-- ================= PRODUITS VEDETTES ================= -->
-  <section class="section section--soft">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">Sélection</p>
-          <h2>Les plus demandés</h2>
-          <p>Une poignée de produits qui reviennent dans presque toutes les commandes.</p>
-        </div>
-        <a class="btn btn--ghost" href="boutique.html">Tout voir</a>
-      </div>
-      <div class="grid-products" id="grille-vedettes"></div>
-    </div>
-  </section>
-
-  <!-- ================= CATÉGORIES ================= -->
   <section class="section">
     <div class="container">
       <div class="section-head">
         <div>
           <p class="eyebrow">Catalogue</p>
           <h2>Par catégorie</h2>
+          <p>Six familles de produits, chacune passée au crible avant d'entrer au catalogue.</p>
         </div>
+        <a class="btn btn--ghost" href="boutique.html">Tout voir</a>
       </div>
       <div class="cat-grid" id="grille-categories"></div>
     </div>
   </section>
 
-  <!-- ================= COMMENT ÇA MARCHE ================= -->
-  <section class="section section--soft" id="comment">
+  <section class="section section--alt">
     <div class="container">
-      <div class="section-head text-center" style="display:block;text-align:center">
-        <p class="eyebrow">En trois étapes</p>
-        <h2>De l'achat à la première retouche</h2>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Les plus vendus</p>
+          <h2>Ce qui part le plus vite</h2>
+          <p>Les modèles que nos clients choisissent le plus souvent, toutes catégories confondues.</p>
+        </div>
+        <a class="btn btn--ghost" href="boutique.html">Voir la boutique</a>
       </div>
-      <div class="steps">
-        <div class="step reveal">
-          <h3>Choisissez votre pack</h3>
-          <p>Parcourez le catalogue, comparez les rendus, ajoutez au panier ce qui vous parle.</p>
+      <div class="grille-produits" id="grille-bestsellers"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="promo">
+        <div>
+          <p class="eyebrow">Offre de la semaine</p>
+          <h2 id="nom-promo">Offre en cours</h2>
+          <p class="lead">
+            Jusqu'à <strong id="eco-promo">—</strong> d'économie. L'offre se termine dimanche à minuit,
+            dans la limite des stocks disponibles.
+          </p>
+          <div class="compte-rebours" id="compte-rebours" aria-live="off"></div>
+          <div class="btn-row">
+            <a class="btn btn--lg" id="lien-promo" href="boutique.html">Profiter de l'offre</a>
+          </div>
         </div>
-        <div class="step reveal">
-          <h3>Payez en sécurité</h3>
-          <p>Carte bancaire, Apple&nbsp;Pay ou PayPal. Le lien de téléchargement s'affiche aussitôt.</p>
-        </div>
-        <div class="step reveal">
-          <h3>Installez en une minute</h3>
-          <p>Un guide illustré accompagne chaque produit, pour mobile comme pour ordinateur.</p>
-        </div>
+        <div id="produit-promo"></div>
       </div>
     </div>
   </section>
 
-  <!-- ================= À PROPOS (aperçu) ================= -->
   <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Nouveautés</p>
+          <h2>Arrivés ce mois-ci</h2>
+        </div>
+        <a class="btn btn--ghost" href="boutique.html?tri=nouveaute">Toutes les nouveautés</a>
+      </div>
+      <div class="grille-produits" id="grille-nouveautes"></div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
     <div class="container split">
       <div>
-        <p class="eyebrow">L'atelier</p>
-        <h2>Des réglages testés sur de vraies photos</h2>
+        <p class="eyebrow">Notre méthode</p>
+        <h2>On refuse plus de produits qu'on n'en vend.</h2>
         <p class="lead">
-          Chaque preset est éprouvé sur plusieurs centaines d'images — intérieur,
-          contre-jour, nuit, portrait — avant d'entrer au catalogue. Si un réglage
-          ne tient pas la route en conditions difficiles, il n'est pas publié.
+          Chaque référence passe deux semaines entre nos mains avant d'être mise en vente.
+          Autonomie mesurée, réparabilité vérifiée, engagement de mises à jour contrôlé.
+          Si un produit ne tient pas ses promesses, il n'entre pas au catalogue —
+          même quand la marge est belle.
         </p>
         <div class="btn-row">
-          <a class="btn btn--ghost" href="a-propos.html">Notre démarche</a>
+          <a class="btn btn--ghost" href="a-propos.html">Comment nous testons</a>
         </div>
       </div>
-      <img src="assets/img/apropos.svg" alt="Espace de travail de retouche" width="800" height="600" loading="lazy">
-    </div>
-  </section>
-
-  <!-- ================= AVIS ================= -->
-  <section class="section section--soft">
-    <div class="container">
-      <div class="section-head text-center" style="display:block;text-align:center">
-        <p class="eyebrow">Avis clients</p>
-        <h2>Ce qu'en disent les acheteurs</h2>
-      </div>
-      <div class="quotes">
-        <blockquote class="quote reveal">
-          <p class="stars" aria-label="5 étoiles sur 5">★★★★★</p>
-          <p>« J'ai enfin un rendu constant sur tout mon feed Instagram. Les presets tiennent même sur les photos prises en intérieur. »</p>
-          <footer>Camille R. — créatrice de contenu</footer>
-        </blockquote>
-        <blockquote class="quote reveal">
-          <p class="stars" aria-label="5 étoiles sur 5">★★★★★</p>
-          <p>« Les LUTs m'ont fait gagner un temps fou au montage. L'étalonnage de base est propre, je n'ai presque plus rien à ajuster. »</p>
-          <footer>Yanis M. — vidéaste</footer>
-        </blockquote>
-        <blockquote class="quote reveal">
-          <p class="stars" aria-label="5 étoiles sur 5">★★★★★</p>
-          <p>« Le guide vaut à lui seul le prix du pack. Clair, sans jargon, avec des exercices concrets à refaire chez soi. »</p>
-          <footer>Léa D. — photographe amatrice</footer>
-        </blockquote>
+      <div class="cartes-info">
+        <div class="carte-info reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4L12 3Z"/></svg><h3>Testé deux semaines</h3><p>En usage réel, pas sur fiche technique.</p></div>
+        <div class="carte-info reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v6c0 4.4-3.2 7.6-7.5 9-4.3-1.4-7.5-4.6-7.5-9V6L12 3Z"/></svg><h3>Réparabilité vérifiée</h3><p>Pièces détachées disponibles ou pas de référencement.</p></div>
+        <div class="carte-info reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l8-4 8 4v8l-8 4-8-4V8Z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg><h3>Emballage sobre</h3><p>Carton recyclé, zéro plastique ajouté.</p></div>
+        <div class="carte-info reveal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16v-4a7 7 0 0 1 14 0v4"/><rect x="3" y="14" width="4" height="6" rx="2"/><rect x="17" y="14" width="4" height="6" rx="2"/></svg><h3>Conseil sans script</h3><p>On vous dira si un modèle moins cher suffit.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- ================= FAQ ================= -->
   <section class="section">
     <div class="container">
-      <div class="section-head text-center" style="display:block;text-align:center">
-        <p class="eyebrow">Questions fréquentes</p>
-        <h2>Bon à savoir avant d'acheter</h2>
+      <div class="section-head section-head--center">
+        <div>
+          <p class="eyebrow eyebrow--plain">Avis clients</p>
+          <h2>Ils ont commandé chez nous</h2>
+          <p>Note moyenne de 4,7/5 sur l'ensemble du catalogue.</p>
+        </div>
+      </div>
+      <div class="avis-grid">
+        <article class="avis-card reveal">
+          <p class="etoiles" aria-label="5 sur 5">★★★★★</p>
+          <p>« Commandé un mardi soir, livré le jeudi matin. Le conseiller m'a orienté vers le modèle en dessous de celui que je visais, en m'expliquant pourquoi. Rare. »</p>
+          <footer><span class="avatar">TL</span> Thomas L. — Lyon</footer>
+        </article>
+        <article class="avis-card reveal">
+          <p class="etoiles" aria-label="5 sur 5">★★★★★</p>
+          <p>« Le comparateur du site m'a fait gagner une heure. Toutes les caractéristiques côte à côte, sans avoir à ouvrir quinze onglets. »</p>
+          <footer><span class="avatar">AB</span> Amina B. — Nantes</footer>
+        </article>
+        <article class="avis-card reveal">
+          <p class="etoiles" aria-label="4 sur 5">★★★★☆</p>
+          <p>« Un souci sur ma montre au bout de trois mois : échange sans discussion, renvoi prépayé. C'est ce que j'attends d'un SAV. »</p>
+          <footer><span class="avatar">JP</span> Julien P. — Bordeaux</footer>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <div>
+          <p class="eyebrow eyebrow--plain">Questions fréquentes</p>
+          <h2>Bon à savoir avant de commander</h2>
+        </div>
       </div>
       <div class="faq">
         <details open>
-          <summary>Comment je reçois mes fichiers ?</summary>
-          <p>Dès le paiement validé, un lien de téléchargement s'affiche à l'écran et vous est envoyé par e-mail. Le lien reste actif de façon permanente.</p>
+          <summary>Quels sont les délais de livraison ?</summary>
+          <p>Les commandes passées avant 15 h partent le jour même. Comptez 3 à 4 jours ouvrés en standard, ou une livraison le lendemain avant 13 h en express.</p>
         </details>
         <details>
-          <summary>Les presets fonctionnent-ils sur Android ?</summary>
-          <p>Oui. Les fichiers .DNG et .XMP s'importent dans Lightroom mobile sur Android comme sur iOS, ainsi que dans Lightroom Classic et Camera Raw sur ordinateur.</p>
+          <summary>Puis-je payer en plusieurs fois ?</summary>
+          <p>Oui, le paiement en trois fois sans frais est disponible dès 150 € d'achat, par carte bancaire, sans dossier ni justificatif.</p>
         </details>
         <details>
-          <summary>Puis-je utiliser les images pour un client ?</summary>
-          <p>Oui, la licence commerciale est incluse dans tous les packs photo et LUTs. Seule la revente ou la redistribution des fichiers tels quels est interdite.</p>
+          <summary>Comment fonctionne le retour ?</summary>
+          <p>Vous avez 30 jours après réception. Une étiquette prépayée est jointe à chaque colis : vous n'avancez rien. Le remboursement intervient sous 5 jours ouvrés après réception du retour.</p>
         </details>
         <details>
-          <summary>Et si le produit ne me convient pas ?</summary>
-          <p>Écrivez-nous dans les quatorze jours en expliquant ce qui ne va pas : soit nous vous aidons à obtenir le rendu voulu, soit nous vous remboursons.</p>
+          <summary>Les produits sont-ils garantis ?</summary>
+          <p>Tous les produits bénéficient d'au moins deux ans de garantie constructeur, en plus de la garantie légale de conformité. Une extension jusqu'à quatre ans est proposée à la commande.</p>
         </details>
         <details>
-          <summary>Faut-il un abonnement Lightroom payant ?</summary>
-          <p>Non. La version gratuite de Lightroom mobile suffit pour importer et appliquer les presets fournis.</p>
+          <summary>Proposez-vous la reprise de mon ancien appareil ?</summary>
+          <p>Oui, sur les smartphones, tablettes et ordinateurs. L'estimation se fait en ligne et le montant est déduit immédiatement de votre commande.</p>
         </details>
+      </div>
+      <div class="btn-row" style="justify-content:center;margin-top:34px">
+        <a class="btn btn--ghost" href="faq.html">Toutes les questions</a>
       </div>
     </div>
   </section>
 
-  <!-- ================= CTA ================= -->
-  <section class="section" style="padding-top:0">
+  <section class="section">
     <div class="container">
-      <div class="cta-band">
-        <h2>Recevez un preset gratuit</h2>
+      <div class="newsletter-band">
+        <p class="eyebrow eyebrow--plain">Lettre d'information</p>
+        <h2>Les bons plans, une fois par mois</h2>
         <p class="lead" style="margin-inline:auto">
-          Un e-mail par mois : nouveautés, conseils de prise de vue et offres réservées aux abonnés.
+          Nouveautés testées, baisses de prix réelles et guides d'achat. Un seul e-mail par mois, pas un de plus.
         </p>
-        <form class="newsletter" data-form-demo="Merci ! Votre preset gratuit arrive par e-mail." novalidate>
+        <form class="newsletter-form" data-demo="Merci ! Votre inscription est enregistrée." novalidate>
           <label class="sr-only" for="email-newsletter">Votre adresse e-mail</label>
           <input class="input" id="email-newsletter" type="email" name="email" placeholder="vous@exemple.fr" required>
           <button class="btn" type="submit">Je m'inscris</button>
@@ -257,58 +266,105 @@
       </div>
     </div>
   </section>
-
 </main>
 
-<!-- ================= PIED DE PAGE ================= -->
 <footer class="footer">
   <div class="container">
     <div class="footer__grid">
-      <div class="footer__brand">
+      <div class="footer__marque">
         <a class="logo" href="index.html">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-            <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
-          </svg>
-          STUDIO
+          <span class="logo__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="5" r="2.2" fill="currentColor" stroke="none"/></svg></span>
+          ORBIT
         </a>
-        <p>Produits numériques pour la photo mobile. Conçus, testés et mis à jour depuis la France.</p>
+        <p>L'écosystème mobile, sans compromis. Sélection resserrée, conseils honnêtes, service après-vente qui répond.</p>
+        <div class="reseaux">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.4"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="6" width="18" height="12" rx="3.5"/><path d="M11 10l4 2-4 2v-4Z" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></a>
+        </div>
       </div>
+
       <div>
         <h4>Boutique</h4>
         <ul>
-          <li><a href="boutique.html?categorie=presets">Presets Lightroom</a></li>
-          <li><a href="boutique.html?categorie=packs">Packs photo</a></li>
-          <li><a href="boutique.html?categorie=luts">LUTs vidéo</a></li>
-          <li><a href="boutique.html?categorie=overlays">Overlays</a></li>
-          <li><a href="boutique.html?categorie=guides">Guides</a></li>
+          <li><a href="boutique.html?categorie=smartphones">Smartphones</a></li>
+          <li><a href="boutique.html?categorie=tablettes">Tablettes</a></li>
+          <li><a href="boutique.html?categorie=audio">Audio</a></li>
+          <li><a href="boutique.html?categorie=montres">Montres</a></li>
+          <li><a href="boutique.html?categorie=ordinateurs">Ordinateurs</a></li>
+          <li><a href="boutique.html?categorie=accessoires">Accessoires</a></li>
         </ul>
       </div>
+
       <div>
-        <h4>Le site</h4>
+        <h4>Aide</h4>
+        <ul>
+          <li><a href="faq.html">Questions fréquentes</a></li>
+          <li><a href="livraison-retours.html">Livraison &amp; retours</a></li>
+          <li><a href="suivi.html">Suivre ma commande</a></li>
+          <li><a href="contact.html">Nous contacter</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Société</h4>
         <ul>
           <li><a href="a-propos.html">À propos</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="panier.html">Panier</a></li>
-          <li><a href="index.html#comment">Comment ça marche</a></li>
+          <li><a href="comparateur.html">Comparateur</a></li>
+          <li><a href="favoris.html">Mes favoris</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
         </ul>
       </div>
+
       <div>
-        <h4>Informations</h4>
+        <h4>Légal</h4>
         <ul>
-          <li><a href="mentions-legales.html">Mentions légales</a></li>
           <li><a href="mentions-legales.html#cgv">Conditions de vente</a></li>
           <li><a href="mentions-legales.html#confidentialite">Confidentialité</a></li>
+          <li><a href="mentions-legales.html#cookies">Cookies</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer__bottom">
-      <p>© <span data-annee>2026</span> STUDIO. Tous droits réservés.</p>
-      <p>Paiement sécurisé · Téléchargement immédiat</p>
+
+    <div class="footer__bas">
+      <p>© <span data-annee>2026</span> ORBIT — site de démonstration.</p>
+      <p>Paiement sécurisé · CB · Visa · Mastercard · PayPal · 3× sans frais</p>
     </div>
   </div>
 </footer>
 
-<script src="assets/js/products.js"></script>
+<div class="voile" id="voile"></div>
+
+<aside class="tiroir" id="tiroir-panier" aria-label="Panier">
+  <div class="tiroir__head">
+    <h2>Votre panier</h2>
+    <button class="icon-btn" type="button" data-fermer-tiroir aria-label="Fermer le panier">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="tiroir__corps" id="tiroir-corps"></div>
+  <div class="tiroir__pied" id="tiroir-pied"></div>
+</aside>
+
+<div class="recherche" id="recherche" role="dialog" aria-modal="true" aria-label="Recherche">
+  <div class="recherche__boite">
+    <div class="recherche__champ">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+      <label class="sr-only" for="champ-recherche">Rechercher un produit</label>
+      <input id="champ-recherche" type="search" placeholder="Rechercher un produit, une marque…" autocomplete="off">
+      <span class="kbd">Échap</span>
+    </div>
+    <div class="recherche__resultats" id="resultats-recherche"></div>
+  </div>
+</div>
+
+<div class="barre-comparateur" id="barre-comparateur" data-visible="false">
+  <div class="barre-comparateur__vignettes"></div>
+  <span data-compare-texte></span>
+  <a class="btn btn--sm" href="comparateur.html">Comparer</a>
+</div>
+
+<script src="assets/js/data.js"></script>
 <script src="assets/js/app.js"></script>
 </body>
 </html>

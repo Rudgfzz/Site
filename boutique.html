@@ -1,41 +1,60 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Boutique — STUDIO</title>
-<meta name="description" content="Tout le catalogue : presets Lightroom, packs photo, LUTs vidéo, overlays et guides pour la photo mobile.">
+<title>Boutique — ORBIT</title>
+<meta name="description" content="Tout le catalogue ORBIT : smartphones, tablettes, audio, montres, ordinateurs et accessoires.">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/style.css">
+<script>
+  /* Applique le thème avant le premier rendu, pour éviter que la page
+     n'apparaisse une fraction de seconde dans la mauvaise couleur. */
+  (function () {
+    try {
+      var t = JSON.parse(localStorage.getItem('orbit_theme'));
+      if (t !== 'clair' && t !== 'sombre') {
+        t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'clair' : 'sombre';
+      }
+      document.documentElement.setAttribute('data-theme', t === 'clair' ? 'light' : 'dark');
+    } catch (e) { /* stockage indisponible : on garde le thème par défaut */ }
+  })();
+</script>
 </head>
-<body>
+<body class="page">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+<div class="annonce">
+  <span>Livraison offerte dès 60 € · Retour gratuit sous 30 jours</span>
+</div>
 
 <header class="header">
   <div class="container header__inner">
     <a class="logo" href="index.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-        <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
-      </svg>
-      STUDIO
+      <span class="logo__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="5" r="2.2" fill="currentColor" stroke="none"/></svg></span>
+      ORBIT
     </a>
-    <nav class="nav" id="nav" aria-label="Navigation principale">
-      <a href="index.html">Accueil</a>
-      <a href="boutique.html" aria-current="page">Boutique</a>
-      <a href="a-propos.html">À propos</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+
+    <nav class="nav" id="nav" aria-label="Navigation principale"><a href="boutique.html" aria-current="page">Boutique</a><a href="boutique.html?tri=nouveaute">Nouveautés</a><a href="comparateur.html">Comparateur</a><a href="a-propos.html">À propos</a><a href="faq.html">Aide</a></nav>
+
     <div class="header__actions">
-      <a class="icon-btn" href="panier.html" aria-label="Voir le panier">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M6 7h12l-1 12a2 2 0 01-2 2H9a2 2 0 01-2-2L6 7z"/><path d="M9 7V5.5a3 3 0 016 0V7"/>
-        </svg>
-        <span class="cart-count" data-cart-count hidden>0</span>
+      <button class="icon-btn" type="button" data-ouvrir-recherche aria-label="Rechercher (Ctrl+K)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+      </button>
+      <button class="icon-btn" type="button" data-bascule-theme aria-pressed="false" aria-label="Changer de thème">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <a class="icon-btn" href="favoris.html" aria-label="Mes favoris">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-9.2A3.8 3.8 0 0 1 12 8a3.8 3.8 0 0 1 7 2.8C19 15.5 12 20 12 20Z"/></svg>
+        <span class="pastille" data-compteur-favoris hidden>0</span>
       </a>
-      <button class="icon-btn burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
-          <path d="M4 7h16M4 12h16M4 17h16"/>
-        </svg>
+      <button class="icon-btn" type="button" data-ouvrir-panier aria-label="Voir le panier">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 12.1A2 2 0 0 1 14.8 21H9.2a2 2 0 0 1-2-1.9L6 7Z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/></svg>
+        <span class="pastille" data-compteur-panier hidden>0</span>
+      </button>
+      <button class="icon-btn burger" id="burger" type="button"
+              aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
   </div>
@@ -43,50 +62,50 @@
 
 <main id="contenu">
   <div class="container">
-    <nav class="breadcrumb" aria-label="Fil d'Ariane">
-      <a href="index.html">Accueil</a><span>/</span>Boutique
-    </nav>
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="index.html">Accueil</a><span>/</span>Boutique</nav>
   </div>
 
-  <section class="section" style="padding-top:32px">
+  <section class="section" style="padding-top:26px">
     <div class="container">
       <div class="section-head">
         <div>
           <p class="eyebrow">Catalogue complet</p>
-          <h2>Boutique</h2>
-          <p>Presets, packs photo, LUTs, overlays et guides. Téléchargement immédiat après paiement.</p>
+          <h1 style="font-size:clamp(1.8rem,3.6vw,2.6rem)">Boutique</h1>
+          <p>Filtrez par catégorie, marque, coloris ou budget. Tout est en stock sauf mention contraire.</p>
         </div>
       </div>
 
-      <div class="filters">
-        <div class="chips" id="filtres-categories" role="group" aria-label="Filtrer par catégorie"></div>
-        <div class="filters__right">
-          <label class="sr-only" for="recherche">Rechercher un produit</label>
-          <input class="input" id="recherche" type="search" placeholder="Rechercher…" autocomplete="off">
-          <label class="sr-only" for="tri">Trier les produits</label>
-          <select class="select" id="tri">
-            <option value="defaut">Tri : par défaut</option>
-            <option value="prix-asc">Prix croissant</option>
-            <option value="prix-desc">Prix décroissant</option>
-            <option value="nom">Nom (A–Z)</option>
-          </select>
-        </div>
-      </div>
+      <div class="boutique">
+        <aside class="facettes" id="facettes" aria-label="Filtres"></aside>
 
-      <p class="result-count" id="compteur-resultats" aria-live="polite"></p>
-      <div class="grid-products" id="grille-boutique"></div>
-    </div>
-  </section>
+        <div>
+          <div class="barre-outils">
+            <span class="compteur-resultats" id="compteur" aria-live="polite"></span>
+            <div class="barre-outils__droite">
+              <label class="sr-only" for="q">Rechercher dans le catalogue</label>
+              <input class="input" id="q" type="search" placeholder="Rechercher…" style="width:190px">
+              <label class="sr-only" for="tri">Trier</label>
+              <select class="select" id="tri">
+                <option value="pertinence">Tri : pertinence</option>
+                <option value="prix-asc">Prix croissant</option>
+                <option value="prix-desc">Prix décroissant</option>
+                <option value="note">Les mieux notés</option>
+                <option value="nouveaute">Nouveautés</option>
+              </select>
+              <div class="bascule-vue" role="group" aria-label="Affichage">
+                <button type="button" data-vue="grille" aria-pressed="true" aria-label="Vue grille"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></button>
+                <button type="button" data-vue="liste" aria-pressed="false" aria-label="Vue liste"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+              </div>
+            </div>
+          </div>
 
-  <section class="section" style="padding-top:0">
-    <div class="container">
-      <div class="cta-band">
-        <h2>Une question sur un produit ?</h2>
-        <p class="lead" style="margin-inline:auto">
-          Dites-nous ce que vous cherchez, nous vous orientons vers le pack adapté.
-        </p>
-        <div class="btn-row" style="justify-content:center;margin-top:20px">
-          <a class="btn" href="contact.html">Nous écrire</a>
+          <div class="jetons" id="jetons"></div>
+          <div class="grille-produits" id="grille-boutique" data-vue="grille"></div>
+
+          <div class="charger-plus" id="charger-plus" hidden>
+            <p class="form-note" id="restants"></p>
+            <button class="btn btn--ghost" type="button" id="bouton-plus">Afficher plus de produits</button>
+          </div>
         </div>
       </div>
     </div>
@@ -96,51 +115,100 @@
 <footer class="footer">
   <div class="container">
     <div class="footer__grid">
-      <div class="footer__brand">
+      <div class="footer__marque">
         <a class="logo" href="index.html">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-            <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
-          </svg>
-          STUDIO
+          <span class="logo__mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="5" r="2.2" fill="currentColor" stroke="none"/></svg></span>
+          ORBIT
         </a>
-        <p>Produits numériques pour la photo mobile. Conçus, testés et mis à jour depuis la France.</p>
+        <p>L'écosystème mobile, sans compromis. Sélection resserrée, conseils honnêtes, service après-vente qui répond.</p>
+        <div class="reseaux">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.4"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="6" width="18" height="12" rx="3.5"/><path d="M11 10l4 2-4 2v-4Z" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg></a>
+        </div>
       </div>
+
       <div>
         <h4>Boutique</h4>
         <ul>
-          <li><a href="boutique.html?categorie=presets">Presets Lightroom</a></li>
-          <li><a href="boutique.html?categorie=packs">Packs photo</a></li>
-          <li><a href="boutique.html?categorie=luts">LUTs vidéo</a></li>
-          <li><a href="boutique.html?categorie=overlays">Overlays</a></li>
-          <li><a href="boutique.html?categorie=guides">Guides</a></li>
+          <li><a href="boutique.html?categorie=smartphones">Smartphones</a></li>
+          <li><a href="boutique.html?categorie=tablettes">Tablettes</a></li>
+          <li><a href="boutique.html?categorie=audio">Audio</a></li>
+          <li><a href="boutique.html?categorie=montres">Montres</a></li>
+          <li><a href="boutique.html?categorie=ordinateurs">Ordinateurs</a></li>
+          <li><a href="boutique.html?categorie=accessoires">Accessoires</a></li>
         </ul>
       </div>
+
       <div>
-        <h4>Le site</h4>
+        <h4>Aide</h4>
+        <ul>
+          <li><a href="faq.html">Questions fréquentes</a></li>
+          <li><a href="livraison-retours.html">Livraison &amp; retours</a></li>
+          <li><a href="suivi.html">Suivre ma commande</a></li>
+          <li><a href="contact.html">Nous contacter</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Société</h4>
         <ul>
           <li><a href="a-propos.html">À propos</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="panier.html">Panier</a></li>
-          <li><a href="index.html#comment">Comment ça marche</a></li>
+          <li><a href="comparateur.html">Comparateur</a></li>
+          <li><a href="favoris.html">Mes favoris</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
         </ul>
       </div>
+
       <div>
-        <h4>Informations</h4>
+        <h4>Légal</h4>
         <ul>
-          <li><a href="mentions-legales.html">Mentions légales</a></li>
           <li><a href="mentions-legales.html#cgv">Conditions de vente</a></li>
           <li><a href="mentions-legales.html#confidentialite">Confidentialité</a></li>
+          <li><a href="mentions-legales.html#cookies">Cookies</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer__bottom">
-      <p>© <span data-annee>2026</span> STUDIO. Tous droits réservés.</p>
-      <p>Paiement sécurisé · Téléchargement immédiat</p>
+
+    <div class="footer__bas">
+      <p>© <span data-annee>2026</span> ORBIT — site de démonstration.</p>
+      <p>Paiement sécurisé · CB · Visa · Mastercard · PayPal · 3× sans frais</p>
     </div>
   </div>
 </footer>
 
-<script src="assets/js/products.js"></script>
+<div class="voile" id="voile"></div>
+
+<aside class="tiroir" id="tiroir-panier" aria-label="Panier">
+  <div class="tiroir__head">
+    <h2>Votre panier</h2>
+    <button class="icon-btn" type="button" data-fermer-tiroir aria-label="Fermer le panier">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="tiroir__corps" id="tiroir-corps"></div>
+  <div class="tiroir__pied" id="tiroir-pied"></div>
+</aside>
+
+<div class="recherche" id="recherche" role="dialog" aria-modal="true" aria-label="Recherche">
+  <div class="recherche__boite">
+    <div class="recherche__champ">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
+      <label class="sr-only" for="champ-recherche">Rechercher un produit</label>
+      <input id="champ-recherche" type="search" placeholder="Rechercher un produit, une marque…" autocomplete="off">
+      <span class="kbd">Échap</span>
+    </div>
+    <div class="recherche__resultats" id="resultats-recherche"></div>
+  </div>
+</div>
+
+<div class="barre-comparateur" id="barre-comparateur" data-visible="false">
+  <div class="barre-comparateur__vignettes"></div>
+  <span data-compare-texte></span>
+  <a class="btn btn--sm" href="comparateur.html">Comparer</a>
+</div>
+
+<script src="assets/js/data.js"></script>
 <script src="assets/js/app.js"></script>
 </body>
 </html>

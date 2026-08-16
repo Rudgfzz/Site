@@ -1,17 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Visuel de remplacement">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" width="900" height="720" role="img" aria-label="Composition d'appareils">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#e0e7ff"/>
-      <stop offset="100%" stop-color="#fdf2f8"/>
+    <linearGradient id="halo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6d8cff" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#b06cff" stop-opacity=".08"/>
     </linearGradient>
-    <radialGradient id="r" cx="30%" cy="25%" r="70%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity=".85"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-    </radialGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5b6070"/><stop offset="50%" stop-color="#33363f"/>
+      <stop offset="100%" stop-color="#1c1e25"/>
+    </linearGradient>
+    <linearGradient id="verre" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#243043"/><stop offset="60%" stop-color="#0c0f16"/>
+      <stop offset="100%" stop-color="#161c27"/>
+    </linearGradient>
+    <linearGradient id="brillance" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity=".26"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
   </defs>
-  <rect width="800" height="600" fill="url(#g)"/>
-  <rect width="800" height="600" fill="url(#r)"/>
-  <circle cx="605" cy="150" r="88" fill="#c7d2fe" opacity=".45"/>
-  <path d="M0 470 L210 330 L370 452 L530 300 L800 486 L800 600 L0 600 Z" fill="#c7d2fe" opacity=".38"/>
-  <path d="M0 528 L250 402 L470 520 L640 424 L800 534 L800 600 L0 600 Z" fill="#c7d2fe" opacity=".55"/>
+
+  <circle cx="470" cy="330" r="300" fill="url(#halo)"/>
+
+  <g transform="translate(268 392) rotate(-9)">
+    <rect x="-150" y="-206" width="300" height="412" rx="26" fill="url(#metal)"/>
+    <rect x="-139" y="-195" width="278" height="390" rx="17" fill="url(#verre)"/>
+    <rect x="-139" y="-195" width="278" height="390" rx="17" fill="url(#brillance)"/>
+  </g>
+
+  <g transform="translate(566 350) rotate(6)">
+    <rect x="-116" y="-228" width="232" height="456" rx="42" fill="url(#metal)"/>
+    <rect x="-105" y="-217" width="210" height="434" rx="33" fill="url(#verre)"/>
+    <rect x="-105" y="-217" width="210" height="434" rx="33" fill="url(#brillance)"/>
+    <rect x="-33" y="-202" width="66" height="18" rx="9" fill="#05070a"/>
+    <g opacity=".85">
+      <rect x="-72" y="-120" width="144" height="12" rx="6" fill="#6d8cff" opacity=".8"/>
+      <rect x="-72" y="-92" width="98" height="12" rx="6" fill="#b06cff" opacity=".6"/>
+      <rect x="-72" y="-64" width="120" height="12" rx="6" fill="#ffffff" opacity=".18"/>
+    </g>
+  </g>
+
+  <g transform="translate(748 528) rotate(-4)">
+    <rect x="-74" y="-88" width="148" height="176" rx="46" fill="url(#metal)"/>
+    <rect x="-64" y="-78" width="128" height="156" rx="37" fill="url(#verre)"/>
+    <rect x="-64" y="-78" width="128" height="156" rx="37" fill="url(#brillance)"/>
+    <circle cx="0" cy="14" r="24" fill="none" stroke="#6d8cff" stroke-width="8" opacity=".85"/>
+  </g>
 </svg>

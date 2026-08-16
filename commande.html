@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact — ORBIT</title>
-<meta name="description" content="Une question ? Notre équipe répond sous 24 h ouvrées.">
+<title>Commande — ORBIT</title>
+<meta name="description" content="Finalisez votre commande en trois étapes.">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/css/style.css">
 <script>
@@ -62,75 +62,174 @@
 
 <main id="contenu">
   <div class="container">
-    <nav class="fil" aria-label="Fil d'Ariane"><a href="index.html">Accueil</a><span>/</span>Contact</nav>
-  </div>
+    <nav class="fil" aria-label="Fil d'Ariane">
+      <a href="panier.html">Panier</a><span>/</span>Commande
+    </nav>
 
-  <section class="section" style="padding-top:30px">
-    <div class="container">
-      <div style="max-width:640px;margin-bottom:40px">
-        <p class="eyebrow">Nous écrire</p>
-        <h1>Une question ? On vous répond.</h1>
-        <p class="lead">
-          Conseil avant achat, suivi de commande, garantie : décrivez votre situation,
-          la réponse arrive sous 24 h ouvrées.
-        </p>
-      </div>
+    <div style="padding:26px 0 0">
+      <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">Finaliser la commande</h1>
+    </div>
 
-      <div class="boutique" style="grid-template-columns:1fr 320px">
-        <form data-demo="Message envoyé. Nous revenons vers vous sous 24 h ouvrées." novalidate>
-          <div data-message></div>
+    <div class="etapes-tunnel">
+      <span class="etape-tunnel" data-numero="1" aria-current="step">
+        <span class="etape-tunnel__num">1</span> Coordonnées
+      </span>
+      <span class="trait"></span>
+      <span class="etape-tunnel" data-numero="2">
+        <span class="etape-tunnel__num">2</span> Livraison
+      </span>
+      <span class="trait"></span>
+      <span class="etape-tunnel" data-numero="3">
+        <span class="etape-tunnel__num">3</span> Paiement
+      </span>
+    </div>
 
-          <div class="field field--half">
-            <div>
-              <label for="c-prenom">Prénom</label>
-              <input class="input" id="c-prenom" name="prenom" autocomplete="given-name" required>
+    <div id="zone-commande">
+      <div class="panier-layout">
+        <form id="form-commande" novalidate>
+
+          <!-- Étape 1 -->
+          <section data-etape="1">
+            <h2 style="font-size:1.2rem">Vos coordonnées</h2>
+            <div class="field field--half">
+              <div>
+                <label for="prenom">Prénom</label>
+                <input class="input" id="prenom" name="prenom" autocomplete="given-name" required>
+                <span class="field-error"></span>
+              </div>
+              <div>
+                <label for="nom">Nom</label>
+                <input class="input" id="nom" name="nom" autocomplete="family-name" required>
+                <span class="field-error"></span>
+              </div>
             </div>
-            <div>
-              <label for="c-nom">Nom</label>
-              <input class="input" id="c-nom" name="nom" autocomplete="family-name" required>
+            <div class="field">
+              <label for="email">Adresse e-mail</label>
+              <input class="input" id="email" name="email" type="email" autocomplete="email"
+                     data-erreur="Merci d'indiquer une adresse e-mail valide." required>
+              <span class="field-error"></span>
             </div>
-          </div>
-          <div class="field">
-            <label for="c-email">Adresse e-mail</label>
-            <input class="input" id="c-email" name="email" type="email" autocomplete="email" required>
-          </div>
-          <div class="field">
-            <label for="c-sujet">Sujet</label>
-            <select class="select" id="c-sujet" name="sujet">
-              <option>Conseil avant achat</option>
-              <option>Suivi de ma commande</option>
-              <option>Retour ou remboursement</option>
-              <option>Garantie ou panne</option>
-              <option>Facture</option>
-              <option>Autre</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="c-commande">Numéro de commande <span class="form-note">(facultatif)</span></label>
-            <input class="input" id="c-commande" name="commande" placeholder="ORB-12345678">
-          </div>
-          <div class="field">
-            <label for="c-message">Votre message</label>
-            <textarea class="textarea" id="c-message" name="message" required></textarea>
-          </div>
+            <div class="field">
+              <label for="telephone">Téléphone</label>
+              <input class="input" id="telephone" name="telephone" type="tel" autocomplete="tel" required>
+              <span class="field-error"></span>
+            </div>
 
-          <div class="btn-row">
-            <button class="btn btn--lg" type="submit">Envoyer le message</button>
-          </div>
-          <p class="form-note" style="margin-top:14px">
-            Vos données servent uniquement à traiter votre demande.
-          </p>
+            <h2 style="font-size:1.2rem;margin-top:30px">Adresse de livraison</h2>
+            <div class="field">
+              <label for="rue">Adresse</label>
+              <input class="input" id="rue" name="rue" autocomplete="address-line1" required>
+              <span class="field-error"></span>
+            </div>
+            <div class="field">
+              <label for="complement">Complément <span class="form-note">(facultatif)</span></label>
+              <input class="input" id="complement" name="complement" autocomplete="address-line2">
+            </div>
+            <div class="field field--half">
+              <div>
+                <label for="cp">Code postal</label>
+                <input class="input" id="cp" name="cp" autocomplete="postal-code" inputmode="numeric" required>
+                <span class="field-error"></span>
+              </div>
+              <div>
+                <label for="ville">Ville</label>
+                <input class="input" id="ville" name="ville" autocomplete="address-level2" required>
+                <span class="field-error"></span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="pays">Pays</label>
+              <select class="select" id="pays" name="pays" required>
+                <option>France</option>
+                <option>Belgique</option>
+                <option>Suisse</option>
+                <option>Luxembourg</option>
+              </select>
+            </div>
+
+            <div class="btn-row" style="margin-top:24px">
+              <button class="btn btn--lg" type="button" data-suivant>Continuer vers la livraison</button>
+            </div>
+          </section>
+
+          <!-- Étape 2 -->
+          <section data-etape="2" hidden>
+            <h2 style="font-size:1.2rem">Mode de livraison</h2>
+            <div id="modes-livraison"></div>
+
+            <label class="check" style="margin-top:20px">
+              <input type="checkbox" name="cadeau">
+              <span>Emballage cadeau offert, avec un mot personnalisé</span>
+            </label>
+
+            <div class="btn-row" style="margin-top:24px">
+              <button class="btn btn--ghost" type="button" data-precedent>Retour</button>
+              <button class="btn btn--lg" type="button" data-suivant>Continuer vers le paiement</button>
+            </div>
+          </section>
+
+          <!-- Étape 3 -->
+          <section data-etape="3" hidden>
+            <h2 style="font-size:1.2rem">Paiement</h2>
+
+            <label class="carte-choix">
+              <input type="radio" name="paiement" value="carte" checked>
+              <span style="flex:1"><strong>Carte bancaire</strong><span>Visa, Mastercard, CB · paiement 3× possible</span></span>
+              <span class="tarif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18"/></svg></span>
+            </label>
+            <label class="carte-choix">
+              <input type="radio" name="paiement" value="paypal">
+              <span style="flex:1"><strong>PayPal</strong><span>Vous serez redirigé pour valider</span></span>
+            </label>
+            <label class="carte-choix">
+              <input type="radio" name="paiement" value="virement">
+              <span style="flex:1"><strong>Virement bancaire</strong><span>Expédition à réception des fonds</span></span>
+            </label>
+
+            <div id="champs-carte" style="margin-top:22px">
+              <div class="field">
+                <label for="carte-numero">Numéro de carte</label>
+                <input class="input" id="carte-numero" name="carte" inputmode="numeric"
+                       placeholder="0000 0000 0000 0000" autocomplete="cc-number" required>
+                <span class="field-error"></span>
+              </div>
+              <div class="field field--half">
+                <div>
+                  <label for="carte-expiration">Expiration</label>
+                  <input class="input" id="carte-expiration" name="expiration" placeholder="MM/AA"
+                         autocomplete="cc-exp" required>
+                  <span class="field-error"></span>
+                </div>
+                <div>
+                  <label for="carte-cvc">Cryptogramme</label>
+                  <input class="input" id="carte-cvc" name="cvc" inputmode="numeric" placeholder="123"
+                         autocomplete="cc-csc" required>
+                  <span class="field-error"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="alerte alerte--info" style="margin-top:18px">
+              Site de démonstration : aucun paiement n'est réellement effectué et aucune donnée
+              bancaire n'est transmise. N'y saisissez jamais un vrai numéro de carte.
+            </div>
+
+            <label class="check">
+              <input type="checkbox" name="cgv" required>
+              <span>J'accepte les <a href="mentions-legales.html#cgv" style="text-decoration:underline">conditions générales de vente</a>.</span>
+            </label>
+
+            <div class="btn-row" style="margin-top:24px">
+              <button class="btn btn--ghost" type="button" data-precedent>Retour</button>
+              <button class="btn btn--lg" type="submit">Valider et payer</button>
+            </div>
+          </section>
         </form>
 
-        <aside>
-          <div class="carte-info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16v-4a7 7 0 0 1 14 0v4"/><rect x="3" y="14" width="4" height="6" rx="2"/><rect x="17" y="14" width="4" height="6" rx="2"/></svg><h3>Par téléphone</h3><p>01 23 45 67 89<br>Du lundi au samedi, 9 h – 19 h</p></div>
-          <div class="carte-info" style="margin-top:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 10h18"/></svg><h3>Par e-mail</h3><p>bonjour@orbit-demo.fr<br>Réponse sous 24 h ouvrées</p></div>
-          <div class="carte-info" style="margin-top:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8l8-4 8 4v8l-8 4-8-4V8Z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg><h3>Suivi de commande</h3><p>Le plus rapide reste la page de suivi.</p>
-            <a class="btn btn--soft btn--sm" href="suivi.html" style="margin-top:12px">Suivre mon colis</a></div>
-        </aside>
+        <aside class="recap" id="recap-commande"></aside>
       </div>
     </div>
-  </section>
+  </div>
 </main>
 
 <footer class="footer">
