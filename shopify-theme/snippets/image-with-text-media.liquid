@@ -1,0 +1,18 @@
+{%- comment -%}
+  Visuel de la section « Image et texte ». Paramètre : section
+{%- endcomment -%}
+
+{%- if section.settings.image -%}
+  {%- assign alt_image = section.settings.image.alt | default: section.settings.titre -%}
+  {{
+    section.settings.image
+    | image_url: width: 1200
+    | image_tag:
+      loading: 'lazy',
+      widths: '600, 900, 1200',
+      sizes: '(min-width: 860px) 45vw, 100vw',
+      alt: alt_image
+  }}
+{%- else -%}
+  {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+{%- endif -%}

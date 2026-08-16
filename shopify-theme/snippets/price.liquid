@@ -1,0 +1,26 @@
+{%- comment -%}
+  Affiche le prix d'un produit, avec l'ancien prix barré s'il y a une remise.
+  Paramètres :
+    product (obligatoire)
+    large (facultatif, booléen) — grande taille pour la page produit
+{%- endcomment -%}
+
+{%- assign variante = product.selected_or_first_available_variant -%}
+{%- assign prix = variante.price | default: product.price -%}
+{%- assign prix_barre = variante.compare_at_price | default: product.compare_at_price -%}
+
+<span class="price{% if large %} product__price{% endif %}">
+  {%- if product.price_varies and large != true -%}
+    À partir de {{ product.price_min | money }}
+  {%- else -%}
+    {%- if prix_barre > prix -%}
+      {%- if large -%}
+        {{ prix | money }} <s>{{ prix_barre | money }}</s>
+      {%- else -%}
+        <s>{{ prix_barre | money }}</s>{{ prix | money }}
+      {%- endif -%}
+    {%- else -%}
+      {{ prix | money }}
+    {%- endif -%}
+  {%- endif -%}
+</span>

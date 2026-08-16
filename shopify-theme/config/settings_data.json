@@ -1,0 +1,17 @@
+{
+  "current": {
+    "logo_width": 120,
+    "color_bg": "#ffffff",
+    "color_bg_soft": "#fafafa",
+    "color_text": "#0b0b0c",
+    "color_muted": "#71717a",
+    "color_line": "#e7e7ea",
+    "color_accent": "#0b0b0c",
+    "color_accent_text": "#ffffff",
+    "radius_card": 14,
+    "product_image_ratio": "4/3",
+    "reassurance_1": "Téléchargement immédiat après paiement",
+    "reassurance_2": "Paiement sécurisé",
+    "reassurance_3": "Mises à jour incluses"
+  }
+}

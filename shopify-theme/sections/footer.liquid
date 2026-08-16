@@ -1,0 +1,85 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a class="logo" href="{{ routes.root_url }}">
+          {% render 'icon', nom: 'logo' %}
+          {{ shop.name }}
+        </a>
+        {%- if section.settings.baseline != blank -%}
+          <p>{{ section.settings.baseline }}</p>
+        {%- endif -%}
+
+        {%- if settings.social_instagram != blank or settings.social_youtube != blank or settings.social_tiktok != blank -%}
+          <p style="margin-top:14px">
+            {%- if settings.social_instagram != blank -%}
+              <a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">Instagram</a>
+            {%- endif -%}
+            {%- if settings.social_youtube != blank -%}
+              · <a href="{{ settings.social_youtube }}" target="_blank" rel="noopener">YouTube</a>
+            {%- endif -%}
+            {%- if settings.social_tiktok != blank -%}
+              · <a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener">TikTok</a>
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        <div {{ block.shopify_attributes }}>
+          <h4>{{ block.settings.titre }}</h4>
+          <ul>
+            {%- for lien in block.settings.menu.links -%}
+              <li><a href="{{ lien.url }}">{{ lien.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="footer__bottom">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits réservés.</p>
+      {%- if section.settings.mention != blank -%}
+        <p>{{ section.settings.mention }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pied de page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "baseline",
+      "label": "Phrase de présentation",
+      "default": "Produits numériques pour la photo mobile."
+    },
+    {
+      "type": "text",
+      "id": "mention",
+      "label": "Mention de droite",
+      "default": "Paiement sécurisé · Téléchargement immédiat"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Colonne de liens",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Boutique" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "menu", "settings": { "titre": "Boutique" } },
+      { "type": "menu", "settings": { "titre": "Le site" } },
+      { "type": "menu", "settings": { "titre": "Informations" } }
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,101 @@
+<section class="hero">
+  <div class="container hero__grid">
+    <div>
+      {%- if section.settings.surtitre != blank -%}
+        <p class="eyebrow">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+
+      <h1>{{ section.settings.titre }}</h1>
+
+      {%- if section.settings.texte != blank -%}
+        <div class="lead">{{ section.settings.texte }}</div>
+      {%- endif -%}
+
+      <div class="btn-row">
+        {%- if section.settings.bouton_1_texte != blank -%}
+          <a class="btn btn--lg" href="{{ section.settings.bouton_1_lien | default: routes.all_products_collection_url }}">
+            {{ section.settings.bouton_1_texte }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.bouton_2_texte != blank -%}
+          <a class="btn btn--ghost btn--lg" href="{{ section.settings.bouton_2_lien }}">
+            {{ section.settings.bouton_2_texte }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="hero__stats">
+          {%- for block in section.blocks -%}
+            <div {{ block.shopify_attributes }}>
+              <strong>{{ block.settings.chiffre }}</strong>
+              <span>{{ block.settings.libelle }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="hero__media">
+      {%- if section.settings.image -%}
+        {%- assign alt_hero = section.settings.image.alt | default: section.settings.titre -%}
+        {{
+          section.settings.image
+          | image_url: width: 1200
+          | image_tag:
+            widths: '600, 900, 1200',
+            sizes: '(min-width: 860px) 45vw, 100vw',
+            fetchpriority: 'high',
+            alt: alt_hero
+        }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bandeau d'accueil",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Téléchargement immédiat" },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "Vos photos méritent mieux que le mode automatique."
+    },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte",
+      "default": "<p>Presets, packs d'images, LUTs vidéo et guides pratiques — conçus pour la photo mobile, prêts à l'emploi en moins d'une minute.</p>"
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "header", "content": "Boutons" },
+    { "type": "text", "id": "bouton_1_texte", "label": "Bouton principal", "default": "Voir la boutique" },
+    { "type": "url", "id": "bouton_1_lien", "label": "Lien du bouton principal" },
+    { "type": "text", "id": "bouton_2_texte", "label": "Bouton secondaire" },
+    { "type": "url", "id": "bouton_2_lien", "label": "Lien du bouton secondaire" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Chiffre clé",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "chiffre", "label": "Chiffre", "default": "180+" },
+        { "type": "text", "id": "libelle", "label": "Libellé", "default": "fichiers disponibles" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bandeau d'accueil",
+      "blocks": [{ "type": "stat" }, { "type": "stat" }, { "type": "stat" }]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,69 @@
+<section class="section{% if section.settings.fond_alterne %} section--soft{% endif %}">
+  <div class="container">
+    <div class="section-head text-center" style="display:block;text-align:center">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="eyebrow">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+      <h2>{{ section.settings.titre }}</h2>
+    </div>
+
+    <div class="quotes">
+      {%- for block in section.blocks -%}
+        <blockquote class="quote reveal" {{ block.shopify_attributes }}>
+          {%- if block.settings.etoiles > 0 -%}
+            <p class="stars" aria-label="{{ block.settings.etoiles }} étoiles sur 5">
+              {%- for i in (1..block.settings.etoiles) -%}★{%- endfor -%}
+            </p>
+          {%- endif -%}
+          <p>{{ block.settings.texte }}</p>
+          {%- if block.settings.auteur != blank -%}
+            <footer>{{ block.settings.auteur }}</footer>
+          {%- endif -%}
+        </blockquote>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Avis clients",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Avis clients" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Ce qu'en disent les acheteurs" },
+    { "type": "checkbox", "id": "fond_alterne", "label": "Fond gris clair", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "Avis",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "range",
+          "id": "etoiles",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "label": "Nombre d'étoiles",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "texte",
+          "label": "Avis",
+          "info": "N'affichez que des avis réellement reçus de vos clients."
+        },
+        { "type": "text", "id": "auteur", "label": "Auteur" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Avis clients",
+      "blocks": [{ "type": "quote" }, { "type": "quote" }, { "type": "quote" }]
+    }
+  ]
+}
+{% endschema %}

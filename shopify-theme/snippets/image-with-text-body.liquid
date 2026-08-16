@@ -1,0 +1,21 @@
+{%- comment -%}
+  Texte de la section « Image et texte ». Paramètre : section
+{%- endcomment -%}
+
+{%- if section.settings.surtitre != blank -%}
+  <p class="eyebrow">{{ section.settings.surtitre }}</p>
+{%- endif -%}
+
+<h2>{{ section.settings.titre }}</h2>
+
+{%- if section.settings.texte != blank -%}
+  <div class="lead">{{ section.settings.texte }}</div>
+{%- endif -%}
+
+{%- if section.settings.bouton_texte != blank -%}
+  <div class="btn-row">
+    <a class="btn btn--ghost" href="{{ section.settings.bouton_lien }}">
+      {{ section.settings.bouton_texte }}
+    </a>
+  </div>
+{%- endif -%}

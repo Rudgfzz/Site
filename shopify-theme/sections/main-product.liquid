@@ -1,0 +1,196 @@
+{%- assign variante = product.selected_or_first_available_variant -%}
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>
+    {%- if collection -%}
+      <a href="{{ collection.url }}">{{ collection.title }}</a><span>/</span>
+    {%- else -%}
+      <a href="{{ routes.all_products_collection_url }}">Boutique</a><span>/</span>
+    {%- endif -%}
+    <span>{{ product.title }}</span>
+  </nav>
+
+  <div class="product">
+    {%- comment -%} ---------- Galerie ---------- {%- endcomment -%}
+    <div class="product__media">
+      <div class="gallery__main">
+        {%- if product.featured_media -%}
+          <img id="image-principale"
+               src="{{ product.featured_media | image_url: width: 1200 }}"
+               srcset="{{ product.featured_media | image_url: width: 600 }} 600w,
+                       {{ product.featured_media | image_url: width: 900 }} 900w,
+                       {{ product.featured_media | image_url: width: 1200 }} 1200w"
+               sizes="(min-width: 860px) 55vw, 100vw"
+               width="1200" height="900"
+               alt="{{ product.featured_media.alt | default: product.title | escape }}">
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+      {%- if product.media.size > 1 -%}
+        <div class="gallery__thumbs" id="miniatures">
+          {%- for media in product.media -%}
+            <button type="button"
+                    data-src="{{ media | image_url: width: 1200 }}"
+                    data-alt="{{ media.alt | default: product.title | escape }}"
+                    aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                    aria-label="Voir l'image {{ forloop.index }}">
+              <img src="{{ media | image_url: width: 200 }}" loading="lazy"
+                   width="200" height="150"
+                   alt="Aperçu {{ forloop.index }} de {{ product.title | escape }}">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ---------- Informations ---------- {%- endcomment -%}
+    <div class="product__info">
+      {%- if product.type != blank -%}
+        <p class="eyebrow">{{ product.type }}</p>
+      {%- endif -%}
+
+      <h1>{{ product.title }}</h1>
+
+      {%- if product.metafields.custom.accroche != blank -%}
+        <p class="lead" style="font-size:1.02rem">{{ product.metafields.custom.accroche }}</p>
+      {%- endif -%}
+
+      {% render 'price', product: product, large: true %}
+
+      {%- form 'product', product, id: 'form-produit' -%}
+        {%- if product.has_only_default_variant -%}
+          <input type="hidden" name="id" value="{{ variante.id }}">
+        {%- else -%}
+          <div class="variant-picker">
+            <label for="variante">{{ product.options | join: ' / ' }}</label>
+            <select class="select" id="variante" name="id">
+              {%- for v in product.variants -%}
+                <option value="{{ v.id }}"
+                        {% if v == variante %}selected{% endif %}
+                        {% unless v.available %}disabled{% endunless %}>
+                  {{ v.title }} — {{ v.price | money }}{% unless v.available %} (épuisé){% endunless %}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- endif -%}
+
+        <div class="product__actions">
+          {%- unless product.metafields.custom.masquer_quantite -%}
+            <div class="qty-input">
+              <button type="button" data-qty-moins aria-label="Diminuer la quantité">−</button>
+              <label class="sr-only" for="quantite">Quantité</label>
+              <input id="quantite" name="quantity" type="number" value="1" min="1" inputmode="numeric">
+              <button type="button" data-qty-plus aria-label="Augmenter la quantité">+</button>
+            </div>
+          {%- endunless -%}
+
+          <button class="btn btn--lg" type="submit" name="add"
+                  {% unless product.available %}disabled{% endunless %}>
+            {%- if product.available -%}Ajouter au panier{%- else -%}Épuisé{%- endif -%}
+          </button>
+        </div>
+
+        {{ form | payment_button }}
+      {%- endform -%}
+
+      {%- if product.description != blank -%}
+        <div class="prose" style="max-width:none;margin-top:26px">
+          {{ product.description }}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%}
+        « Ce qui est inclus » : métachamp custom.inclus
+        (type « Texte sur une ligne », coché « liste de valeurs »).
+      {%- endcomment -%}
+      {%- assign inclus = product.metafields.custom.inclus.value -%}
+      {%- if inclus != blank -%}
+        <h2 style="font-size:1.05rem;margin-top:28px">Ce qui est inclus</h2>
+        <ul class="list-check">
+          {%- for ligne in inclus -%}
+            <li>{{ ligne }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- comment -%}
+        « Caractéristiques » : métachamp custom.caracteristiques,
+        une valeur par ligne au format « Clé : valeur ».
+      {%- endcomment -%}
+      {%- assign specs = product.metafields.custom.caracteristiques.value -%}
+      {%- if specs != blank -%}
+        <h2 style="font-size:1.05rem">Caractéristiques</h2>
+        <table class="specs">
+          <tbody>
+            {%- for ligne in specs -%}
+              {%- assign paire = ligne | split: ' : ' -%}
+              <tr>
+                <th scope="row">{{ paire[0] }}</th>
+                <td>{{ paire[1] | default: '—' }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      {%- endif -%}
+
+      <div class="reassurance">
+        {%- if settings.reassurance_1 != blank -%}
+          <div>{% render 'icon', nom: 'telechargement' %}<span>{{ settings.reassurance_1 }}</span></div>
+        {%- endif -%}
+        {%- if settings.reassurance_2 != blank -%}
+          <div>{% render 'icon', nom: 'bouclier' %}<span>{{ settings.reassurance_2 }}</span></div>
+        {%- endif -%}
+        {%- if settings.reassurance_3 != blank -%}
+          <div>{% render 'icon', nom: 'actualiser' %}<span>{{ settings.reassurance_3 }}</span></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- comment -%} ---------- Produits similaires ---------- {%- endcomment -%}
+{%- if section.settings.show_related -%}
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">À découvrir aussi</p>
+          <h2>Produits similaires</h2>
+        </div>
+        <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Tout le catalogue</a>
+      </div>
+
+      <div class="grid-products">
+        {%- assign compte = 0 -%}
+        {%- for p in collections.all.products -%}
+          {%- if p.id != product.id and compte < 4 -%}
+            {% render 'product-card', product: p %}
+            {%- assign compte = compte | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Page produit",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_related",
+      "label": "Afficher les produits similaires",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

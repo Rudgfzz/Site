@@ -1,0 +1,21 @@
+<div class="container">
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>{{ page.title }}
+  </nav>
+</div>
+
+<section class="section" style="padding-top:36px">
+  <div class="container">
+    <div class="prose">
+      <h1 style="font-size:clamp(1.8rem,3.6vw,2.4rem)">{{ page.title }}</h1>
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,88 @@
+<div class="container">
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>{{ collection.title }}
+  </nav>
+</div>
+
+<section class="section" style="padding-top:32px">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Catalogue</p>
+        <h1 style="font-size:clamp(1.6rem,3.4vw,2.3rem)">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div>{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} Filtres : les collections du menu + tri Shopify {%- endcomment -%}
+    <div class="filters">
+      <div class="chips">
+        <a class="chip" href="{{ routes.all_products_collection_url }}"
+           aria-pressed="{% if collection.handle == 'all' %}true{% else %}false{% endif %}">Tout</a>
+        {%- for lien in section.settings.menu_collections.links -%}
+          <a class="chip" href="{{ lien.url }}" aria-pressed="{% if lien.current %}true{% else %}false{% endif %}">
+            {{ lien.title }}
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%}
+        Vrai formulaire GET : le tri fonctionne même sans JavaScript,
+        le script se contente de le soumettre au changement.
+      {%- endcomment -%}
+      <form class="filters__right" method="get" action="{{ collection.url }}" id="form-tri">
+        <label class="sr-only" for="tri">Trier les produits</label>
+        <select class="select" id="tri" name="sort_by">
+          {%- assign tri_actuel = collection.sort_by | default: collection.default_sort_by -%}
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value }}" {% if option.value == tri_actuel %}selected{% endif %}>
+              {{ option.name }}
+            </option>
+          {%- endfor -%}
+        </select>
+        <noscript><button class="btn btn--soft btn--sm" type="submit">Trier</button></noscript>
+      </form>
+    </div>
+
+    {% paginate collection.products by section.settings.produits_par_page %}
+      <p class="result-count">
+        {{ collection.products_count }} produit{% if collection.products_count > 1 %}s{% endif %}
+      </p>
+
+      <div class="grid-products">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- else -%}
+          <p class="empty-state">Aucun produit dans cette collection pour le moment.</p>
+        {%- endfor -%}
+      </div>
+
+      {% render 'pagination', paginate: paginate %}
+    {% endpaginate %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "produits_par_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "label": "Produits par page",
+      "default": 12
+    },
+    {
+      "type": "link_list",
+      "id": "menu_collections",
+      "label": "Menu des catégories",
+      "info": "Affiché en pastilles au-dessus de la grille."
+    }
+  ]
+}
+{% endschema %}

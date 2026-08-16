@@ -1,0 +1,76 @@
+<section class="section{% if section.settings.fond_alterne %} section--soft{% else %} section--line{% endif %}">
+  <div class="container">
+    {%- if section.settings.titre != blank -%}
+      <div class="section-head text-center" style="display:block;text-align:center">
+        {%- if section.settings.surtitre != blank -%}
+          <p class="eyebrow">{{ section.settings.surtitre }}</p>
+        {%- endif -%}
+        <h2>{{ section.settings.titre }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="features">
+      {%- for block in section.blocks -%}
+        <div class="feature reveal" {{ block.shopify_attributes }}>
+          <div class="feature__icon">{% render 'icon', nom: block.settings.icone %}</div>
+          <h3>{{ block.settings.titre }}</h3>
+          <p>{{ block.settings.texte }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Arguments",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre" },
+    { "type": "text", "id": "titre", "label": "Titre" },
+    { "type": "checkbox", "id": "fond_alterne", "label": "Fond gris clair", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Argument",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icone",
+          "label": "Icône",
+          "options": [
+            { "value": "eclair", "label": "Éclair" },
+            { "value": "mobile", "label": "Téléphone" },
+            { "value": "actualiser", "label": "Mise à jour" },
+            { "value": "bouclier", "label": "Bouclier" },
+            { "value": "telechargement", "label": "Téléchargement" },
+            { "value": "coeur", "label": "Cœur" },
+            { "value": "etoile", "label": "Étoile" }
+          ],
+          "default": "eclair"
+        },
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Livraison instantanée" },
+        {
+          "type": "text",
+          "id": "texte",
+          "label": "Texte",
+          "default": "Le lien de téléchargement arrive dès le paiement validé."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Arguments",
+      "blocks": [
+        { "type": "feature", "settings": { "icone": "eclair" } },
+        { "type": "feature", "settings": { "icone": "mobile" } },
+        { "type": "feature", "settings": { "icone": "actualiser" } },
+        { "type": "feature", "settings": { "icone": "bouclier" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

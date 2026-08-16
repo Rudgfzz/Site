@@ -1,0 +1,65 @@
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="cta-band">
+      <h2>{{ section.settings.titre }}</h2>
+
+      {%- if section.settings.texte != blank -%}
+        <div class="lead" style="margin-inline:auto">{{ section.settings.texte }}</div>
+      {%- endif -%}
+
+      {%- form 'customer', class: 'newsletter' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="sr-only" for="email-newsletter">Votre adresse e-mail</label>
+        <input class="input" id="email-newsletter" type="email" name="contact[email]"
+               placeholder="{{ section.settings.placeholder }}" required
+               autocomplete="email" value="{{ form.email }}">
+        <button class="btn" type="submit">{{ section.settings.bouton }}</button>
+
+        {%- if form.posted_successfully? -%}
+          <div class="alert alert--ok" style="width:100%;margin-top:14px">
+            {{ section.settings.confirmation }}
+          </div>
+        {%- elsif form.errors -%}
+          <div class="alert alert--error" style="width:100%;margin-top:14px">
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+
+      {%- if section.settings.mention != blank -%}
+        <p class="form-note" style="margin-top:14px">{{ section.settings.mention }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Restez informé des nouveautés" },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte",
+      "default": "<p>Un e-mail par mois : nouveautés, conseils et offres réservées aux abonnés.</p>"
+    },
+    { "type": "text", "id": "placeholder", "label": "Exemple dans le champ", "default": "vous@exemple.fr" },
+    { "type": "text", "id": "bouton", "label": "Texte du bouton", "default": "Je m'inscris" },
+    {
+      "type": "text",
+      "id": "confirmation",
+      "label": "Message de confirmation",
+      "default": "Merci ! Votre inscription est enregistrée."
+    },
+    {
+      "type": "text",
+      "id": "mention",
+      "label": "Mention sous le formulaire",
+      "default": "Désinscription en un clic. Aucune adresse revendue."
+    }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

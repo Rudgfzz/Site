@@ -1,0 +1,68 @@
+<header class="header">
+  <div class="container header__inner">
+    <a class="logo" href="{{ routes.root_url }}">
+      {%- if settings.logo -%}
+        {%- comment -%}
+          Les filtres doivent être appliqués avant image_tag : chaînés après,
+          ils porteraient sur la balise produite et non sur le paramètre.
+        {%- endcomment -%}
+        {%- capture style_logo -%}width:{{ settings.logo_width }}px;height:auto{%- endcapture -%}
+        {{
+          settings.logo
+          | image_url: width: 480
+          | image_tag:
+            widths: '120, 240, 480',
+            style: style_logo,
+            alt: shop.name
+        }}
+      {%- else -%}
+        {% render 'icon', nom: 'logo' %}
+        {{ shop.name }}
+      {%- endif -%}
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      {%- for lien in section.settings.menu.links -%}
+        <a href="{{ lien.url }}"{% if lien.current %} aria-current="page"{% endif %}>{{ lien.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="header__actions">
+      {%- if section.settings.show_search -%}
+        <a class="icon-btn" href="{{ routes.search_url }}" aria-label="Rechercher">
+          {% render 'icon', nom: 'recherche' %}
+        </a>
+      {%- endif -%}
+
+      <a class="icon-btn" href="{{ routes.cart_url }}" aria-label="Voir le panier">
+        {% render 'icon', nom: 'panier' %}
+        <span class="cart-count"{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+
+      <button class="icon-btn burger" id="burger" type="button"
+              aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+        {% render 'icon', nom: 'menu' %}
+      </button>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "En-tête",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Afficher l'icône de recherche",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,51 @@
+<section class="section">
+  <div class="container" style="max-width:460px">
+    <h1 style="font-size:1.7rem;text-align:center">Connexion</h1>
+
+    {%- form 'customer_login' -%}
+      {%- if form.errors -%}
+        <div class="alert alert--error">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+
+      <div class="field">
+        <label for="login-email">E-mail</label>
+        <input class="input" id="login-email" type="email" name="customer[email]"
+               autocomplete="email" required>
+      </div>
+
+      {%- if form.password_needed -%}
+        <div class="field">
+          <label for="login-password">Mot de passe</label>
+          <input class="input" id="login-password" type="password" name="customer[password]"
+                 autocomplete="current-password" required>
+        </div>
+      {%- endif -%}
+
+      <button class="btn btn--block btn--lg" type="submit">Se connecter</button>
+
+      <p class="form-note" style="margin-top:16px;text-align:center">
+        <a href="#recuperation" onclick="document.getElementById('recuperation').open=true">Mot de passe oublié ?</a>
+        {%- if shop.customer_accounts_optional %}
+          · <a href="{{ routes.account_register_url }}">Créer un compte</a>
+        {%- endif -%}
+      </p>
+    {%- endform -%}
+
+    <details id="recuperation" class="faq" style="margin-top:26px">
+      <summary>Réinitialiser mon mot de passe</summary>
+      {%- form 'recover_customer_password' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="alert alert--ok">Un e-mail vient de vous être envoyé.</div>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <div class="alert alert--error">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+        <div class="field">
+          <label for="recover-email">Votre e-mail</label>
+          <input class="input" id="recover-email" type="email" name="email" required>
+        </div>
+        <button class="btn" type="submit">Envoyer</button>
+      {%- endform -%}
+    </details>
+  </div>
+</section>

@@ -1,0 +1,63 @@
+<section class="section{% if section.settings.fond_alterne %} section--soft{% endif %}">
+  <div class="container">
+    <div class="section-head text-center" style="display:block;text-align:center">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="eyebrow">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+      <h2>{{ section.settings.titre }}</h2>
+    </div>
+
+    <div class="faq">
+      {%- for block in section.blocks -%}
+        <details {% if forloop.first and section.settings.ouvrir_premiere %}open{% endif %} {{ block.shopify_attributes }}>
+          <summary>{{ block.settings.question }}</summary>
+          <div>{{ block.settings.reponse }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Questions fréquentes",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Questions fréquentes" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Bon à savoir avant d'acheter" },
+    {
+      "type": "checkbox",
+      "id": "ouvrir_premiere",
+      "label": "Ouvrir la première question",
+      "default": true
+    },
+    { "type": "checkbox", "id": "fond_alterne", "label": "Fond gris clair", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Comment je reçois mes fichiers ?"
+        },
+        {
+          "type": "richtext",
+          "id": "reponse",
+          "label": "Réponse",
+          "default": "<p>Dès le paiement validé, un lien de téléchargement vous est envoyé par e-mail.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Questions fréquentes",
+      "blocks": [{ "type": "question" }, { "type": "question" }, { "type": "question" }]
+    }
+  ]
+}
+{% endschema %}

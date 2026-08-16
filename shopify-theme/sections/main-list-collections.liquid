@@ -1,0 +1,34 @@
+<div class="container">
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>Catégories
+  </nav>
+</div>
+
+<section class="section" style="padding-top:32px">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Catalogue</p>
+        <h1 style="font-size:clamp(1.6rem,3.4vw,2.3rem)">Toutes les catégories</h1>
+      </div>
+    </div>
+
+    <div class="cat-grid">
+      {%- for collection in collections -%}
+        <a class="cat-card" href="{{ collection.url }}">
+          {{ collection.title }}
+          <span>{{ collection.products_count }} produit{% if collection.products_count > 1 %}s{% endif %}</span>
+        </a>
+      {%- else -%}
+        <p class="empty-state">Aucune catégorie pour le moment.</p>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Liste des collections",
+  "settings": []
+}
+{% endschema %}

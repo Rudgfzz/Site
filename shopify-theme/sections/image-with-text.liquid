@@ -1,0 +1,48 @@
+<section class="section{% if section.settings.fond_alterne %} section--soft{% endif %}">
+  <div class="container split">
+    {%- if section.settings.image_a_gauche -%}
+      <div>
+        {%- render 'image-with-text-media', section: section -%}
+      </div>
+      <div>
+        {%- render 'image-with-text-body', section: section -%}
+      </div>
+    {%- else -%}
+      <div>
+        {%- render 'image-with-text-body', section: section -%}
+      </div>
+      <div>
+        {%- render 'image-with-text-media', section: section -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image et texte",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "L'atelier" },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "Des réglages testés sur de vraies photos"
+    },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte",
+      "default": "<p>Chaque preset est éprouvé sur plusieurs centaines d'images avant d'entrer au catalogue.</p>"
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "checkbox", "id": "image_a_gauche", "label": "Image à gauche", "default": false },
+    { "type": "checkbox", "id": "fond_alterne", "label": "Fond gris clair", "default": false },
+    { "type": "header", "content": "Bouton" },
+    { "type": "text", "id": "bouton_texte", "label": "Texte du bouton" },
+    { "type": "url", "id": "bouton_lien", "label": "Lien du bouton" }
+  ],
+  "presets": [{ "name": "Image et texte" }]
+}
+{% endschema %}

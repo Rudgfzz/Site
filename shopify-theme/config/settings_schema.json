@@ -1,0 +1,152 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Studio",
+    "theme_version": "1.0.0",
+    "theme_author": "Studio",
+    "theme_documentation_url": "https://shopify.dev/docs/themes",
+    "theme_support_url": "https://shopify.dev/docs/themes"
+  },
+  {
+    "name": "Identité",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "Si aucun logo n'est choisi, le nom de la boutique s'affiche en texte."
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 60,
+        "max": 240,
+        "step": 10,
+        "unit": "px",
+        "label": "Largeur du logo",
+        "default": 120
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Image carrée, 96 × 96 px minimum."
+      }
+    ]
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Fond principal",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_bg_soft",
+        "label": "Fond des sections alternées",
+        "default": "#fafafa"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Texte",
+        "default": "#0b0b0c"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Texte secondaire",
+        "default": "#71717a"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Bordures",
+        "default": "#e7e7ea"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Boutons",
+        "default": "#0b0b0c"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_text",
+        "label": "Texte des boutons",
+        "default": "#ffffff"
+      }
+    ]
+  },
+  {
+    "name": "Mise en forme",
+    "settings": [
+      {
+        "type": "range",
+        "id": "radius_card",
+        "min": 0,
+        "max": 28,
+        "step": 2,
+        "unit": "px",
+        "label": "Arrondi des cartes",
+        "default": 14
+      },
+      {
+        "type": "select",
+        "id": "product_image_ratio",
+        "label": "Format des images produit",
+        "options": [
+          { "value": "1/1", "label": "Carré" },
+          { "value": "4/3", "label": "Paysage 4:3" },
+          { "value": "3/4", "label": "Portrait 3:4" }
+        ],
+        "default": "4/3"
+      }
+    ]
+  },
+  {
+    "name": "Réassurance",
+    "settings": [
+      {
+        "type": "text",
+        "id": "reassurance_1",
+        "label": "Argument 1",
+        "default": "Téléchargement immédiat après paiement"
+      },
+      {
+        "type": "text",
+        "id": "reassurance_2",
+        "label": "Argument 2",
+        "default": "Paiement sécurisé"
+      },
+      {
+        "type": "text",
+        "id": "reassurance_3",
+        "label": "Argument 3",
+        "default": "Mises à jour incluses"
+      }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      { "type": "url", "id": "social_instagram", "label": "Instagram" },
+      { "type": "url", "id": "social_youtube", "label": "YouTube" },
+      { "type": "url", "id": "social_tiktok", "label": "TikTok" }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux — partage",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Image de partage par défaut",
+        "info": "Utilisée quand une page n'a pas d'image propre. 1200 × 628 px."
+      }
+    ]
+  }
+]
