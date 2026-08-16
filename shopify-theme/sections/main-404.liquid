@@ -6,6 +6,18 @@
       {%- endif -%}
       <h1 style="font-size:clamp(1.8rem,4vw,2.6rem)">{{ section.settings.titre }}</h1>
       {%- if section.settings.texte != blank -%}<p>{{ section.settings.texte }}</p>{%- endif -%}
+      {%- if section.settings.afficher_chemin -%}
+        {%- comment -%}
+          Affiche l'adresse demandée : indispensable pour diagnostiquer
+          une 404. Décochez le réglage une fois le problème réglé.
+        {%- endcomment -%}
+        <p class="form-note" style="margin-top:18px;font-family:var(--mono);font-size:.8rem;word-break:break-all">
+          Adresse demandée : {{ request.path }}
+          {%- if request.host %}<br>Hôte : {{ request.host }}{% endif -%}
+          {%- if template %}<br>Gabarit : {{ template }}{% endif -%}
+        </p>
+      {%- endif -%}
+
       <div class="btn-row" style="justify-content:center;margin-top:22px">
         {%- if section.settings.bouton_1 != blank -%}
           <a class="btn" href="{{ section.settings.lien_1 | default: routes.all_products_collection_url }}">
@@ -32,7 +44,14 @@
     { "type": "text", "id": "bouton_1", "label": "Bouton principal", "default": "Voir la boutique" },
     { "type": "url", "id": "lien_1", "label": "Lien du bouton principal" },
     { "type": "text", "id": "bouton_2", "label": "Bouton secondaire", "default": "Retour à l'accueil" },
-    { "type": "url", "id": "lien_2", "label": "Lien du bouton secondaire" }
+    { "type": "url", "id": "lien_2", "label": "Lien du bouton secondaire" },
+    {
+      "type": "checkbox",
+      "id": "afficher_chemin",
+      "label": "Afficher l'adresse demandée",
+      "info": "Aide au diagnostic. À décocher une fois le site en ordre.",
+      "default": true
+    }
   ]
 }
 {% endschema %}
