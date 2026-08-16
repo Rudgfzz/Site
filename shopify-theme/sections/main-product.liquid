@@ -206,17 +206,32 @@
 {
   "name": "Page produit",
   "settings": [
-    { "type": "header", "content": "Images" },
+    {
+      "type": "header",
+      "content": "Images"
+    },
     {
       "type": "select",
       "id": "ratio_image",
       "label": "Format d'affichage",
       "info": "« Adapté à l'image » évite tout recadrage : le cadre prend la forme de vos photos.",
       "options": [
-        { "value": "auto", "label": "Adapté à l'image" },
-        { "value": "carre", "label": "Carré (1:1)" },
-        { "value": "paysage", "label": "Paysage (4:3)" },
-        { "value": "portrait", "label": "Portrait (3:4)" }
+        {
+          "value": "auto",
+          "label": "Adapté à l'image"
+        },
+        {
+          "value": "carre",
+          "label": "Carré (1:1)"
+        },
+        {
+          "value": "paysage",
+          "label": "Paysage (4:3)"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (3:4)"
+        }
       ],
       "default": "auto"
     },
@@ -226,8 +241,14 @@
       "label": "Ajustement",
       "info": "« Image entière » n'en coupe aucune partie. « Remplir le cadre » recadre pour occuper tout l'espace.",
       "options": [
-        { "value": "contain", "label": "Image entière" },
-        { "value": "cover", "label": "Remplir le cadre" }
+        {
+          "value": "contain",
+          "label": "Image entière"
+        },
+        {
+          "value": "cover",
+          "label": "Remplir le cadre"
+        }
       ],
       "default": "contain"
     },
@@ -244,26 +265,85 @@
       "label": "Galerie qui suit le défilement",
       "default": true
     },
-    { "type": "header", "content": "Onglets sous la fiche" },
-    { "type": "checkbox", "id": "afficher_onglets", "label": "Afficher les onglets", "default": true },
-    { "type": "text", "id": "titre_onglet_desc", "label": "Onglet 1", "default": "Description" },
-    { "type": "text", "id": "titre_onglet_specs", "label": "Onglet 2", "default": "Caractéristiques" },
-    { "type": "text", "id": "titre_onglet_livraison", "label": "Onglet 3", "default": "Livraison & retours" },
+    {
+      "type": "header",
+      "content": "Onglets sous la fiche"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_onglets",
+      "label": "Afficher les onglets",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "titre_onglet_desc",
+      "label": "Onglet 1",
+      "default": "Description"
+    },
+    {
+      "type": "text",
+      "id": "titre_onglet_specs",
+      "label": "Onglet 2",
+      "default": "Caractéristiques"
+    },
+    {
+      "type": "text",
+      "id": "titre_onglet_livraison",
+      "label": "Onglet 3",
+      "default": "Livraison & retours"
+    },
     {
       "type": "richtext",
       "id": "texte_livraison",
       "label": "Contenu de l'onglet 3",
       "default": "<p>Les commandes passées avant 15 h partent le jour même. Vous disposez de 30 jours pour retourner un produit, avec une étiquette prépayée fournie.</p>"
     },
-    { "type": "header", "content": "Produits similaires" },
-    { "type": "checkbox", "id": "afficher_lies", "label": "Afficher les produits similaires", "default": true },
-    { "type": "text", "id": "surtitre_lies", "label": "Surtitre", "default": "À découvrir aussi" },
-    { "type": "text", "id": "titre_lies", "label": "Titre", "default": "Dans la même catégorie" },
-    { "type": "range", "id": "nombre_lies", "min": 2, "max": 8, "step": 1, "label": "Nombre", "default": 4 }
+    {
+      "type": "header",
+      "content": "Produits similaires"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_lies",
+      "label": "Afficher les produits similaires",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "surtitre_lies",
+      "label": "Surtitre",
+      "default": "À découvrir aussi"
+    },
+    {
+      "type": "text",
+      "id": "titre_lies",
+      "label": "Titre",
+      "default": "Dans la même catégorie"
+    },
+    {
+      "type": "range",
+      "id": "nombre_lies",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Nombre",
+      "default": 4
+    }
   ],
   "blocks": [
-    { "type": "marque", "name": "Marque et type", "limit": 1 },
-    { "type": "titre", "name": "Titre du produit", "limit": 1 },
+    {
+      "type": "marque",
+      "name": "Marque et type",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "titre",
+      "name": "Titre du produit",
+      "limit": 1,
+      "settings": []
+    },
     {
       "type": "accroche",
       "name": "Accroche",
@@ -277,15 +357,35 @@
         }
       ]
     },
-    { "type": "note", "name": "Note et avis", "limit": 1 },
+    {
+      "type": "note",
+      "name": "Note et avis",
+      "limit": 1,
+      "settings": []
+    },
     {
       "type": "prix",
       "name": "Prix",
       "limit": 1,
       "settings": [
-        { "type": "checkbox", "id": "afficher_3x", "label": "Afficher le paiement en 3 fois", "default": true },
-        { "type": "text", "id": "texte_3x", "label": "Mention", "default": "ou" },
-        { "type": "text", "id": "mention_taxes", "label": "Mention sous le prix", "default": "TVA incluse" }
+        {
+          "type": "checkbox",
+          "id": "afficher_3x",
+          "label": "Afficher le paiement en 3 fois",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "texte_3x",
+          "label": "Mention",
+          "default": "ou"
+        },
+        {
+          "type": "text",
+          "id": "mention_taxes",
+          "label": "Mention sous le prix",
+          "default": "TVA incluse"
+        }
       ]
     },
     {
@@ -302,15 +402,35 @@
         }
       ]
     },
-    { "type": "stock", "name": "Disponibilité", "limit": 1 },
+    {
+      "type": "stock",
+      "name": "Disponibilité",
+      "limit": 1,
+      "settings": []
+    },
     {
       "type": "achat",
       "name": "Quantité et bouton d'achat",
       "limit": 1,
       "settings": [
-        { "type": "checkbox", "id": "afficher_quantite", "label": "Afficher le sélecteur de quantité", "default": true },
-        { "type": "text", "id": "texte_bouton", "label": "Texte du bouton", "default": "Ajouter au panier" },
-        { "type": "checkbox", "id": "paiement_rapide", "label": "Bouton de paiement accéléré", "default": true }
+        {
+          "type": "checkbox",
+          "id": "afficher_quantite",
+          "label": "Afficher le sélecteur de quantité",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "texte_bouton",
+          "label": "Texte du bouton",
+          "default": "Ajouter au panier"
+        },
+        {
+          "type": "checkbox",
+          "id": "paiement_rapide",
+          "label": "Bouton de paiement accéléré",
+          "default": true
+        }
       ]
     },
     {
@@ -318,82 +438,250 @@
       "name": "Favoris et comparateur",
       "limit": 1,
       "settings": [
-        { "type": "checkbox", "id": "afficher_favoris", "label": "Bouton Favoris", "default": true },
-        { "type": "checkbox", "id": "afficher_comparer", "label": "Bouton Comparer", "default": true }
+        {
+          "type": "checkbox",
+          "id": "afficher_favoris",
+          "label": "Bouton Favoris",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "afficher_comparer",
+          "label": "Bouton Comparer",
+          "default": true
+        }
       ]
     },
-    { "type": "points_forts", "name": "Points forts", "limit": 1 },
+    {
+      "type": "points_forts",
+      "name": "Points forts",
+      "limit": 1,
+      "settings": []
+    },
     {
       "type": "services",
       "name": "Services (livraison, retour…)",
       "limit": 1,
       "settings": [
         {
-          "type": "select", "id": "icone_1", "label": "Icône 1", "default": "camion",
+          "type": "select",
+          "id": "icone_1",
+          "label": "Icône 1",
+          "default": "camion",
           "options": [
-            { "value": "camion", "label": "Livraison" }, { "value": "retour", "label": "Retour" },
-            { "value": "bouclier", "label": "Garantie" }, { "value": "casque", "label": "Conseil" },
-            { "value": "etincelle", "label": "Nouveauté" }, { "value": "colis", "label": "Colis" },
-            { "value": "carte", "label": "Paiement" }
+            {
+              "value": "camion",
+              "label": "Livraison"
+            },
+            {
+              "value": "retour",
+              "label": "Retour"
+            },
+            {
+              "value": "bouclier",
+              "label": "Garantie"
+            },
+            {
+              "value": "casque",
+              "label": "Conseil"
+            },
+            {
+              "value": "etincelle",
+              "label": "Nouveauté"
+            },
+            {
+              "value": "colis",
+              "label": "Colis"
+            },
+            {
+              "value": "carte",
+              "label": "Paiement"
+            }
           ]
         },
-        { "type": "text", "id": "service_1", "label": "Service 1", "default": "Expédition sous 24 h" },
-        { "type": "text", "id": "detail_1", "label": "Détail 1", "default": "Depuis notre entrepôt en France" },
         {
-          "type": "select", "id": "icone_2", "label": "Icône 2", "default": "retour",
-          "options": [
-            { "value": "camion", "label": "Livraison" }, { "value": "retour", "label": "Retour" },
-            { "value": "bouclier", "label": "Garantie" }, { "value": "casque", "label": "Conseil" },
-            { "value": "etincelle", "label": "Nouveauté" }, { "value": "colis", "label": "Colis" },
-            { "value": "carte", "label": "Paiement" }
-          ]
+          "type": "text",
+          "id": "service_1",
+          "label": "Service 1",
+          "default": "Expédition sous 24 h"
         },
-        { "type": "text", "id": "service_2", "label": "Service 2", "default": "30 jours pour changer d'avis" },
-        { "type": "text", "id": "detail_2", "label": "Détail 2", "default": "Retour gratuit" },
         {
-          "type": "select", "id": "icone_3", "label": "Icône 3", "default": "bouclier",
+          "type": "text",
+          "id": "detail_1",
+          "label": "Détail 1",
+          "default": "Depuis notre entrepôt en France"
+        },
+        {
+          "type": "select",
+          "id": "icone_2",
+          "label": "Icône 2",
+          "default": "retour",
           "options": [
-            { "value": "camion", "label": "Livraison" }, { "value": "retour", "label": "Retour" },
-            { "value": "bouclier", "label": "Garantie" }, { "value": "casque", "label": "Conseil" },
-            { "value": "etincelle", "label": "Nouveauté" }, { "value": "colis", "label": "Colis" },
-            { "value": "carte", "label": "Paiement" }
+            {
+              "value": "camion",
+              "label": "Livraison"
+            },
+            {
+              "value": "retour",
+              "label": "Retour"
+            },
+            {
+              "value": "bouclier",
+              "label": "Garantie"
+            },
+            {
+              "value": "casque",
+              "label": "Conseil"
+            },
+            {
+              "value": "etincelle",
+              "label": "Nouveauté"
+            },
+            {
+              "value": "colis",
+              "label": "Colis"
+            },
+            {
+              "value": "carte",
+              "label": "Paiement"
+            }
           ]
         },
-        { "type": "text", "id": "service_3", "label": "Service 3", "default": "Garantie 2 ans" },
-        { "type": "text", "id": "detail_3", "label": "Détail 3", "default": "Extension possible" }
+        {
+          "type": "text",
+          "id": "service_2",
+          "label": "Service 2",
+          "default": "30 jours pour changer d'avis"
+        },
+        {
+          "type": "text",
+          "id": "detail_2",
+          "label": "Détail 2",
+          "default": "Retour gratuit"
+        },
+        {
+          "type": "select",
+          "id": "icone_3",
+          "label": "Icône 3",
+          "default": "bouclier",
+          "options": [
+            {
+              "value": "camion",
+              "label": "Livraison"
+            },
+            {
+              "value": "retour",
+              "label": "Retour"
+            },
+            {
+              "value": "bouclier",
+              "label": "Garantie"
+            },
+            {
+              "value": "casque",
+              "label": "Conseil"
+            },
+            {
+              "value": "etincelle",
+              "label": "Nouveauté"
+            },
+            {
+              "value": "colis",
+              "label": "Colis"
+            },
+            {
+              "value": "carte",
+              "label": "Paiement"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "service_3",
+          "label": "Service 3",
+          "default": "Garantie 2 ans"
+        },
+        {
+          "type": "text",
+          "id": "detail_3",
+          "label": "Détail 3",
+          "default": "Extension possible"
+        }
       ]
     },
-    { "type": "description", "name": "Description du produit", "limit": 1 },
+    {
+      "type": "description",
+      "name": "Description du produit",
+      "limit": 1,
+      "settings": []
+    },
     {
       "type": "caracteristiques",
       "name": "Tableau de caractéristiques",
       "limit": 1,
-      "settings": [{ "type": "text", "id": "titre", "label": "Titre", "default": "Caractéristiques" }]
+      "settings": [
+        {
+          "type": "text",
+          "id": "titre",
+          "label": "Titre",
+          "default": "Caractéristiques"
+        }
+      ]
     },
     {
       "type": "texte",
       "name": "Texte libre",
       "settings": [
-        { "type": "text", "id": "titre", "label": "Titre" },
-        { "type": "richtext", "id": "contenu", "label": "Contenu", "default": "<p>Votre texte.</p>" }
+        {
+          "type": "text",
+          "id": "titre",
+          "label": "Titre"
+        },
+        {
+          "type": "richtext",
+          "id": "contenu",
+          "label": "Contenu",
+          "default": "<p>Votre texte.</p>"
+        }
       ]
     },
     {
       "type": "encart",
       "name": "Encart signalé",
       "settings": [
-        { "type": "richtext", "id": "texte", "label": "Texte", "default": "<p>Information importante.</p>" },
         {
-          "type": "select", "id": "ton", "label": "Ton", "default": "info",
+          "type": "richtext",
+          "id": "texte",
+          "label": "Texte",
+          "default": "<p>Information importante.</p>"
+        },
+        {
+          "type": "select",
+          "id": "ton",
+          "label": "Ton",
+          "default": "info",
           "options": [
-            { "value": "info", "label": "Information" },
-            { "value": "ok", "label": "Positif" },
-            { "value": "err", "label": "Alerte" }
+            {
+              "value": "info",
+              "label": "Information"
+            },
+            {
+              "value": "ok",
+              "label": "Positif"
+            },
+            {
+              "value": "err",
+              "label": "Alerte"
+            }
           ]
         }
       ]
     },
-    { "type": "separateur", "name": "Séparateur" }
+    {
+      "type": "separateur",
+      "name": "Séparateur",
+      "settings": []
+    }
   ],
   "default": {
     "blocks": [
