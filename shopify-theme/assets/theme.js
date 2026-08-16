@@ -484,13 +484,18 @@
     var champId = $('#variante-id');
     var qte = 1;
 
-    function varianteCourante() {
-      var choix = $$('[data-option-index]', fiche).reduce(function (acc, el) {
+    /* Valeur retenue pour chaque option, d'après l'état des boutons. */
+    function choixCourants() {
+      return $$('[data-option-index]', fiche).reduce(function (acc, el) {
         if (el.getAttribute('aria-pressed') === 'true' || el.checked || el.tagName === 'SELECT') {
           acc[Number(el.dataset.optionIndex)] = el.tagName === 'SELECT' ? el.value : el.dataset.valeur;
         }
         return acc;
       }, {});
+    }
+
+    function varianteCourante() {
+      var choix = choixCourants();
       return produit.variants.filter(function (v) {
         return Object.keys(choix).every(function (i) { return v.options[i] === choix[i]; });
       })[0];
@@ -542,10 +547,33 @@
 
       if (v.featured_image && v.featured_image.src) changerImage(v.featured_image.src);
 
+      marquerIndisponibles();
+
       /* Reflète la variante dans l'URL, pour un lien partageable. */
       var url = new URL(window.location.href);
       url.searchParams.set('variant', v.id);
       window.history.replaceState({}, '', url);
+    }
+
+    /* Grise les valeurs d'option qui ne mènent à aucune variante en stock,
+       compte tenu des autres choix en cours. */
+    function marquerIndisponibles() {
+      var courant = choixCourants();
+
+      $$('[data-option-index][data-valeur]', fiche).forEach(function (bouton) {
+        var idx = Number(bouton.dataset.optionIndex);
+        var essai = Object.assign({}, courant);
+        essai[idx] = bouton.dataset.valeur;
+
+        var possible = produit.variants.some(function (variante) {
+          if (!variante.available) return false;
+          return Object.keys(essai).every(function (i) {
+            return variante.options[i] === essai[i];
+          });
+        });
+
+        bouton.dataset.indispo = String(!possible);
+      });
     }
 
     function changerImage(src) {

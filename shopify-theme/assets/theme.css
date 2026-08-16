@@ -1978,3 +1978,24 @@ main { flex: 1; }
 
 /* La barre d'édition Shopify ne doit pas décaler l'en-tête collant */
 .shopify-section-header { position: relative; z-index: 120; }
+
+/* Valeur d'option qui ne mène à aucune variante en stock */
+.choix-couleur[data-indispo="true"],
+.choix-capacite[data-indispo="true"] {
+  opacity: .38;
+  position: relative;
+}
+.choix-couleur[data-indispo="true"]::after,
+.choix-capacite[data-indispo="true"]::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 50%;
+  height: 1.5px;
+  background: currentColor;
+  transform: rotate(-24deg);
+  opacity: .75;
+  pointer-events: none;
+}
+.choix-couleur[data-indispo="true"]::after { background: #fff; mix-blend-mode: difference; }

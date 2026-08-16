@@ -1,11 +1,83 @@
 {
   "sections": {
-    "product": {
+    "main": {
       "type": "main-product",
+      "blocks": {
+        "marque-0": {
+          "type": "marque",
+          "settings": {}
+        },
+        "titre-1": {
+          "type": "titre",
+          "settings": {}
+        },
+        "accroche-2": {
+          "type": "accroche",
+          "settings": {}
+        },
+        "note-3": {
+          "type": "note",
+          "settings": {}
+        },
+        "prix-4": {
+          "type": "prix",
+          "settings": {
+            "afficher_3x": false,
+            "texte_3x": "ou",
+            "mention_taxes": "TVA incluse"
+          }
+        },
+        "options-5": {
+          "type": "options",
+          "settings": {
+            "option_pastilles": ""
+          }
+        },
+        "stock-6": {
+          "type": "stock",
+          "settings": {}
+        },
+        "achat-7": {
+          "type": "achat",
+          "settings": {
+            "afficher_quantite": true,
+            "texte_bouton": "Ajouter au panier",
+            "paiement_rapide": true
+          }
+        },
+        "actions-8": {
+          "type": "actions",
+          "settings": {
+            "afficher_favoris": true,
+            "afficher_comparer": true
+          }
+        },
+        "points_forts-9": {
+          "type": "points_forts",
+          "settings": {}
+        },
+        "services-10": {
+          "type": "services",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "marque-0",
+        "titre-1",
+        "accroche-2",
+        "note-3",
+        "prix-4",
+        "options-5",
+        "stock-6",
+        "achat-7",
+        "actions-8",
+        "points_forts-9",
+        "services-10"
+      ],
       "settings": {}
     }
   },
   "order": [
-    "product"
+    "main"
   ]
 }

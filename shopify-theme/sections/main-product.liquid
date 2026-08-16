@@ -1,6 +1,45 @@
-{%- assign v = product.selected_or_first_available_variant -%}
-{%- assign note = product.metafields.reviews.rating.value -%}
-{%- assign nb_avis = product.metafields.reviews.rating_count.value -%}
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign note = product.metafields.reviews.rating.value
+  assign nb_avis = product.metafields.reviews.rating_count.value
+
+  # Format d'affichage de la galerie.
+  case section.settings.ratio_image
+    when 'auto'
+      assign ratio_css = product.featured_media.aspect_ratio | default: 1.0
+    when 'carre'
+      assign ratio_css = 1.0
+    when 'paysage'
+      assign ratio_css = 1.3333
+    when 'portrait'
+      assign ratio_css = 0.75
+    else
+      assign ratio_css = 1.0
+  endcase
+-%}
+
+{% style %}
+  #shopify-section-{{ section.id }} .galerie__principale {
+    aspect-ratio: {{ ratio_css }};
+    background: {{ section.settings.fond_images }};
+    {% if section.settings.ajustement == 'contain' %}padding: 4%;{% endif %}
+  }
+  #shopify-section-{{ section.id }} .galerie__vignettes button {
+    background: {{ section.settings.fond_images }};
+  }
+  #shopify-section-{{ section.id }} .galerie__principale img {
+    object-fit: {{ section.settings.ajustement }};
+  }
+  #shopify-section-{{ section.id }} .galerie__vignettes button {
+    aspect-ratio: {{ ratio_css }};
+  }
+  #shopify-section-{{ section.id }} .galerie__vignettes img {
+    object-fit: {{ section.settings.ajustement }};
+  }
+  {% unless section.settings.galerie_collante %}
+    #shopify-section-{{ section.id }} .galerie { position: static; }
+  {% endunless %}
+{% endstyle %}
 
 <div class="container">
   <nav class="fil" aria-label="Fil d'Ariane">
@@ -20,12 +59,13 @@
         <div class="galerie__principale">
           {%- if product.featured_media -%}
             <img id="image-produit"
-                 src="{{ product.featured_media | image_url: width: 1200 }}"
+                 src="{{ product.featured_media | image_url: width: 1400 }}"
                  srcset="{{ product.featured_media | image_url: width: 600 }} 600w,
                          {{ product.featured_media | image_url: width: 900 }} 900w,
-                         {{ product.featured_media | image_url: width: 1200 }} 1200w"
+                         {{ product.featured_media | image_url: width: 1400 }} 1400w"
                  sizes="(min-width: 900px) 52vw, 100vw"
-                 width="1200" height="900"
+                 width="{{ product.featured_media.width }}"
+                 height="{{ product.featured_media.height }}"
                  alt="{{ product.featured_media.alt | default: product.title | escape }}">
           {%- else -%}
             {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
@@ -36,10 +76,11 @@
           <div class="galerie__vignettes">
             {%- for media in product.media -%}
               <button type="button"
-                      data-image-vignette="{{ media | image_url: width: 1200 }}"
+                      data-image-vignette="{{ media | image_url: width: 1400 }}"
                       aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
                       aria-label="Voir l'image {{ forloop.index }}">
-                <img src="{{ media | image_url: width: 200 }}" loading="lazy" width="200" height="150"
+                <img src="{{ media | image_url: width: 220 }}" loading="lazy"
+                     width="{{ media.width }}" height="{{ media.height }}"
                      alt="Aperçu {{ forloop.index }} de {{ product.title | escape }}">
               </button>
             {%- endfor -%}
@@ -47,192 +88,242 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} ---------- Informations ---------- {%- endcomment -%}
+      {%- comment -%}
+        ---------- Colonne d'informations ----------
+        Chaque élément est un bloc : l'ordre, la présence et les réglages se
+        modifient depuis Personnaliser, sans toucher au code.
+
+        Le formulaire enveloppe toute la colonne pour que le sélecteur de
+        variantes, la quantité et le bouton d'achat restent solidaires quel
+        que soit l'ordre choisi.
+      {%- endcomment -%}
       <div class="fiche__info">
-        <p class="eyebrow">
-          {{ product.vendor }}{% if product.type != blank %} · {{ product.type }}{% endif %}
-        </p>
-
-        <h1>{{ product.title }}</h1>
-
-        {%- if product.metafields.custom.accroche != blank -%}
-          <p class="lead" style="font-size:1.03rem">{{ product.metafields.custom.accroche }}</p>
-        {%- endif -%}
-
-        {%- if note -%}
-          {%- assign pleines = note | round -%}
-          <p class="note" style="margin-bottom:16px">
-            <span class="etoiles" aria-hidden="true">
-              {%- for i in (1..5) -%}{% if i <= pleines %}★{% else %}☆{% endif %}{%- endfor -%}
-            </span>
-            <span>{{ note | round: 1 }} sur 5{% if nb_avis %} · {{ nb_avis }} avis{% endif %}</span>
-          </p>
-        {%- endif -%}
-
-        <div class="fiche__prix">
-          <span class="montant" id="prix-affiche">{{ v.price | money }}</span>
-          <s id="prix-barre" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>
-            {{ v.compare_at_price | money }}
-          </s>
-          <span class="remise" id="remise" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>
-            {%- if v.compare_at_price > v.price -%}
-              −{{ v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round }} %
-            {%- endif -%}
-          </span>
-        </div>
-
-        {%- if settings.afficher_3x -%}
-          {%- assign tiers = v.price | divided_by: 3 -%}
-          <p class="paiement-3x">ou <strong id="prix-3x">{{ tiers | money }}</strong> × 3 sans frais</p>
-        {%- endif -%}
-
         {%- form 'product', product, id: 'form-produit' -%}
           <input type="hidden" name="id" id="variante-id" value="{{ v.id }}">
 
-          {%- unless product.has_only_default_variant -%}
-            {%- for option in product.options_with_values -%}
-              {%- assign nom_option = option.name | downcase -%}
-              {%- assign index = forloop.index0 -%}
-              {%- assign est_couleur = false -%}
-              {%- if nom_option contains 'couleur' or nom_option contains 'color' or nom_option contains 'coloris' -%}
-                {%- assign est_couleur = true -%}
-              {%- endif -%}
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
 
-              <div class="option">
-                <p class="option__titre">
-                  {{ option.name }}
-                  <span id="nom-option-{{ index }}">{{ option.selected_value }}</span>
+              {%- when 'marque' -%}
+                <p class="eyebrow" {{ block.shopify_attributes }}>
+                  {{ product.vendor }}{% if product.type != blank %} · {{ product.type }}{% endif %}
                 </p>
 
-                {%- if est_couleur -%}
-                  <div class="choix-couleurs">
-                    {%- for valeur in option.values -%}
-                      {%- capture hex -%}{% render 'pastille-couleur', valeur: valeur %}{%- endcapture -%}
-                      <button class="choix-couleur" type="button"
-                              data-option-index="{{ index }}" data-valeur="{{ valeur | escape }}"
-                              aria-pressed="{% if valeur == option.selected_value %}true{% else %}false{% endif %}"
-                              style="background:{{ hex | strip }}"
-                              title="{{ valeur | escape }}" aria-label="{{ valeur | escape }}"></button>
-                    {%- endfor -%}
+              {%- when 'titre' -%}
+                <h1 {{ block.shopify_attributes }}>{{ product.title }}</h1>
+
+              {%- when 'accroche' -%}
+                {%- assign texte = product.metafields.custom.accroche | default: block.settings.texte_secours -%}
+                {%- if texte != blank -%}
+                  <p class="lead" style="font-size:1.03rem" {{ block.shopify_attributes }}>{{ texte }}</p>
+                {%- endif -%}
+
+              {%- when 'note' -%}
+                {%- if note -%}
+                  {%- assign pleines = note | round -%}
+                  <p class="note" style="margin-bottom:16px" {{ block.shopify_attributes }}>
+                    <span class="etoiles" aria-hidden="true">
+                      {%- for i in (1..5) -%}{% if i <= pleines %}★{% else %}☆{% endif %}{%- endfor -%}
+                    </span>
+                    <span>{{ note | round: 1 }} sur 5{% if nb_avis %} · {{ nb_avis }} avis{% endif %}</span>
+                  </p>
+                {%- endif -%}
+
+              {%- when 'prix' -%}
+                <div {{ block.shopify_attributes }}>
+                  <div class="fiche__prix">
+                    <span class="montant" id="prix-affiche">{{ v.price | money }}</span>
+                    <s id="prix-barre" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>
+                      {{ v.compare_at_price | money }}
+                    </s>
+                    <span class="remise" id="remise" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>
+                      {%- if v.compare_at_price > v.price -%}
+                        −{{ v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round }} %
+                      {%- endif -%}
+                    </span>
                   </div>
-                {%- else -%}
-                  <div class="choix-capacites">
-                    {%- for valeur in option.values -%}
-                      <button class="choix-capacite" type="button"
-                              data-option-index="{{ index }}" data-valeur="{{ valeur | escape }}"
-                              aria-pressed="{% if valeur == option.selected_value %}true{% else %}false{% endif %}">
-                        {{ valeur }}
-                      </button>
-                    {%- endfor -%}
+                  {%- if block.settings.afficher_3x -%}
+                    {%- assign tiers = v.price | divided_by: 3 -%}
+                    <p class="paiement-3x">
+                      {{ block.settings.texte_3x }} <strong id="prix-3x">{{ tiers | money }}</strong> × 3
+                    </p>
+                  {%- endif -%}
+                  {%- if block.settings.mention_taxes != blank -%}
+                    <p class="form-note" style="margin:-14px 0 18px">{{ block.settings.mention_taxes }}</p>
+                  {%- endif -%}
+                </div>
+
+              {%- when 'options' -%}
+                <div {{ block.shopify_attributes }}>
+                  {% render 'selecteur-options',
+                     product: product,
+                     option_pastilles: block.settings.option_pastilles %}
+                </div>
+
+              {%- when 'stock' -%}
+                <p class="stock {% if product.available %}stock--ok{% else %}stock--non{% endif %}"
+                   id="etat-stock" {{ block.shopify_attributes }}>
+                  {% if product.available %}En stock{% else %}Rupture de stock{% endif %}
+                </p>
+
+              {%- when 'achat' -%}
+                <div {{ block.shopify_attributes }}>
+                  <div class="achat">
+                    {%- if block.settings.afficher_quantite -%}
+                      <div class="quantite">
+                        <button type="button" id="qte-moins" aria-label="Diminuer la quantité">−</button>
+                        <label class="sr-only" for="qte-valeur">Quantité</label>
+                        <input id="qte-valeur" name="quantity" type="number" value="1" min="1" inputmode="numeric">
+                        <button type="button" id="qte-plus" aria-label="Augmenter la quantité">+</button>
+                      </div>
+                    {%- endif -%}
+
+                    <button class="btn btn--lg" type="submit" name="add" id="ajouter-panier"
+                            {% unless product.available %}disabled{% endunless %}>
+                      {% if product.available %}{{ block.settings.texte_bouton }}{% else %}Épuisé{% endif %}
+                    </button>
+                  </div>
+
+                  {%- if block.settings.paiement_rapide -%}
+                    {{ form | payment_button }}
+                  {%- endif -%}
+                </div>
+
+              {%- when 'actions' -%}
+                <div class="btn-row" style="margin:16px 0 8px" {{ block.shopify_attributes }}>
+                  {%- if block.settings.afficher_favoris -%}
+                    <button class="btn btn--soft btn--sm" type="button"
+                            data-favori="{{ product.handle }}" aria-pressed="false">
+                      {% render 'icon', nom: 'coeur' %} Favoris
+                    </button>
+                  {%- endif -%}
+                  {%- if block.settings.afficher_comparer -%}
+                    <button class="btn btn--soft btn--sm" type="button"
+                            data-comparer="{{ product.handle }}" aria-pressed="false">
+                      {% render 'icon', nom: 'compare' %} Comparer
+                    </button>
+                  {%- endif -%}
+                </div>
+
+              {%- when 'points_forts' -%}
+                {%- assign points = product.metafields.custom.points_forts.value -%}
+                {%- if points != blank -%}
+                  <ul class="points-forts" {{ block.shopify_attributes }}>
+                    {%- for point in points -%}<li>{{ point }}</li>{%- endfor -%}
+                  </ul>
+                {%- endif -%}
+
+              {%- when 'services' -%}
+                <div class="services" {{ block.shopify_attributes }}>
+                  {%- if block.settings.service_1 != blank -%}
+                    <div class="service">{% render 'icon', nom: block.settings.icone_1 %}
+                      <span><strong>{{ block.settings.service_1 }}</strong>{{ block.settings.detail_1 }}</span></div>
+                  {%- endif -%}
+                  {%- if block.settings.service_2 != blank -%}
+                    <div class="service">{% render 'icon', nom: block.settings.icone_2 %}
+                      <span><strong>{{ block.settings.service_2 }}</strong>{{ block.settings.detail_2 }}</span></div>
+                  {%- endif -%}
+                  {%- if block.settings.service_3 != blank -%}
+                    <div class="service">{% render 'icon', nom: block.settings.icone_3 %}
+                      <span><strong>{{ block.settings.service_3 }}</strong>{{ block.settings.detail_3 }}</span></div>
+                  {%- endif -%}
+                </div>
+
+              {%- when 'description' -%}
+                {%- if product.description != blank -%}
+                  <div class="prose" style="max-width:none;margin-top:20px" {{ block.shopify_attributes }}>
+                    {{ product.description }}
                   </div>
                 {%- endif -%}
-              </div>
-            {%- endfor -%}
 
-            <noscript>
-              <div class="option">
-                <label for="variante-secours">Choisir une version</label>
-                <select class="select" id="variante-secours" name="id">
-                  {%- for variante in product.variants -%}
-                    <option value="{{ variante.id }}" {% if variante == v %}selected{% endif %}
-                            {% unless variante.available %}disabled{% endunless %}>
-                      {{ variante.title }} — {{ variante.price | money }}
-                    </option>
-                  {%- endfor -%}
-                </select>
-              </div>
-            </noscript>
-          {%- endunless -%}
+              {%- when 'caracteristiques' -%}
+                {%- assign specs = product.metafields.custom.caracteristiques.value -%}
+                {%- if specs != blank -%}
+                  <div {{ block.shopify_attributes }}>
+                    {%- if block.settings.titre != blank -%}
+                      <h2 style="font-size:1.05rem;margin-top:24px">{{ block.settings.titre }}</h2>
+                    {%- endif -%}
+                    <table class="tableau-specs"><tbody>
+                      {%- for ligne in specs -%}
+                        {%- assign paire = ligne | split: ' : ' -%}
+                        <tr><th scope="row">{{ paire[0] }}</th><td>{{ paire[1] | default: '—' }}</td></tr>
+                      {%- endfor -%}
+                    </tbody></table>
+                  </div>
+                {%- endif -%}
 
-          <p class="stock {% if product.available %}stock--ok{% else %}stock--non{% endif %}" id="etat-stock">
-            {% if product.available %}En stock{% else %}Rupture de stock{% endif %}
-          </p>
+              {%- when 'texte' -%}
+                {%- if block.settings.contenu != blank -%}
+                  <div class="prose" style="max-width:none" {{ block.shopify_attributes }}>
+                    {%- if block.settings.titre != blank -%}
+                      <h2 style="font-size:1.05rem;margin-top:24px">{{ block.settings.titre }}</h2>
+                    {%- endif -%}
+                    {{ block.settings.contenu }}
+                  </div>
+                {%- endif -%}
 
-          <div class="achat">
-            <div class="quantite">
-              <button type="button" id="qte-moins" aria-label="Diminuer la quantité">−</button>
-              <label class="sr-only" for="qte-valeur">Quantité</label>
-              <input id="qte-valeur" name="quantity" type="number" value="1" min="1" inputmode="numeric">
-              <button type="button" id="qte-plus" aria-label="Augmenter la quantité">+</button>
-            </div>
+              {%- when 'encart' -%}
+                {%- if block.settings.texte != blank -%}
+                  <div class="alerte alerte--{{ block.settings.ton }}" {{ block.shopify_attributes }}>
+                    {{ block.settings.texte }}
+                  </div>
+                {%- endif -%}
 
-            <button class="btn btn--lg" type="submit" name="add" id="ajouter-panier"
-                    {% unless product.available %}disabled{% endunless %}>
-              {% if product.available %}Ajouter au panier{% else %}Épuisé{% endif %}
-            </button>
-          </div>
+              {%- when 'separateur' -%}
+                <hr {{ block.shopify_attributes }}>
 
-          {%- if settings.afficher_paiement_rapide -%}
-            {{ form | payment_button }}
-          {%- endif -%}
+            {%- endcase -%}
+          {%- endfor -%}
         {%- endform -%}
-
-        <div class="btn-row" style="margin:16px 0 8px">
-          <button class="btn btn--soft btn--sm" type="button" data-favori="{{ product.handle }}" aria-pressed="false">
-            {% render 'icon', nom: 'coeur' %} Favoris
-          </button>
-          <button class="btn btn--soft btn--sm" type="button" data-comparer="{{ product.handle }}" aria-pressed="false">
-            {% render 'icon', nom: 'compare' %} Comparer
-          </button>
-        </div>
-
-        {%- assign points = product.metafields.custom.points_forts.value -%}
-        {%- if points != blank -%}
-          <ul class="points-forts">
-            {%- for point in points -%}<li>{{ point }}</li>{%- endfor -%}
-          </ul>
-        {%- endif -%}
-
-        <div class="services">
-          {%- if settings.service_1 != blank -%}
-            <div class="service">{% render 'icon', nom: 'camion' %}<span><strong>{{ settings.service_1 }}</strong>{{ settings.service_1_detail }}</span></div>
-          {%- endif -%}
-          {%- if settings.service_2 != blank -%}
-            <div class="service">{% render 'icon', nom: 'retour' %}<span><strong>{{ settings.service_2 }}</strong>{{ settings.service_2_detail }}</span></div>
-          {%- endif -%}
-          {%- if settings.service_3 != blank -%}
-            <div class="service">{% render 'icon', nom: 'bouclier' %}<span><strong>{{ settings.service_3 }}</strong>{{ settings.service_3_detail }}</span></div>
-          {%- endif -%}
-        </div>
       </div>
     </div>
 
-    {%- comment -%}
-      Les données de variantes alimentent la sélection côté navigateur.
-    {%- endcomment -%}
+    {%- comment -%} Données de variantes lues par assets/theme.js. {%- endcomment -%}
     <script type="application/json" id="donnees-produit">
       {{ product | json }}
     </script>
   </div>
 
-  {%- comment -%} ---------- Onglets ---------- {%- endcomment -%}
-  <div class="onglets" role="tablist">
-    <button role="tab" aria-selected="true" aria-controls="panneau-desc" id="tab-desc">Description</button>
+  {%- comment -%} ---------- Onglets sous la fiche ---------- {%- endcomment -%}
+  {%- if section.settings.afficher_onglets -%}
     {%- assign specs = product.metafields.custom.caracteristiques.value -%}
-    {%- if specs != blank -%}
-      <button role="tab" aria-selected="false" aria-controls="panneau-specs" id="tab-specs">Caractéristiques</button>
-    {%- endif -%}
-    <button role="tab" aria-selected="false" aria-controls="panneau-livraison" id="tab-livraison">Livraison &amp; retours</button>
-  </div>
-
-  <div class="panneau" id="panneau-desc" role="tabpanel" aria-labelledby="tab-desc">
-    <div class="prose">{{ product.description | default: '<p>Aucune description pour ce produit.</p>' }}</div>
-  </div>
-
-  {%- if specs != blank -%}
-    <div class="panneau" id="panneau-specs" role="tabpanel" aria-labelledby="tab-specs" hidden>
-      <table class="tableau-specs"><tbody>
-        {%- for ligne in specs -%}
-          {%- assign paire = ligne | split: ' : ' -%}
-          <tr><th scope="row">{{ paire[0] }}</th><td>{{ paire[1] | default: '—' }}</td></tr>
-        {%- endfor -%}
-      </tbody></table>
+    <div class="onglets" role="tablist">
+      <button role="tab" aria-selected="true" aria-controls="panneau-desc" id="tab-desc">
+        {{ section.settings.titre_onglet_desc }}
+      </button>
+      {%- if specs != blank -%}
+        <button role="tab" aria-selected="false" aria-controls="panneau-specs" id="tab-specs">
+          {{ section.settings.titre_onglet_specs }}
+        </button>
+      {%- endif -%}
+      {%- if section.settings.texte_livraison != blank -%}
+        <button role="tab" aria-selected="false" aria-controls="panneau-livraison" id="tab-livraison">
+          {{ section.settings.titre_onglet_livraison }}
+        </button>
+      {%- endif -%}
     </div>
-  {%- endif -%}
 
-  <div class="panneau" id="panneau-livraison" role="tabpanel" aria-labelledby="tab-livraison" hidden>
-    <div class="prose">{{ section.settings.texte_livraison }}</div>
-  </div>
+    <div class="panneau" id="panneau-desc" role="tabpanel" aria-labelledby="tab-desc">
+      <div class="prose">{{ product.description | default: '<p>Aucune description pour ce produit.</p>' }}</div>
+    </div>
+
+    {%- if specs != blank -%}
+      <div class="panneau" id="panneau-specs" role="tabpanel" aria-labelledby="tab-specs" hidden>
+        <table class="tableau-specs"><tbody>
+          {%- for ligne in specs -%}
+            {%- assign paire = ligne | split: ' : ' -%}
+            <tr><th scope="row">{{ paire[0] }}</th><td>{{ paire[1] | default: '—' }}</td></tr>
+          {%- endfor -%}
+        </tbody></table>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.texte_livraison != blank -%}
+      <div class="panneau" id="panneau-livraison" role="tabpanel" aria-labelledby="tab-livraison" hidden>
+        <div class="prose">{{ section.settings.texte_livraison }}</div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
 </div>
 
 {%- comment -%} ---------- Produits liés ---------- {%- endcomment -%}
@@ -241,8 +332,8 @@
     <div class="container">
       <div class="section-head">
         <div>
-          <p class="eyebrow">À découvrir aussi</p>
-          <h2>Dans la même catégorie</h2>
+          <p class="eyebrow">{{ section.settings.surtitre_lies }}</p>
+          <h2>{{ section.settings.titre_lies }}</h2>
         </div>
         <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Tout le catalogue</a>
       </div>
@@ -251,7 +342,7 @@
         {%- assign lies = collections[product.collections.first.handle].products | default: collections.all.products -%}
         {%- assign compte = 0 -%}
         {%- for autre in lies -%}
-          {%- if autre.id != product.id and compte < 4 -%}
+          {%- if autre.id != product.id and compte < section.settings.nombre_lies -%}
             {% render 'product-card', product: autre %}
             {%- assign compte = compte | plus: 1 -%}
           {%- endif -%}
@@ -269,13 +360,194 @@
 {
   "name": "Page produit",
   "settings": [
-    { "type": "checkbox", "id": "afficher_lies", "label": "Afficher les produits similaires", "default": true },
+    { "type": "header", "content": "Images" },
+    {
+      "type": "select",
+      "id": "ratio_image",
+      "label": "Format d'affichage",
+      "info": "« Adapté à l'image » évite tout recadrage : le cadre prend la forme de vos photos.",
+      "options": [
+        { "value": "auto", "label": "Adapté à l'image" },
+        { "value": "carre", "label": "Carré (1:1)" },
+        { "value": "paysage", "label": "Paysage (4:3)" },
+        { "value": "portrait", "label": "Portrait (3:4)" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "select",
+      "id": "ajustement",
+      "label": "Ajustement",
+      "info": "« Image entière » n'en coupe aucune partie. « Remplir le cadre » recadre pour occuper tout l'espace.",
+      "options": [
+        { "value": "contain", "label": "Image entière" },
+        { "value": "cover", "label": "Remplir le cadre" }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "color",
+      "id": "fond_images",
+      "label": "Fond derrière les images",
+      "info": "Utile quand vos photos sont détourées ou sur fond blanc.",
+      "default": "#eef0f4"
+    },
+    {
+      "type": "checkbox",
+      "id": "galerie_collante",
+      "label": "Galerie qui suit le défilement",
+      "default": true
+    },
+    { "type": "header", "content": "Onglets sous la fiche" },
+    { "type": "checkbox", "id": "afficher_onglets", "label": "Afficher les onglets", "default": true },
+    { "type": "text", "id": "titre_onglet_desc", "label": "Onglet 1", "default": "Description" },
+    { "type": "text", "id": "titre_onglet_specs", "label": "Onglet 2", "default": "Caractéristiques" },
+    { "type": "text", "id": "titre_onglet_livraison", "label": "Onglet 3", "default": "Livraison & retours" },
     {
       "type": "richtext",
       "id": "texte_livraison",
-      "label": "Texte livraison & retours",
+      "label": "Contenu de l'onglet 3",
       "default": "<p>Les commandes passées avant 15 h partent le jour même. Vous disposez de 30 jours pour retourner un produit, avec une étiquette prépayée fournie.</p>"
-    }
+    },
+    { "type": "header", "content": "Produits similaires" },
+    { "type": "checkbox", "id": "afficher_lies", "label": "Afficher les produits similaires", "default": true },
+    { "type": "text", "id": "surtitre_lies", "label": "Surtitre", "default": "À découvrir aussi" },
+    { "type": "text", "id": "titre_lies", "label": "Titre", "default": "Dans la même catégorie" },
+    { "type": "range", "id": "nombre_lies", "min": 2, "max": 8, "step": 1, "label": "Nombre", "default": 4 }
+  ],
+  "blocks": [
+    { "type": "marque", "name": "Marque et type", "limit": 1 },
+    { "type": "titre", "name": "Titre du produit", "limit": 1 },
+    {
+      "type": "accroche",
+      "name": "Accroche",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "texte_secours",
+          "label": "Texte si le métachamp est vide",
+          "info": "Le métachamp custom.accroche est prioritaire."
+        }
+      ]
+    },
+    { "type": "note", "name": "Note et avis", "limit": 1 },
+    {
+      "type": "prix",
+      "name": "Prix",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "afficher_3x", "label": "Afficher le paiement en 3 fois", "default": true },
+        { "type": "text", "id": "texte_3x", "label": "Mention", "default": "ou" },
+        { "type": "text", "id": "mention_taxes", "label": "Mention sous le prix", "default": "TVA incluse" }
+      ]
+    },
+    {
+      "type": "options",
+      "name": "Choix des variantes",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "option_pastilles",
+          "label": "Option affichée en pastilles",
+          "info": "Nom exact de l'option, par exemple « Couleur ». Laissez vide pour une détection automatique.",
+          "placeholder": "Couleur"
+        }
+      ]
+    },
+    { "type": "stock", "name": "Disponibilité", "limit": 1 },
+    {
+      "type": "achat",
+      "name": "Quantité et bouton d'achat",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "afficher_quantite", "label": "Afficher le sélecteur de quantité", "default": true },
+        { "type": "text", "id": "texte_bouton", "label": "Texte du bouton", "default": "Ajouter au panier" },
+        { "type": "checkbox", "id": "paiement_rapide", "label": "Bouton de paiement accéléré", "default": true }
+      ]
+    },
+    {
+      "type": "actions",
+      "name": "Favoris et comparateur",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "afficher_favoris", "label": "Bouton Favoris", "default": true },
+        { "type": "checkbox", "id": "afficher_comparer", "label": "Bouton Comparer", "default": true }
+      ]
+    },
+    { "type": "points_forts", "name": "Points forts", "limit": 1 },
+    {
+      "type": "services",
+      "name": "Services (livraison, retour…)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select", "id": "icone_1", "label": "Icône 1", "default": "camion",
+          "options": [
+            { "value": "camion", "label": "Livraison" }, { "value": "retour", "label": "Retour" },
+            { "value": "bouclier", "label": "Garantie" }, { "value": "casque", "label": "Conseil" },
+            { "value": "etincelle", "label": "Nouveauté" }, { "value": "colis", "label": "Colis" },
+            { "value": "carte", "label": "Paiement" }
+          ]
+        },
+        { "type": "text", "id": "service_1", "label": "Service 1", "default": "Expédition sous 24 h" },
+        { "type": "text", "id": "detail_1", "label": "Détail 1", "default": "Depuis notre entrepôt en France" },
+        {
+          "type": "select", "id": "icone_2", "label": "Icône 2", "default": "retour",
+          "options": [
+            { "value": "camion", "label": "Livraison" }, { "value": "retour", "label": "Retour" },
+            { "value": "bouclier", "label": "Garantie" }, { "value": "casque", "label": "Conseil" },
+            { "value": "etincelle", "label": "Nouveauté" }, { "value": "colis", "label": "Colis" },
+            { "value": "carte", "label": "Paiement" }
+          ]
+        },
+        { "type": "text", "id": "service_2", "label": "Service 2", "default": "30 jours pour changer d'avis" },
+        { "type": "text", "id": "detail_2", "label": "Détail 2", "default": "Retour gratuit" },
+        {
+          "type": "select", "id": "icone_3", "label": "Icône 3", "default": "bouclier",
+          "options": [
+            { "value": "camion", "label": "Livraison" }, { "value": "retour", "label": "Retour" },
+            { "value": "bouclier", "label": "Garantie" }, { "value": "casque", "label": "Conseil" },
+            { "value": "etincelle", "label": "Nouveauté" }, { "value": "colis", "label": "Colis" },
+            { "value": "carte", "label": "Paiement" }
+          ]
+        },
+        { "type": "text", "id": "service_3", "label": "Service 3", "default": "Garantie 2 ans" },
+        { "type": "text", "id": "detail_3", "label": "Détail 3", "default": "Extension possible" }
+      ]
+    },
+    { "type": "description", "name": "Description du produit", "limit": 1 },
+    {
+      "type": "caracteristiques",
+      "name": "Tableau de caractéristiques",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "titre", "label": "Titre", "default": "Caractéristiques" }]
+    },
+    {
+      "type": "texte",
+      "name": "Texte libre",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre" },
+        { "type": "richtext", "id": "contenu", "label": "Contenu", "default": "<p>Votre texte.</p>" }
+      ]
+    },
+    {
+      "type": "encart",
+      "name": "Encart signalé",
+      "settings": [
+        { "type": "richtext", "id": "texte", "label": "Texte", "default": "<p>Information importante.</p>" },
+        {
+          "type": "select", "id": "ton", "label": "Ton", "default": "info",
+          "options": [
+            { "value": "info", "label": "Information" },
+            { "value": "ok", "label": "Positif" },
+            { "value": "err", "label": "Alerte" }
+          ]
+        }
+      ]
+    },
+    { "type": "separateur", "name": "Séparateur" }
   ]
 }
 {% endschema %}

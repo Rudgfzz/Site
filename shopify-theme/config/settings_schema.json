@@ -10,9 +10,28 @@
   {
     "name": "Identité",
     "settings": [
-      { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Sans logo, le nom de la boutique s'affiche en texte." },
-      { "type": "range", "id": "logo_width", "min": 60, "max": 240, "step": 10, "unit": "px", "label": "Largeur du logo", "default": 120 },
-      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "Image carrée, 96 × 96 px minimum." }
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "Sans logo, le nom de la boutique s'affiche en texte."
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 60,
+        "max": 240,
+        "step": 10,
+        "unit": "px",
+        "label": "Largeur du logo",
+        "default": 120
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Image carrée, 96 × 96 px minimum."
+      }
     ]
   },
   {
@@ -24,9 +43,18 @@
         "label": "Thème par défaut",
         "info": "Le visiteur peut changer à tout moment ; son choix est mémorisé.",
         "options": [
-          { "value": "sombre", "label": "Sombre" },
-          { "value": "clair", "label": "Clair" },
-          { "value": "systeme", "label": "Suivre le réglage de l'appareil" }
+          {
+            "value": "sombre",
+            "label": "Sombre"
+          },
+          {
+            "value": "clair",
+            "label": "Clair"
+          },
+          {
+            "value": "systeme",
+            "label": "Suivre le réglage de l'appareil"
+          }
         ],
         "default": "sombre"
       }
@@ -35,44 +63,79 @@
   {
     "name": "Couleurs",
     "settings": [
-      { "type": "header", "content": "Thème sombre" },
-      { "type": "color", "id": "color_accent", "label": "Accent principal", "default": "#6d8cff" },
-      { "type": "color", "id": "color_accent_2", "label": "Accent secondaire (dégradé)", "default": "#b06cff" },
-      { "type": "color", "id": "color_accent_ink", "label": "Texte sur les boutons", "default": "#ffffff" },
-      { "type": "header", "content": "Thème clair" },
-      { "type": "color", "id": "color_accent_light", "label": "Accent principal", "default": "#4361ee" },
-      { "type": "color", "id": "color_accent_2_light", "label": "Accent secondaire (dégradé)", "default": "#8b3dff" }
+      {
+        "type": "header",
+        "content": "Thème sombre"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent principal",
+        "default": "#6d8cff"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_2",
+        "label": "Accent secondaire (dégradé)",
+        "default": "#b06cff"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_ink",
+        "label": "Texte sur les boutons",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Thème clair"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_light",
+        "label": "Accent principal",
+        "default": "#4361ee"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_2_light",
+        "label": "Accent secondaire (dégradé)",
+        "default": "#8b3dff"
+      }
     ]
   },
   {
     "name": "Mise en forme",
     "settings": [
-      { "type": "range", "id": "radius", "min": 0, "max": 30, "step": 2, "unit": "px", "label": "Arrondi des cartes", "default": 18 },
+      {
+        "type": "range",
+        "id": "radius",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "unit": "px",
+        "label": "Arrondi des cartes",
+        "default": 18
+      },
       {
         "type": "select",
         "id": "product_ratio",
         "label": "Format des images produit",
         "options": [
-          { "value": "1 / 1", "label": "Carré" },
-          { "value": "4 / 3", "label": "Paysage 4:3" },
-          { "value": "3 / 4", "label": "Portrait 3:4" }
+          {
+            "value": "1 / 1",
+            "label": "Carré"
+          },
+          {
+            "value": "4 / 3",
+            "label": "Paysage 4:3"
+          },
+          {
+            "value": "3 / 4",
+            "label": "Portrait 3:4"
+          }
         ],
         "default": "4 / 3"
       }
-    ]
-  },
-  {
-    "name": "Page produit",
-    "settings": [
-      { "type": "checkbox", "id": "afficher_3x", "label": "Afficher « ou X × 3 sans frais »", "default": true },
-      { "type": "checkbox", "id": "afficher_paiement_rapide", "label": "Afficher le bouton de paiement accéléré", "default": true },
-      { "type": "header", "content": "Services affichés sous le bouton d'achat" },
-      { "type": "text", "id": "service_1", "label": "Service 1", "default": "Expédition sous 24 h" },
-      { "type": "text", "id": "service_1_detail", "label": "Détail 1", "default": "Depuis notre entrepôt en France" },
-      { "type": "text", "id": "service_2", "label": "Service 2", "default": "30 jours pour changer d'avis" },
-      { "type": "text", "id": "service_2_detail", "label": "Détail 2", "default": "Retour gratuit" },
-      { "type": "text", "id": "service_3", "label": "Service 3", "default": "Garantie 2 ans" },
-      { "type": "text", "id": "service_3_detail", "label": "Détail 3", "default": "Extension possible" }
     ]
   },
   {
@@ -107,10 +170,27 @@
   {
     "name": "Réseaux sociaux",
     "settings": [
-      { "type": "url", "id": "social_instagram", "label": "Instagram" },
-      { "type": "url", "id": "social_youtube", "label": "YouTube" },
-      { "type": "url", "id": "social_x", "label": "X" },
-      { "type": "image_picker", "id": "share_image", "label": "Image de partage par défaut", "info": "1200 × 628 px." }
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "url",
+        "id": "social_x",
+        "label": "X"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Image de partage par défaut",
+        "info": "1200 × 628 px."
+      }
     ]
   }
 ]

@@ -81,7 +81,53 @@ pour afficher la pastille correspondante sur sa carte.
 `reviews.rating` et `reviews.rating_count`, alimentés par la plupart des
 applications d'avis (dont Shopify Product Reviews et Judge.me).
 
-## 6. Personnaliser l'apparence
+## 6. Modifier la page produit
+
+Toute la colonne d'informations est faite de **blocs** réorganisables.
+**Personnaliser → une page produit → section « Page produit »** :
+
+- glissez-déposez pour changer l'ordre (marque, titre, accroche, note, prix,
+  variantes, disponibilité, achat, favoris, points forts, services…) ;
+- masquez un bloc en le supprimant, remettez-le avec **Ajouter un bloc** ;
+- ajoutez autant de blocs **Texte libre**, **Encart signalé** ou
+  **Séparateur** que vous voulez.
+
+Réglages de la section (colonne de droite) : format et ajustement des images,
+couleur de fond derrière les photos, galerie collante, onglets, produits
+similaires.
+
+### Taille des images produit
+
+Deux réglages commandent l'affichage :
+
+| Réglage | Effet |
+|---|---|
+| **Format d'affichage** | *Adapté à l'image* (défaut) épouse la forme de vos photos, donc aucun recadrage. Ou imposez Carré / Paysage / Portrait. |
+| **Ajustement** | *Image entière* n'en coupe aucune partie. *Remplir le cadre* recadre pour occuper tout l'espace. |
+
+Si vos photos étaient rognées, gardez *Adapté à l'image* + *Image entière*.
+
+### Pastilles de couleur
+
+Le bloc **Choix des variantes** affiche en pastilles l'option dont le nom
+contient « couleur », « coloris » ou « color ». Si votre option porte un autre
+nom (« Teinte », « Finition »…), saisissez-le dans le réglage
+**Option affichée en pastilles**.
+
+La couleur de chaque pastille vient, dans l'ordre :
+
+1. de l'**échantillon natif Shopify**, si vous l'avez configuré
+   (Produits → Options → votre option → échantillon couleur ou image) ;
+2. sinon, du nom de la valeur, reconnu automatiquement (noir, argent, bleu,
+   titane, vert, or, rouge, rose, violet, jaune, gris, beige, orange) ;
+3. sinon, de la couleur d'accent du thème.
+
+Pour ajouter vos propres correspondances, complétez
+`snippets/pastille-couleur.liquid`.
+
+Les combinaisons épuisées apparaissent barrées et grisées automatiquement.
+
+## 7. Personnaliser l'apparence
 
 **Personnaliser → Réglages du thème** :
 
@@ -94,7 +140,7 @@ applications d'avis (dont Shopify Product Reviews et Judge.me).
   les trois services affichés sous le bouton d'achat.
 - *Panier* — seuil de livraison offerte (la jauge de progression en découle).
 
-## 7. Ce que contient le thème
+## 8. Ce que contient le thème
 
 ```
 layout/theme.liquid            Ossature + surcouches (tiroir, recherche)
@@ -114,7 +160,7 @@ Le panier s'ouvre en tiroir sans rechargement (API panier de Shopify), la
 recherche utilise la recherche prédictive, et **tout continue de fonctionner
 sans JavaScript** : les formulaires classiques prennent le relais.
 
-## 8. Avant de publier
+## 9. Avant de publier
 
 - [ ] Remplacer les avis de démonstration (texte « À REMPLACER ») par de vrais
       avis, ou supprimer la section. Publier de faux avis est sanctionné.
