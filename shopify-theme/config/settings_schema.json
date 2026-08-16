@@ -135,6 +135,58 @@
           }
         ],
         "default": "4 / 3"
+      },
+      {
+        "type": "header",
+        "content": "Images de la page produit"
+      },
+      {
+        "type": "select",
+        "id": "fiche_ratio",
+        "label": "Format d'affichage",
+        "info": "« Adapté à l'image » évite tout recadrage.",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Adapté à l'image"
+          },
+          {
+            "value": "1 / 1",
+            "label": "Carré"
+          },
+          {
+            "value": "4 / 3",
+            "label": "Paysage"
+          },
+          {
+            "value": "3 / 4",
+            "label": "Portrait"
+          }
+        ],
+        "default": "auto"
+      },
+      {
+        "type": "select",
+        "id": "fiche_ajustement",
+        "label": "Ajustement",
+        "info": "« Image entière » ne coupe aucune partie de la photo.",
+        "options": [
+          {
+            "value": "contain",
+            "label": "Image entière"
+          },
+          {
+            "value": "cover",
+            "label": "Remplir le cadre"
+          }
+        ],
+        "default": "contain"
+      },
+      {
+        "type": "color",
+        "id": "fiche_fond",
+        "label": "Fond derrière les images",
+        "default": "#eef0f4"
       }
     ]
   },

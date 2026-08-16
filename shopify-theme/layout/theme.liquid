@@ -45,6 +45,28 @@
       --accent-soft: {{ settings.color_accent_light | color_modify: 'alpha', 0.10 }};
     }
     .produit__media { aspect-ratio: var(--ratio-produit, 4 / 3); }
+
+    {%- comment -%} Affichage des images sur la fiche produit. {%- endcomment -%}
+    {%- if template.name == 'product' -%}
+      {%- if settings.fiche_ratio == 'auto' and product.featured_media -%}
+        .galerie__principale, .galerie__vignettes button {
+          aspect-ratio: {{ product.featured_media.aspect_ratio }};
+        }
+      {%- elsif settings.fiche_ratio != 'auto' -%}
+        .galerie__principale, .galerie__vignettes button {
+          aspect-ratio: {{ settings.fiche_ratio }};
+        }
+      {%- endif -%}
+      .galerie__principale, .galerie__vignettes button {
+        background: {{ settings.fiche_fond }};
+      }
+      .galerie__principale img, .galerie__vignettes img {
+        object-fit: {{ settings.fiche_ajustement }};
+      }
+      {%- if settings.fiche_ajustement == 'contain' -%}
+        .galerie__principale { padding: 4%; }
+      {%- endif -%}
+    {%- endif -%}
   {% endstyle %}
 
   <script>
