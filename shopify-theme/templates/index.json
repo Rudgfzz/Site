@@ -1,0 +1,256 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "p1": {
+          "type": "puce",
+          "settings": {
+            "icone": "camion",
+            "texte": "Livraison offerte dès 60 €"
+          }
+        },
+        "p2": {
+          "type": "puce",
+          "settings": {
+            "icone": "retour",
+            "texte": "30 jours pour changer d'avis"
+          }
+        },
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "chiffre": "24 h",
+            "libelle": "expédition"
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "chiffre": "30 j",
+            "libelle": "pour changer d'avis"
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "chiffre": "2 ans",
+            "libelle": "de garantie"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {}
+    },
+    "confiance": {
+      "type": "bandeau-confiance",
+      "blocks": {
+        "a1": {
+          "type": "argument",
+          "settings": {
+            "icone": "camion",
+            "titre": "Expédition sous 24 h",
+            "texte": "Depuis notre entrepôt en France"
+          }
+        },
+        "a2": {
+          "type": "argument",
+          "settings": {
+            "icone": "retour",
+            "titre": "Retour gratuit 30 jours",
+            "texte": "Étiquette prépayée incluse"
+          }
+        },
+        "a3": {
+          "type": "argument",
+          "settings": {
+            "icone": "bouclier",
+            "titre": "Garantie 2 ans minimum",
+            "texte": "Extension jusqu'à 4 ans"
+          }
+        },
+        "a4": {
+          "type": "argument",
+          "settings": {
+            "icone": "casque",
+            "titre": "Conseil humain",
+            "texte": "Du lundi au samedi"
+          }
+        }
+      },
+      "block_order": [
+        "a1",
+        "a2",
+        "a3",
+        "a4"
+      ],
+      "settings": {}
+    },
+    "categories": {
+      "type": "collection-list",
+      "blocks": {
+        "c1": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c2": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c3": {
+          "type": "collection",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {}
+    },
+    "vedettes": {
+      "type": "featured-collection",
+      "settings": {
+        "fond_alterne": true,
+        "nombre": 4
+      }
+    },
+    "offre": {
+      "type": "promo",
+      "settings": {}
+    },
+    "methode": {
+      "type": "image-with-text",
+      "blocks": {
+        "m1": {
+          "type": "argument",
+          "settings": {
+            "icone": "etincelle",
+            "titre": "Testé deux semaines",
+            "texte": "En usage réel, pas sur fiche technique."
+          }
+        },
+        "m2": {
+          "type": "argument",
+          "settings": {
+            "icone": "bouclier",
+            "titre": "Réparabilité vérifiée",
+            "texte": "Pièces détachées disponibles ou pas de référencement."
+          }
+        },
+        "m3": {
+          "type": "argument",
+          "settings": {
+            "icone": "colis",
+            "titre": "Emballage sobre",
+            "texte": "Carton recyclé, zéro plastique ajouté."
+          }
+        },
+        "m4": {
+          "type": "argument",
+          "settings": {
+            "icone": "casque",
+            "titre": "Conseil sans script",
+            "texte": "On vous dira si un modèle moins cher suffit."
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {}
+    },
+    "avis": {
+      "type": "testimonials",
+      "blocks": {
+        "t1": {
+          "type": "avis",
+          "settings": {
+            "etoiles": 5,
+            "texte": "À REMPLACER par un avis réellement reçu d'un client. Supprimez cette section tant que vous n'en avez pas.",
+            "auteur": "Prénom N. — Ville"
+          }
+        },
+        "t2": {
+          "type": "avis",
+          "settings": {
+            "etoiles": 5,
+            "texte": "À REMPLACER par un avis réellement reçu d'un client.",
+            "auteur": "Prénom N. — Ville"
+          }
+        },
+        "t3": {
+          "type": "avis",
+          "settings": {
+            "etoiles": 5,
+            "texte": "À REMPLACER par un avis réellement reçu d'un client.",
+            "auteur": "Prénom N. — Ville"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Quels sont les délais de livraison ?",
+            "reponse": "<p>Les commandes passées avant 15 h partent le jour même. Comptez 3 à 4 jours ouvrés en standard.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Comment fonctionne le retour ?",
+            "reponse": "<p>Vous avez 30 jours après réception. Une étiquette prépayée est jointe à chaque colis.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Les produits sont-ils garantis ?",
+            "reponse": "<p>Tous les produits bénéficient d'au moins deux ans de garantie, en plus de la garantie légale de conformité.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "confiance",
+    "categories",
+    "vedettes",
+    "offre",
+    "methode",
+    "avis",
+    "faq",
+    "newsletter"
+  ]
+}

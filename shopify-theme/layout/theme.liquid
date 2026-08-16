@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64 }}">
+  {%- endif -%}
+
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% render 'meta-tags' %}
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  {%- comment -%} Les réglages du thème pilotent les variables CSS. {%- endcomment -%}
+  {% style %}
+    :root {
+      --accent: {{ settings.color_accent }};
+      --accent-2: {{ settings.color_accent_2 }};
+      --accent-ink: {{ settings.color_accent_ink }};
+      --accent-soft: {{ settings.color_accent | color_modify: 'alpha', 0.14 }};
+      --ring: 0 0 0 3px {{ settings.color_accent | color_modify: 'alpha', 0.35 }};
+      --r: {{ settings.radius }}px;
+      --r-sm: {{ settings.radius | minus: 6 | at_least: 4 }}px;
+      --r-lg: {{ settings.radius | plus: 8 }}px;
+      --r-xl: {{ settings.radius | plus: 16 }}px;
+      --ratio-produit: {{ settings.product_ratio }};
+    }
+    [data-theme="light"] {
+      --accent: {{ settings.color_accent_light }};
+      --accent-2: {{ settings.color_accent_2_light }};
+      --accent-soft: {{ settings.color_accent_light | color_modify: 'alpha', 0.10 }};
+    }
+    .produit__media { aspect-ratio: var(--ratio-produit, 4 / 3); }
+  {% endstyle %}
+
+  <script>
+    /* Applique le thème avant le premier rendu, pour éviter que la page
+       n'apparaisse une fraction de seconde dans la mauvaise couleur. */
+    (function () {
+      var defaut = {{ settings.theme_defaut | default: 'systeme' | json }};
+      try {
+        var t = JSON.parse(localStorage.getItem('orbit_theme'));
+        if (t !== 'clair' && t !== 'sombre') {
+          if (defaut === 'clair') { t = 'clair'; }
+          else if (defaut === 'sombre') { t = 'sombre'; }
+          else { t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'clair' : 'sombre'; }
+        }
+        document.documentElement.setAttribute('data-theme', t === 'clair' ? 'light' : 'dark');
+      } catch (e) { /* stockage indisponible : on garde le thème par défaut */ }
+    })();
+  </script>
+
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+  {{ content_for_header }}
+</head>
+
+<body class="page template-{{ template.name | handle }}">
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  {% section 'annonce' %}
+  {% section 'header' %}
+
+  <main id="contenu" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'footer' %}
+
+  {%- comment -%} Surcouches communes à toutes les pages. {%- endcomment -%}
+  <div class="voile" id="voile"></div>
+
+  <aside class="tiroir" id="tiroir-panier" aria-label="Panier">
+    <div class="tiroir__head">
+      <h2>Votre panier</h2>
+      <button class="icon-btn" type="button" data-fermer-tiroir aria-label="Fermer le panier">
+        {% render 'icon', nom: 'croix' %}
+      </button>
+    </div>
+    <div class="tiroir__corps" id="tiroir-corps"></div>
+    <div class="tiroir__pied" id="tiroir-pied"></div>
+  </aside>
+
+  <div class="recherche" id="recherche" role="dialog" aria-modal="true" aria-label="Recherche">
+    <div class="recherche__boite">
+      <form class="recherche__champ" action="{{ routes.search_url }}" method="get" role="search">
+        {% render 'icon', nom: 'loupe' %}
+        <label class="sr-only" for="champ-recherche">Rechercher un produit</label>
+        <input id="champ-recherche" type="search" name="q" autocomplete="off"
+               placeholder="Rechercher un produit, une marque…">
+        <span class="kbd">Échap</span>
+      </form>
+      <div class="recherche__resultats" id="resultats-recherche"></div>
+    </div>
+  </div>
+
+  <div class="barre-comparateur" id="barre-comparateur" data-visible="false">
+    <div class="barre-comparateur__vignettes"></div>
+    <span data-compare-texte></span>
+    <a class="btn btn--sm" href="{{ settings.page_comparateur.url | default: '/pages/comparateur' }}">Comparer</a>
+  </div>
+
+  <div class="barre-achat" id="barre-achat" data-visible="false"></div>
+
+  <script>
+    /* Réglages lus par assets/theme.js */
+    window.ORBIT = {
+      routes: {
+        cart_add: '{{ routes.cart_add_url }}',
+        cart_change: '{{ routes.cart_change_url }}',
+        cart: '{{ routes.cart_url }}',
+        predictive: '{{ routes.predictive_search_url }}',
+        search: '{{ routes.search_url }}'
+      },
+      pages: {
+        comparateur: {{ settings.page_comparateur.url | default: '/pages/comparateur' | json }},
+        favoris: {{ settings.page_favoris.url | default: '/pages/favoris' | json }}
+      },
+      seuilLivraisonGratuite: {{ settings.seuil_livraison_gratuite | default: 0 | times: 100 }},
+      moneyFormat: {{ shop.money_format | json }}
+    };
+  </script>
+</body>
+</html>

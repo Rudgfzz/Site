@@ -1,0 +1,22 @@
+{
+  "current": {
+    "logo_width": 120,
+    "theme_defaut": "sombre",
+    "color_accent": "#6d8cff",
+    "color_accent_2": "#b06cff",
+    "color_accent_ink": "#ffffff",
+    "color_accent_light": "#4361ee",
+    "color_accent_2_light": "#8b3dff",
+    "radius": 18,
+    "product_ratio": "4 / 3",
+    "afficher_3x": true,
+    "afficher_paiement_rapide": true,
+    "service_1": "Expédition sous 24 h",
+    "service_1_detail": "Depuis notre entrepôt en France",
+    "service_2": "30 jours pour changer d'avis",
+    "service_2_detail": "Retour gratuit",
+    "service_3": "Garantie 2 ans",
+    "service_3_detail": "Extension possible",
+    "seuil_livraison_gratuite": 60
+  }
+}

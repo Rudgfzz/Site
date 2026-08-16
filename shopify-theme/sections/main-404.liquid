@@ -1,0 +1,19 @@
+<section class="section">
+  <div class="container">
+    <div class="empty-state" style="margin:40px 0">
+      <h1 style="font-size:1.6rem">Page introuvable</h1>
+      <p>La page que vous cherchez n'existe pas ou a été déplacée.</p>
+      <div class="btn-row" style="justify-content:center;margin-top:18px">
+        <a class="btn" href="{{ routes.all_products_collection_url }}">Voir la boutique</a>
+        <a class="btn btn--ghost" href="{{ routes.root_url }}">Retour à l'accueil</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page 404",
+  "settings": []
+}
+{% endschema %}

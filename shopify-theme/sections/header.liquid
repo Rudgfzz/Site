@@ -1,0 +1,60 @@
+<header class="header">
+  <div class="container header__inner">
+    <a class="logo" href="{{ routes.root_url }}">
+      {%- if settings.logo -%}
+        {%- capture style_logo -%}width:{{ settings.logo_width }}px;height:auto{%- endcapture -%}
+        {{ settings.logo | image_url: width: 480 | image_tag: widths: '120, 240, 480', style: style_logo, alt: shop.name }}
+      {%- else -%}
+        <span class="logo__mark">{% render 'icon', nom: 'logo' %}</span>
+        {{ shop.name }}
+      {%- endif -%}
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Navigation principale">
+      {%- for lien in section.settings.menu.links -%}
+        <a href="{{ lien.url }}"{% if lien.current %} aria-current="page"{% endif %}>{{ lien.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <div class="header__actions">
+      <button class="icon-btn" type="button" data-ouvrir-recherche aria-label="Rechercher (Ctrl+K)">
+        {% render 'icon', nom: 'loupe' %}
+      </button>
+
+      {%- if section.settings.afficher_theme -%}
+        <button class="icon-btn" type="button" data-bascule-theme aria-pressed="false"
+                aria-label="Changer de thème">{% render 'icon', nom: 'theme' %}</button>
+      {%- endif -%}
+
+      <a class="icon-btn" href="{{ settings.page_favoris.url | default: '/pages/favoris' }}" aria-label="Mes favoris">
+        {% render 'icon', nom: 'coeur' %}
+        <span class="pastille" data-compteur-favoris hidden>0</span>
+      </a>
+
+      <a class="icon-btn" href="{{ routes.cart_url }}" data-ouvrir-panier aria-label="Voir le panier">
+        {% render 'icon', nom: 'panier' %}
+        <span class="pastille" data-compteur-panier {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+
+      <button class="icon-btn burger" id="burger" type="button"
+              aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav">
+        {% render 'icon', nom: 'menu' %}
+      </button>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "En-tête",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    {
+      "type": "checkbox",
+      "id": "afficher_theme",
+      "label": "Afficher le bouton de thème clair / sombre",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,60 @@
+<section class="section{% if section.settings.fond_alterne %} section--alt{% endif %}">
+  <div class="container">
+    <div class="section-head section-head--center">
+      <div>
+        {%- if section.settings.surtitre != blank -%}
+          <p class="eyebrow eyebrow--plain">{{ section.settings.surtitre }}</p>
+        {%- endif -%}
+        <h2>{{ section.settings.titre }}</h2>
+      </div>
+    </div>
+
+    <div class="faq">
+      {%- for block in section.blocks -%}
+        <details {% if forloop.first and section.settings.ouvrir_premiere %}open{% endif %} {{ block.shopify_attributes }}>
+          <summary>{{ block.settings.question }}</summary>
+          <div>{{ block.settings.reponse }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.lien_texte != blank -%}
+      <div class="btn-row" style="justify-content:center;margin-top:34px">
+        <a class="btn btn--ghost" href="{{ section.settings.lien }}">{{ section.settings.lien_texte }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Questions fréquentes",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Questions fréquentes" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Bon à savoir avant de commander" },
+    { "type": "checkbox", "id": "ouvrir_premiere", "label": "Ouvrir la première", "default": true },
+    { "type": "checkbox", "id": "fond_alterne", "label": "Fond alterné", "default": true },
+    { "type": "text", "id": "lien_texte", "label": "Texte du lien" },
+    { "type": "url", "id": "lien", "label": "Lien" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Quels sont les délais de livraison ?" },
+        {
+          "type": "richtext",
+          "id": "reponse",
+          "label": "Réponse",
+          "default": "<p>Les commandes passées avant 15 h partent le jour même.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Questions fréquentes", "blocks": [{ "type": "question" }, { "type": "question" }, { "type": "question" }] }
+  ]
+}
+{% endschema %}

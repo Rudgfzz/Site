@@ -1,0 +1,60 @@
+<section class="section{% if section.settings.fond_alterne %} section--alt{% endif %}">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        {%- if section.settings.surtitre != blank -%}<p class="eyebrow">{{ section.settings.surtitre }}</p>{%- endif -%}
+        <h2>{{ section.settings.titre }}</h2>
+        {%- if section.settings.texte != blank -%}<p>{{ section.settings.texte }}</p>{%- endif -%}
+      </div>
+      <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Tout voir</a>
+    </div>
+
+    <div class="cat-grid">
+      {%- for block in section.blocks -%}
+        {%- assign col = block.settings.collection -%}
+        {%- if col != blank -%}
+          <a class="cat-card reveal" href="{{ col.url }}" {{ block.shopify_attributes }}>
+            <div>
+              <strong>{{ col.title }}</strong>
+              <span>{{ col.products_count }} produit{% if col.products_count > 1 %}s{% endif %}</span>
+            </div>
+            {%- if col.featured_image -%}
+              {{ col.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: col.title }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </a>
+        {%- endif -%}
+      {%- else -%}
+        <p class="vide">Ajoutez des collections dans les réglages de cette section.</p>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Liste de catégories",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Catalogue" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Par catégorie" },
+    { "type": "text", "id": "texte", "label": "Texte" },
+    { "type": "checkbox", "id": "fond_alterne", "label": "Fond alterné", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Catégorie",
+      "limit": 8,
+      "settings": [{ "type": "collection", "id": "collection", "label": "Collection" }]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Liste de catégories",
+      "blocks": [{ "type": "collection" }, { "type": "collection" }, { "type": "collection" }]
+    }
+  ]
+}
+{% endschema %}

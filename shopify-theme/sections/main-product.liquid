@@ -1,0 +1,281 @@
+{%- assign v = product.selected_or_first_available_variant -%}
+{%- assign note = product.metafields.reviews.rating.value -%}
+{%- assign nb_avis = product.metafields.reviews.rating_count.value -%}
+
+<div class="container">
+  <nav class="fil" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>
+    {%- if collection -%}
+      <a href="{{ collection.url }}">{{ collection.title }}</a><span>/</span>
+    {%- else -%}
+      <a href="{{ routes.all_products_collection_url }}">Boutique</a><span>/</span>
+    {%- endif -%}
+    <span>{{ product.title }}</span>
+  </nav>
+
+  <div id="fiche-produit">
+    <div class="fiche">
+      {%- comment -%} ---------- Galerie ---------- {%- endcomment -%}
+      <div class="galerie">
+        <div class="galerie__principale">
+          {%- if product.featured_media -%}
+            <img id="image-produit"
+                 src="{{ product.featured_media | image_url: width: 1200 }}"
+                 srcset="{{ product.featured_media | image_url: width: 600 }} 600w,
+                         {{ product.featured_media | image_url: width: 900 }} 900w,
+                         {{ product.featured_media | image_url: width: 1200 }} 1200w"
+                 sizes="(min-width: 900px) 52vw, 100vw"
+                 width="1200" height="900"
+                 alt="{{ product.featured_media.alt | default: product.title | escape }}">
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        {%- if product.media.size > 1 -%}
+          <div class="galerie__vignettes">
+            {%- for media in product.media -%}
+              <button type="button"
+                      data-image-vignette="{{ media | image_url: width: 1200 }}"
+                      aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                      aria-label="Voir l'image {{ forloop.index }}">
+                <img src="{{ media | image_url: width: 200 }}" loading="lazy" width="200" height="150"
+                     alt="Aperçu {{ forloop.index }} de {{ product.title | escape }}">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ---------- Informations ---------- {%- endcomment -%}
+      <div class="fiche__info">
+        <p class="eyebrow">
+          {{ product.vendor }}{% if product.type != blank %} · {{ product.type }}{% endif %}
+        </p>
+
+        <h1>{{ product.title }}</h1>
+
+        {%- if product.metafields.custom.accroche != blank -%}
+          <p class="lead" style="font-size:1.03rem">{{ product.metafields.custom.accroche }}</p>
+        {%- endif -%}
+
+        {%- if note -%}
+          {%- assign pleines = note | round -%}
+          <p class="note" style="margin-bottom:16px">
+            <span class="etoiles" aria-hidden="true">
+              {%- for i in (1..5) -%}{% if i <= pleines %}★{% else %}☆{% endif %}{%- endfor -%}
+            </span>
+            <span>{{ note | round: 1 }} sur 5{% if nb_avis %} · {{ nb_avis }} avis{% endif %}</span>
+          </p>
+        {%- endif -%}
+
+        <div class="fiche__prix">
+          <span class="montant" id="prix-affiche">{{ v.price | money }}</span>
+          <s id="prix-barre" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>
+            {{ v.compare_at_price | money }}
+          </s>
+          <span class="remise" id="remise" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>
+            {%- if v.compare_at_price > v.price -%}
+              −{{ v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round }} %
+            {%- endif -%}
+          </span>
+        </div>
+
+        {%- if settings.afficher_3x -%}
+          {%- assign tiers = v.price | divided_by: 3 -%}
+          <p class="paiement-3x">ou <strong id="prix-3x">{{ tiers | money }}</strong> × 3 sans frais</p>
+        {%- endif -%}
+
+        {%- form 'product', product, id: 'form-produit' -%}
+          <input type="hidden" name="id" id="variante-id" value="{{ v.id }}">
+
+          {%- unless product.has_only_default_variant -%}
+            {%- for option in product.options_with_values -%}
+              {%- assign nom_option = option.name | downcase -%}
+              {%- assign index = forloop.index0 -%}
+              {%- assign est_couleur = false -%}
+              {%- if nom_option contains 'couleur' or nom_option contains 'color' or nom_option contains 'coloris' -%}
+                {%- assign est_couleur = true -%}
+              {%- endif -%}
+
+              <div class="option">
+                <p class="option__titre">
+                  {{ option.name }}
+                  <span id="nom-option-{{ index }}">{{ option.selected_value }}</span>
+                </p>
+
+                {%- if est_couleur -%}
+                  <div class="choix-couleurs">
+                    {%- for valeur in option.values -%}
+                      {%- capture hex -%}{% render 'pastille-couleur', valeur: valeur %}{%- endcapture -%}
+                      <button class="choix-couleur" type="button"
+                              data-option-index="{{ index }}" data-valeur="{{ valeur | escape }}"
+                              aria-pressed="{% if valeur == option.selected_value %}true{% else %}false{% endif %}"
+                              style="background:{{ hex | strip }}"
+                              title="{{ valeur | escape }}" aria-label="{{ valeur | escape }}"></button>
+                    {%- endfor -%}
+                  </div>
+                {%- else -%}
+                  <div class="choix-capacites">
+                    {%- for valeur in option.values -%}
+                      <button class="choix-capacite" type="button"
+                              data-option-index="{{ index }}" data-valeur="{{ valeur | escape }}"
+                              aria-pressed="{% if valeur == option.selected_value %}true{% else %}false{% endif %}">
+                        {{ valeur }}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+
+            <noscript>
+              <div class="option">
+                <label for="variante-secours">Choisir une version</label>
+                <select class="select" id="variante-secours" name="id">
+                  {%- for variante in product.variants -%}
+                    <option value="{{ variante.id }}" {% if variante == v %}selected{% endif %}
+                            {% unless variante.available %}disabled{% endunless %}>
+                      {{ variante.title }} — {{ variante.price | money }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+            </noscript>
+          {%- endunless -%}
+
+          <p class="stock {% if product.available %}stock--ok{% else %}stock--non{% endif %}" id="etat-stock">
+            {% if product.available %}En stock{% else %}Rupture de stock{% endif %}
+          </p>
+
+          <div class="achat">
+            <div class="quantite">
+              <button type="button" id="qte-moins" aria-label="Diminuer la quantité">−</button>
+              <label class="sr-only" for="qte-valeur">Quantité</label>
+              <input id="qte-valeur" name="quantity" type="number" value="1" min="1" inputmode="numeric">
+              <button type="button" id="qte-plus" aria-label="Augmenter la quantité">+</button>
+            </div>
+
+            <button class="btn btn--lg" type="submit" name="add" id="ajouter-panier"
+                    {% unless product.available %}disabled{% endunless %}>
+              {% if product.available %}Ajouter au panier{% else %}Épuisé{% endif %}
+            </button>
+          </div>
+
+          {%- if settings.afficher_paiement_rapide -%}
+            {{ form | payment_button }}
+          {%- endif -%}
+        {%- endform -%}
+
+        <div class="btn-row" style="margin:16px 0 8px">
+          <button class="btn btn--soft btn--sm" type="button" data-favori="{{ product.handle }}" aria-pressed="false">
+            {% render 'icon', nom: 'coeur' %} Favoris
+          </button>
+          <button class="btn btn--soft btn--sm" type="button" data-comparer="{{ product.handle }}" aria-pressed="false">
+            {% render 'icon', nom: 'compare' %} Comparer
+          </button>
+        </div>
+
+        {%- assign points = product.metafields.custom.points_forts.value -%}
+        {%- if points != blank -%}
+          <ul class="points-forts">
+            {%- for point in points -%}<li>{{ point }}</li>{%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <div class="services">
+          {%- if settings.service_1 != blank -%}
+            <div class="service">{% render 'icon', nom: 'camion' %}<span><strong>{{ settings.service_1 }}</strong>{{ settings.service_1_detail }}</span></div>
+          {%- endif -%}
+          {%- if settings.service_2 != blank -%}
+            <div class="service">{% render 'icon', nom: 'retour' %}<span><strong>{{ settings.service_2 }}</strong>{{ settings.service_2_detail }}</span></div>
+          {%- endif -%}
+          {%- if settings.service_3 != blank -%}
+            <div class="service">{% render 'icon', nom: 'bouclier' %}<span><strong>{{ settings.service_3 }}</strong>{{ settings.service_3_detail }}</span></div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%}
+      Les données de variantes alimentent la sélection côté navigateur.
+    {%- endcomment -%}
+    <script type="application/json" id="donnees-produit">
+      {{ product | json }}
+    </script>
+  </div>
+
+  {%- comment -%} ---------- Onglets ---------- {%- endcomment -%}
+  <div class="onglets" role="tablist">
+    <button role="tab" aria-selected="true" aria-controls="panneau-desc" id="tab-desc">Description</button>
+    {%- assign specs = product.metafields.custom.caracteristiques.value -%}
+    {%- if specs != blank -%}
+      <button role="tab" aria-selected="false" aria-controls="panneau-specs" id="tab-specs">Caractéristiques</button>
+    {%- endif -%}
+    <button role="tab" aria-selected="false" aria-controls="panneau-livraison" id="tab-livraison">Livraison &amp; retours</button>
+  </div>
+
+  <div class="panneau" id="panneau-desc" role="tabpanel" aria-labelledby="tab-desc">
+    <div class="prose">{{ product.description | default: '<p>Aucune description pour ce produit.</p>' }}</div>
+  </div>
+
+  {%- if specs != blank -%}
+    <div class="panneau" id="panneau-specs" role="tabpanel" aria-labelledby="tab-specs" hidden>
+      <table class="tableau-specs"><tbody>
+        {%- for ligne in specs -%}
+          {%- assign paire = ligne | split: ' : ' -%}
+          <tr><th scope="row">{{ paire[0] }}</th><td>{{ paire[1] | default: '—' }}</td></tr>
+        {%- endfor -%}
+      </tbody></table>
+    </div>
+  {%- endif -%}
+
+  <div class="panneau" id="panneau-livraison" role="tabpanel" aria-labelledby="tab-livraison" hidden>
+    <div class="prose">{{ section.settings.texte_livraison }}</div>
+  </div>
+</div>
+
+{%- comment -%} ---------- Produits liés ---------- {%- endcomment -%}
+{%- if section.settings.afficher_lies -%}
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">À découvrir aussi</p>
+          <h2>Dans la même catégorie</h2>
+        </div>
+        <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">Tout le catalogue</a>
+      </div>
+
+      <div class="grille-produits">
+        {%- assign lies = collections[product.collections.first.handle].products | default: collections.all.products -%}
+        {%- assign compte = 0 -%}
+        {%- for autre in lies -%}
+          {%- if autre.id != product.id and compte < 4 -%}
+            {% render 'product-card', product: autre %}
+            {%- assign compte = compte | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Page produit",
+  "settings": [
+    { "type": "checkbox", "id": "afficher_lies", "label": "Afficher les produits similaires", "default": true },
+    {
+      "type": "richtext",
+      "id": "texte_livraison",
+      "label": "Texte livraison & retours",
+      "default": "<p>Les commandes passées avant 15 h partent le jour même. Vous disposez de 30 jours pour retourner un produit, avec une étiquette prépayée fournie.</p>"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,116 @@
+<div class="container">
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>{{ page.title | default: 'Contact' }}
+  </nav>
+</div>
+
+<section class="section" style="padding-top:36px">
+  <div class="container">
+    <div style="max-width:640px;margin-bottom:44px">
+      {%- if section.settings.surtitre != blank -%}
+        <p class="eyebrow">{{ section.settings.surtitre }}</p>
+      {%- endif -%}
+      <h1>{{ page.title | default: 'Une question ? On vous répond.' }}</h1>
+      {%- if page.content != blank -%}
+        <div class="lead">{{ page.content }}</div>
+      {%- endif -%}
+    </div>
+
+    <div class="contact-grid">
+      {%- form 'contact' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="alert alert--ok">{{ section.settings.confirmation }}</div>
+        {%- elsif form.errors -%}
+          <div class="alert alert--error">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+
+        <div class="field">
+          <label for="contact-nom">Votre nom</label>
+          <input class="input" id="contact-nom" type="text" name="contact[name]"
+                 autocomplete="name" value="{{ form.name }}" required>
+        </div>
+
+        <div class="field">
+          <label for="contact-email">Votre e-mail</label>
+          <input class="input" id="contact-email" type="email" name="contact[email]"
+                 autocomplete="email" value="{{ form.email }}" required>
+        </div>
+
+        {%- if section.settings.sujets != blank -%}
+          <div class="field">
+            <label for="contact-sujet">Sujet</label>
+            <select class="select" id="contact-sujet" name="contact[Sujet]">
+              {%- assign liste = section.settings.sujets | split: ',' -%}
+              {%- for sujet in liste -%}
+                <option value="{{ sujet | strip | escape }}">{{ sujet | strip }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- endif -%}
+
+        <div class="field">
+          <label for="contact-message">Votre message</label>
+          <textarea class="textarea" id="contact-message" name="contact[body]" required>{{ form.body }}</textarea>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn--lg" type="submit">Envoyer le message</button>
+        </div>
+
+        <p class="form-note" style="margin-top:14px">
+          Vos données servent uniquement à traiter votre demande.
+        </p>
+      {%- endform -%}
+
+      <aside>
+        {%- for block in section.blocks -%}
+          <div class="info-card" {% unless forloop.first %}style="margin-top:18px"{% endunless %} {{ block.shopify_attributes }}>
+            <h3>{{ block.settings.titre }}</h3>
+            <div>{{ block.settings.texte }}</div>
+          </div>
+        {%- endfor -%}
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Nous écrire" },
+    {
+      "type": "text",
+      "id": "sujets",
+      "label": "Sujets proposés",
+      "info": "Séparés par des virgules. Laissez vide pour masquer le champ.",
+      "default": "Question avant achat, Problème d'installation, Commande ou téléchargement, Licence, Autre"
+    },
+    {
+      "type": "text",
+      "id": "confirmation",
+      "label": "Message de confirmation",
+      "default": "Message envoyé. Nous revenons vers vous sous 24 h ouvrées."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Encart d'information",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Délai de réponse" },
+        {
+          "type": "richtext",
+          "id": "texte",
+          "label": "Texte",
+          "default": "<p>Sous 24 h ouvrées, du lundi au vendredi.</p>"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [{ "type": "info" }]
+  }
+}
+{% endschema %}

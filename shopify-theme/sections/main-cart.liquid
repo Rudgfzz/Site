@@ -1,0 +1,162 @@
+<div class="container">
+  <nav class="fil" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>Panier
+  </nav>
+
+  <div style="padding:26px 0 24px">
+    <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">Votre panier</h1>
+    {%- if section.settings.sous_titre != blank -%}
+      <p class="lead" style="margin:0">{{ section.settings.sous_titre }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="vide" style="margin:20px 0 60px">
+      <h3>Votre panier est vide</h3>
+      <p>Découvrez les produits les plus demandés du moment.</p>
+      <a class="btn" href="{{ routes.all_products_collection_url }}">Voir la boutique</a>
+    </div>
+
+    {%- if section.settings.collection_suggestions != blank -%}
+      <section class="section section--tight">
+        <h2 style="font-size:1.3rem;margin-bottom:24px">Nos best-sellers</h2>
+        <div class="grille-produits">
+          {%- for product in section.settings.collection_suggestions.products limit: 4 -%}
+            {% render 'product-card', product: product %}
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" novalidate id="form-panier">
+      <div class="panier-layout">
+        <div>
+          {%- for item in cart.items -%}
+            <div class="ligne">
+              <a class="ligne__img" href="{{ item.url }}">
+                {%- if item.image -%}
+                  <img src="{{ item.image | image_url: width: 220 }}" width="220" height="165" loading="lazy"
+                       alt="{{ item.image.alt | default: item.product.title | escape }}">
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </a>
+
+              <div>
+                <p class="ligne__nom"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
+                <p class="ligne__meta">
+                  {%- unless item.product.has_only_default_variant -%}
+                    {{ item.variant.title }} ·
+                  {%- endunless -%}
+                  {{ item.original_price | money }} l'unité
+                </p>
+                {%- for remise in item.line_level_discount_allocations -%}
+                  <p class="ligne__meta" style="color:var(--success)">
+                    {{ remise.discount_application.title }} (−{{ remise.amount | money }})
+                  </p>
+                {%- endfor -%}
+              </div>
+
+              <div class="ligne__fin">
+                <div class="quantite quantite--sm">
+                  <button type="button" data-ligne="{{ item.key }}" data-delta="-1" aria-label="Diminuer">−</button>
+                  <label class="sr-only" for="qte-{{ forloop.index }}">Quantité de {{ item.product.title | escape }}</label>
+                  <input id="qte-{{ forloop.index }}" name="updates[]" type="number"
+                         value="{{ item.quantity }}" min="0" inputmode="numeric">
+                  <button type="button" data-ligne="{{ item.key }}" data-delta="1" aria-label="Augmenter">+</button>
+                </div>
+
+                <strong class="prix">{{ item.final_line_price | money }}</strong>
+
+                <a class="lien-supprimer" href="{{ item.url_to_remove }}">Retirer</a>
+              </div>
+            </div>
+          {%- endfor -%}
+
+          {%- if section.settings.note_commande -%}
+            <div style="margin-top:26px;max-width:460px">
+              <label for="note-commande">Instructions pour la commande</label>
+              <textarea class="textarea" id="note-commande" name="note" style="min-height:90px">{{ cart.note }}</textarea>
+            </div>
+          {%- endif -%}
+
+          <div style="margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+            <a class="link-arrow" href="{{ routes.all_products_collection_url }}">Continuer mes achats</a>
+            <noscript>
+              <button class="btn btn--soft btn--sm" type="submit" name="update">Mettre à jour</button>
+            </noscript>
+          </div>
+        </div>
+
+        <aside class="recap">
+          <h2>Récapitulatif</h2>
+
+          <div class="recap__ligne">
+            <span>Sous-total</span><span>{{ cart.items_subtotal_price | money }}</span>
+          </div>
+
+          {%- for remise in cart.cart_level_discount_applications -%}
+            <div class="recap__ligne recap__ligne--eco">
+              <span>{{ remise.title }}</span><span>−{{ remise.total_allocated_amount | money }}</span>
+            </div>
+          {%- endfor -%}
+
+          {%- assign seuil = settings.seuil_livraison_gratuite | times: 100 -%}
+          {%- if seuil > 0 -%}
+            {%- assign restant = seuil | minus: cart.total_price -%}
+            {%- if restant > 0 -%}
+              <div class="jauge-livraison">
+                <div class="piste">
+                  <div class="jauge" style="width:{{ cart.total_price | times: 100.0 | divided_by: seuil }}%"></div>
+                </div>
+                <p>Plus que <strong>{{ restant | money }}</strong> pour la livraison offerte.</p>
+              </div>
+            {%- else -%}
+              <p class="form-note" style="color:var(--success)">✓ Livraison offerte</p>
+            {%- endif -%}
+          {%- endif -%}
+
+          <div class="recap__total">
+            <span>Total</span>
+            <span>{{ cart.total_price | money_with_currency }}<br><small>TVA incluse</small></span>
+          </div>
+
+          <button class="btn btn--block btn--lg" type="submit" name="checkout" style="margin-top:20px">
+            Passer commande
+          </button>
+
+          {{ content_for_additional_checkout_buttons }}
+
+          <p class="form-note" style="margin-top:14px;text-align:center">
+            Frais de port et remises calculés au paiement.
+          </p>
+
+          <div class="paiements">
+            <span>CB</span><span>VISA</span><span>MASTERCARD</span><span>PAYPAL</span>
+          </div>
+        </aside>
+      </div>
+    </form>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Panier",
+  "settings": [
+    {
+      "type": "text",
+      "id": "sous_titre",
+      "label": "Phrase sous le titre",
+      "default": "Livraison offerte dès 60 € · Retour gratuit sous 30 jours"
+    },
+    { "type": "checkbox", "id": "note_commande", "label": "Autoriser une note de commande", "default": false },
+    {
+      "type": "collection",
+      "id": "collection_suggestions",
+      "label": "Suggestions si le panier est vide"
+    }
+  ]
+}
+{% endschema %}
