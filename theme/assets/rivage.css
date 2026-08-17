@@ -21,7 +21,15 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
+
+/* L'attribut « hidden » doit toujours l'emporter : une règle d'affichage
+   posée sur un composant (le tiroir est en flex) l'écrasait, et le panier
+   restait rendu hors écran à droite. Safari ne rogne pas les éléments en
+   position fixe : le document devenait plus large que l'écran, laissant
+   des bandes vides sur le côté. */
+[hidden] { display: none !important; }
 
 body {
   margin: 0;

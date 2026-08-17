@@ -150,12 +150,21 @@
     auDefilement();
   }
 
-  function ouvrir(el) {
+  /* Deux images d'attente : l'élément sort de « display:none », et le
+     navigateur doit l'avoir mis en page avant que la transition démarre.
+     Avec une seule, le panneau apparaît d'un coup, sans glissement. */
+  function afficher(el) {
     if (!el) return;
     el.hidden = false;
-    requestAnimationFrame(function () { el.dataset.ouvert = 'true'; });
-    var voile = un('[data-voile]');
-    if (voile) { voile.hidden = false; requestAnimationFrame(function () { voile.dataset.ouvert = 'true'; }); }
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { el.dataset.ouvert = 'true'; });
+    });
+  }
+
+  function ouvrir(el) {
+    if (!el) return;
+    afficher(el);
+    afficher(un('[data-voile]'));
     document.body.classList.add('bloque');
   }
 

@@ -7,8 +7,13 @@
     {%- if section.settings.afficher_entete -%}
       <div class="tete">
         <span class="numero">{{ collection.products_count }}</span>
+        {%- comment -%}
+          Le titre ne passe jamais par « t » : ce filtre traduirait le nom
+          de la collection comme s'il s'agissait d'une clé de traduction.
+        {%- endcomment -%}
+        {%- capture titre_defaut -%}{{ 'produits.facettes.articles' | t }}{%- endcapture -%}
         <h1 class="tete__titre titre-moyen" data-anim>
-          {{ collection.title | default: 'produits.facettes.articles' | t }}
+          {{ collection.title | default: titre_defaut }}
         </h1>
         {%- if collection.description != blank and section.settings.afficher_description -%}
           <div class="tete__texte prose" data-anim>{{ collection.description }}</div>
