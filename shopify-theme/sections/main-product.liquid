@@ -1,0 +1,641 @@
+{%- assign v = product.selected_or_first_available_variant -%}
+{%- assign note = product.metafields.reviews.rating.value -%}
+{%- assign nb_avis = product.metafields.reviews.rating_count.value -%}
+
+<div class="container">
+  <nav class="fil" aria-label="{{ 'general.navigation.fil_ariane' | t }}">
+    <a href="{{ routes.root_url }}">{{ 'general.navigation.accueil' | t }}</a><span>/</span>
+    {%- if collection -%}
+      <a href="{{ collection.url }}">{{ collection.title }}</a><span>/</span>
+    {%- else -%}
+      <a href="{{ routes.all_products_collection_url }}">{{ 'general.navigation.boutique' | t }}</a><span>/</span>
+    {%- endif -%}
+    <span>{{ product.title }}</span>
+  </nav>
+
+  <div id="fiche-produit">
+    <div class="fiche">
+      {%- comment -%} ---------- Galerie ---------- {%- endcomment -%}
+      <div class="galerie">
+        <div class="galerie__principale">
+          {%- if product.featured_media -%}
+            <img id="image-produit"
+                 src="{{ product.featured_media | image_url: width: 1200 }}"
+                 srcset="{{ product.featured_media | image_url: width: 600 }} 600w,
+                         {{ product.featured_media | image_url: width: 900 }} 900w,
+                         {{ product.featured_media | image_url: width: 1200 }} 1200w"
+                 sizes="(min-width: 900px) 52vw, 100vw"
+                 width="{{ product.featured_media.width }}"
+                 height="{{ product.featured_media.height }}"
+                 alt="{{ product.featured_media.alt | default: product.title | escape }}">
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        {%- if product.media.size > 1 and section.settings.afficher_vignettes -%}
+          <div class="galerie__vignettes">
+            {%- for media in product.media -%}
+              <button type="button"
+                      data-image-vignette="{{ media | image_url: width: 1200 }}"
+                      aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                      aria-label="Voir l'image {{ forloop.index }}">
+                <img src="{{ media | image_url: width: 220 }}" loading="lazy"
+                     width="{{ media.width }}" height="{{ media.height }}"
+                     alt="Aperçu {{ forloop.index }} de {{ product.title | escape }}">
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ---------- Informations ---------- {%- endcomment -%}
+      <div class="fiche__info">
+        {%- if section.settings.afficher_marque -%}
+          <p class="eyebrow">
+            {{ product.vendor }}{% if product.type != blank %} · {{ product.type }}{% endif %}
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.afficher_titre -%}
+          <h1>{{ product.title }}</h1>
+        {%- endif -%}
+
+        {%- assign accroche = product.metafields.custom.accroche -%}
+        {%- if accroche != blank and section.settings.afficher_accroche -%}
+          <p class="lead" style="font-size:1.03rem">{{ accroche }}</p>
+        {%- endif -%}
+
+        {%- if note and section.settings.afficher_note -%}
+          {%- assign pleines = note | round -%}
+          <p class="note" style="margin-bottom:16px">
+            <span class="etoiles" aria-hidden="true">
+              {%- for i in (1..5) -%}{% if i <= pleines %}★{% else %}☆{% endif %}{%- endfor -%}
+            </span>
+            <span>{{ note | round: 1 }} {{ 'products.product.sur_cinq' | t }}{% if nb_avis %} · {{ nb_avis }} {{ 'products.product.avis_suffixe' | t }}{% endif %}</span>
+          </p>
+        {%- endif -%}
+
+        <div class="fiche__prix">
+          <span class="montant" id="prix-affiche">{{ v.price | money }}</span>
+          <s id="prix-barre" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>
+            {{ v.compare_at_price | money }}
+          </s>
+          <span class="remise" id="remise" {% unless v.compare_at_price > v.price %}hidden{% endunless %}>
+            {%- if v.compare_at_price > v.price -%}
+              −{{ v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round }} %
+            {%- endif -%}
+          </span>
+        </div>
+
+        {%- if section.settings.afficher_3x -%}
+          {%- assign tiers = v.price | divided_by: 3 -%}
+          <p class="paiement-3x">
+            {{ section.settings.texte_3x }} <strong id="prix-3x">{{ tiers | money }}</strong> × 3 sans frais
+          </p>
+        {%- endif -%}
+
+        {%- if section.settings.mention_prix != blank -%}
+          <p class="form-note" style="margin:-10px 0 18px">{{ section.settings.mention_prix }}</p>
+        {%- endif -%}
+
+        {%- form 'product', product, id: 'form-produit' -%}
+          <input type="hidden" name="id" id="variante-id" value="{{ v.id }}">
+
+          {% render 'selecteur-options', product: product, option_pastilles: section.settings.option_pastilles %}
+
+          {%- if section.settings.afficher_stock -%}
+            <p class="stock {% if product.available %}stock--ok{% else %}stock--non{% endif %}" id="etat-stock">
+              {% if product.available %}{{ section.settings.texte_en_stock }}{% else %}{{ section.settings.texte_rupture }}{% endif %}
+            </p>
+          {%- endif -%}
+
+          <div class="achat">
+            {%- if section.settings.afficher_quantite -%}
+            <div class="quantite">
+              <button type="button" id="qte-moins" aria-label="{{ 'products.product.diminuer' | t }}">−</button>
+              <label class="sr-only" for="qte-valeur">{{ 'products.product.quantite' | t }}</label>
+              <input id="qte-valeur" name="quantity" type="number" value="1" min="1" inputmode="numeric">
+              <button type="button" id="qte-plus" aria-label="{{ 'products.product.augmenter' | t }}">+</button>
+            </div>
+            {%- endif -%}
+
+            <button class="btn btn--lg" type="submit" name="add" id="ajouter-panier"
+                    {% unless product.available %}disabled{% endunless %}>
+              {% if product.available %}{{ section.settings.texte_bouton }}{% else %}{{ section.settings.texte_epuise }}{% endif %}
+            </button>
+          </div>
+
+          {%- if section.settings.paiement_rapide -%}
+            {{ form | payment_button }}
+          {%- endif -%}
+        {%- endform -%}
+
+        {%- if section.settings.afficher_favoris or section.settings.afficher_comparer -%}
+          <div class="btn-row" style="margin:16px 0 8px">
+            {%- if section.settings.afficher_favoris -%}
+              <button class="btn btn--soft btn--sm" type="button" data-favori="{{ product.handle }}" aria-pressed="false">
+                {% render 'icon', nom: 'coeur' %} {{ 'products.product.favoris' | t }}
+              </button>
+            {%- endif -%}
+            {%- if section.settings.afficher_comparer -%}
+              <button class="btn btn--soft btn--sm" type="button" data-comparer="{{ product.handle }}" aria-pressed="false">
+                {% render 'icon', nom: 'compare' %} {{ 'products.product.comparer' | t }}
+              </button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- assign points = product.metafields.custom.points_forts.value -%}
+        {%- if points != blank and section.settings.afficher_points_forts -%}
+          <ul class="points-forts">
+            {%- for point in points -%}<li>{{ point }}</li>{%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.afficher_services -%}
+          <div class="services">
+            {%- if section.settings.service_1 != blank -%}
+              <div class="service">{% render 'icon', nom: section.settings.icone_1 %}
+                <span><strong>{{ section.settings.service_1 }}</strong>{{ section.settings.detail_1 }}</span></div>
+            {%- endif -%}
+            {%- if section.settings.service_2 != blank -%}
+              <div class="service">{% render 'icon', nom: section.settings.icone_2 %}
+                <span><strong>{{ section.settings.service_2 }}</strong>{{ section.settings.detail_2 }}</span></div>
+            {%- endif -%}
+            {%- if section.settings.service_3 != blank -%}
+              <div class="service">{% render 'icon', nom: section.settings.icone_3 %}
+                <span><strong>{{ section.settings.service_3 }}</strong>{{ section.settings.detail_3 }}</span></div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%}
+      Les données de variantes alimentent la sélection côté navigateur.
+    {%- endcomment -%}
+    <script type="application/json" id="donnees-produit">
+      {{ product | json }}
+    </script>
+  </div>
+
+  {%- comment -%} ---------- Onglets ---------- {%- endcomment -%}
+  {%- assign specs = product.metafields.custom.caracteristiques.value -%}
+  {%- if section.settings.afficher_onglets -%}
+  <div class="onglets" role="tablist">
+    <button role="tab" aria-selected="true" aria-controls="panneau-desc" id="tab-desc">{{ section.settings.onglet_1 }}</button>
+    {%- if specs != blank -%}
+      <button role="tab" aria-selected="false" aria-controls="panneau-specs" id="tab-specs">{{ section.settings.onglet_2 }}</button>
+    {%- endif -%}
+    {%- if section.settings.texte_livraison != blank -%}
+      <button role="tab" aria-selected="false" aria-controls="panneau-livraison" id="tab-livraison">{{ section.settings.onglet_3 }}</button>
+    {%- endif -%}
+  </div>
+
+  <div class="panneau" id="panneau-desc" role="tabpanel" aria-labelledby="tab-desc">
+    <div class="prose">{%- if product.description != blank -%}{{ product.description }}{%- else -%}<p>{{ 'products.product.aucune_description' | t }}</p>{%- endif -%}</div>
+  </div>
+
+  {%- if specs != blank -%}
+    <div class="panneau" id="panneau-specs" role="tabpanel" aria-labelledby="tab-specs" hidden>
+      <table class="tableau-specs"><tbody>
+        {%- for ligne in specs -%}
+          {%- assign paire = ligne | split: ' : ' -%}
+          <tr><th scope="row">{{ paire[0] }}</th><td>{{ paire[1] | default: '—' }}</td></tr>
+        {%- endfor -%}
+      </tbody></table>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.texte_livraison != blank -%}
+    <div class="panneau" id="panneau-livraison" role="tabpanel" aria-labelledby="tab-livraison" hidden>
+      <div class="prose">{{ section.settings.texte_livraison }}</div>
+    </div>
+  {%- endif -%}
+  {%- endif -%}
+</div>
+
+{%- comment -%} ---------- Produits liés ---------- {%- endcomment -%}
+{%- if section.settings.afficher_lies -%}
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">{{ section.settings.surtitre_lies }}</p>
+          <h2>{{ section.settings.titre_lies }}</h2>
+        </div>
+        <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">{{ 'general.navigation.tout_le_catalogue' | t }}</a>
+      </div>
+
+      <div class="grille-produits">
+        {%- assign lies = collections[product.collections.first.handle].products | default: collections.all.products -%}
+        {%- assign compte = 0 -%}
+        {%- for autre in lies -%}
+          {%- if autre.id != product.id and compte < section.settings.nombre_lies -%}
+            {% render 'product-card', product: autre %}
+            {%- assign compte = compte | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Page produit",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Textes du bouton et du stock"
+    },
+    {
+      "type": "text",
+      "id": "texte_bouton",
+      "label": "Bouton d'achat",
+      "default": "Ajouter au panier"
+    },
+    {
+      "type": "text",
+      "id": "texte_epuise",
+      "label": "Bouton si épuisé",
+      "default": "Épuisé"
+    },
+    {
+      "type": "text",
+      "id": "texte_en_stock",
+      "label": "Mention en stock",
+      "default": "En stock"
+    },
+    {
+      "type": "text",
+      "id": "texte_rupture",
+      "label": "Mention rupture",
+      "default": "Rupture de stock"
+    },
+    {
+      "type": "header",
+      "content": "Prix"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_3x",
+      "label": "Paiement en 3 fois",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "texte_3x",
+      "label": "Texte avant le montant",
+      "default": "ou"
+    },
+    {
+      "type": "text",
+      "id": "mention_prix",
+      "label": "Mention sous le prix",
+      "default": "TVA incluse. Frais de port calculés au paiement."
+    },
+    {
+      "type": "header",
+      "content": "Variantes"
+    },
+    {
+      "type": "text",
+      "id": "option_pastilles",
+      "label": "Option affichée en pastilles",
+      "info": "Nom exact de l'option, par exemple « Couleur ». Vide = détection automatique.",
+      "default": "Couleur"
+    },
+    {
+      "type": "header",
+      "content": "Services sous le bouton d'achat"
+    },
+    {
+      "type": "select",
+      "id": "icone_1",
+      "label": "Icône 1",
+      "options": [
+        {
+          "value": "camion",
+          "label": "Livraison"
+        },
+        {
+          "value": "retour",
+          "label": "Retour"
+        },
+        {
+          "value": "bouclier",
+          "label": "Garantie"
+        },
+        {
+          "value": "casque",
+          "label": "Conseil"
+        },
+        {
+          "value": "etincelle",
+          "label": "Nouveauté"
+        },
+        {
+          "value": "colis",
+          "label": "Colis"
+        },
+        {
+          "value": "carte",
+          "label": "Paiement"
+        },
+        {
+          "value": "regle",
+          "label": "Mesures"
+        },
+        {
+          "value": "cintre",
+          "label": "Vêtement"
+        },
+        {
+          "value": "coeur",
+          "label": "Coup de cœur"
+        }
+      ],
+      "default": "camion"
+    },
+    {
+      "type": "text",
+      "id": "service_1",
+      "label": "Service 1",
+      "default": "Livraison offerte dès 100 €"
+    },
+    {
+      "type": "text",
+      "id": "detail_1",
+      "label": "Détail 1",
+      "default": "Expédition sous 24 h ouvrées"
+    },
+    {
+      "type": "select",
+      "id": "icone_2",
+      "label": "Icône 2",
+      "options": [
+        {
+          "value": "camion",
+          "label": "Livraison"
+        },
+        {
+          "value": "retour",
+          "label": "Retour"
+        },
+        {
+          "value": "bouclier",
+          "label": "Garantie"
+        },
+        {
+          "value": "casque",
+          "label": "Conseil"
+        },
+        {
+          "value": "etincelle",
+          "label": "Nouveauté"
+        },
+        {
+          "value": "colis",
+          "label": "Colis"
+        },
+        {
+          "value": "carte",
+          "label": "Paiement"
+        },
+        {
+          "value": "regle",
+          "label": "Mesures"
+        },
+        {
+          "value": "cintre",
+          "label": "Vêtement"
+        },
+        {
+          "value": "coeur",
+          "label": "Coup de cœur"
+        }
+      ],
+      "default": "retour"
+    },
+    {
+      "type": "text",
+      "id": "service_2",
+      "label": "Service 2",
+      "default": "Retours gratuits sous 14 jours"
+    },
+    {
+      "type": "text",
+      "id": "detail_2",
+      "label": "Détail 2",
+      "default": "Étiquette prépayée incluse"
+    },
+    {
+      "type": "select",
+      "id": "icone_3",
+      "label": "Icône 3",
+      "options": [
+        {
+          "value": "camion",
+          "label": "Livraison"
+        },
+        {
+          "value": "retour",
+          "label": "Retour"
+        },
+        {
+          "value": "bouclier",
+          "label": "Garantie"
+        },
+        {
+          "value": "casque",
+          "label": "Conseil"
+        },
+        {
+          "value": "etincelle",
+          "label": "Nouveauté"
+        },
+        {
+          "value": "colis",
+          "label": "Colis"
+        },
+        {
+          "value": "carte",
+          "label": "Paiement"
+        },
+        {
+          "value": "regle",
+          "label": "Mesures"
+        },
+        {
+          "value": "cintre",
+          "label": "Vêtement"
+        },
+        {
+          "value": "coeur",
+          "label": "Coup de cœur"
+        }
+      ],
+      "default": "regle"
+    },
+    {
+      "type": "text",
+      "id": "service_3",
+      "label": "Service 3",
+      "default": "Mesures réelles du vêtement"
+    },
+    {
+      "type": "text",
+      "id": "detail_3",
+      "label": "Détail 3",
+      "default": "Prises à plat, article par article"
+    },
+    {
+      "type": "header",
+      "content": "Onglets"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_onglets",
+      "label": "Afficher les onglets",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "onglet_1",
+      "label": "Onglet 1",
+      "default": "Description"
+    },
+    {
+      "type": "text",
+      "id": "onglet_2",
+      "label": "Onglet 2",
+      "default": "Composition & entretien"
+    },
+    {
+      "type": "text",
+      "id": "onglet_3",
+      "label": "Onglet 3",
+      "default": "Livraison & retours"
+    },
+    {
+      "type": "richtext",
+      "id": "texte_livraison",
+      "label": "Contenu de l'onglet 3",
+      "default": "<p>Expédition sous 24 h ouvrées. Livraison offerte dès 100 € d'achat, sinon les frais s'affichent au panier. Vous disposez de 14 jours pour retourner un article non porté, étiquette attachée, avec une étiquette de retour prépayée.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Produits similaires"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_lies",
+      "label": "Afficher la section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "surtitre_lies",
+      "label": "Surtitre",
+      "default": "À découvrir aussi"
+    },
+    {
+      "type": "text",
+      "id": "titre_lies",
+      "label": "Titre",
+      "default": "Dans le même esprit"
+    },
+    {
+      "type": "range",
+      "id": "nombre_lies",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "Nombre de produits",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Masquer / afficher des éléments"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_vignettes",
+      "label": "Vignettes de la galerie",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_marque",
+      "label": "Marque et type",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_titre",
+      "label": "Titre du produit",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_accroche",
+      "label": "Accroche",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_note",
+      "label": "Note et avis",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_stock",
+      "label": "Disponibilité",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_quantite",
+      "label": "Sélecteur de quantité",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "paiement_rapide",
+      "label": "Bouton de paiement accéléré",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_favoris",
+      "label": "Bouton Favoris",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_comparer",
+      "label": "Bouton Comparer",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_points_forts",
+      "label": "Points forts",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_services",
+      "label": "Services",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

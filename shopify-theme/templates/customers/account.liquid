@@ -1,0 +1,45 @@
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">Mon compte</p>
+        <h1 style="font-size:clamp(1.6rem,3.4vw,2.2rem)">Bonjour {{ customer.first_name | default: customer.email }}</h1>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--ghost btn--sm" href="{{ routes.account_addresses_url }}">Mes adresses</a>
+        <a class="btn btn--ghost btn--sm" href="{{ routes.account_logout_url }}">Se déconnecter</a>
+      </div>
+    </div>
+
+    <h2 style="font-size:1.15rem">Mes commandes</h2>
+
+    {%- paginate customer.orders by 20 -%}
+      {%- if customer.orders.size > 0 -%}
+        <table class="tableau-compte" style="margin-top:10px">
+          <thead>
+            <tr>
+              <th scope="col" style="width:auto">Commande</th>
+              <th scope="col" style="width:auto">Date</th>
+              <th scope="col" style="width:auto">Paiement</th>
+              <th scope="col" style="width:auto">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for order in customer.orders -%}
+              <tr>
+                <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                <td>{{ order.created_at | date: '%d/%m/%Y' }}</td>
+                <td>{{ order.financial_status_label }}</td>
+                <td>{{ order.total_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+
+        {% render 'pagination', paginate: paginate %}
+      {%- else -%}
+        <p class="vide" style="margin-top:16px">Vous n'avez pas encore passé de commande.</p>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>

@@ -1,0 +1,113 @@
+{%- comment -%}
+  Bandeau d'offre limitée avec décompte.
+
+  La date de fin se règle dans l'éditeur au format AAAA-MM-JJ HH:MM.
+  Une fois l'échéance passée, le décompte disparaît et seul le message
+  de fin reste affiché : aucune offre ne peut donc « expirer » sans
+  que le client s'en aperçoive.
+{%- endcomment -%}
+
+{%- assign fin = section.settings.date_fin | strip -%}
+
+<section class="section{% if section.settings.fond_alterne %} section--alt{% endif %}">
+  <div class="container">
+    <div class="offre-limitee">
+      {%- if section.settings.image != blank -%}
+        <div class="offre-limitee__media">
+          <img src="{{ section.settings.image | image_url: width: 900 }}"
+               srcset="{{ section.settings.image | image_url: width: 450 }} 450w,
+                       {{ section.settings.image | image_url: width: 900 }} 900w"
+               sizes="(min-width: 900px) 44vw, 100vw"
+               width="900" height="700" loading="lazy"
+               alt="{{ section.settings.image.alt | escape }}">
+        </div>
+      {%- endif -%}
+
+      <div class="offre-limitee__corps">
+        {%- if section.settings.surtitre != blank -%}
+          <p class="eyebrow eyebrow--plain">{{ section.settings.surtitre }}</p>
+        {%- endif -%}
+
+        <h2>{{ section.settings.titre }}</h2>
+
+        {%- if section.settings.texte != blank -%}
+          <div class="prose">{{ section.settings.texte }}</div>
+        {%- endif -%}
+
+        {%- if fin != blank -%}
+          <div class="decompte" data-compte-a-rebours data-fin="{{ fin }}"
+               data-fini-texte="{{ section.settings.texte_fin | escape }}">
+            <div class="decompte__bloc">
+              <strong data-unite="jours">--</strong>
+              <span>{{ 'general.decompte.jours' | t }}</span>
+            </div>
+            <div class="decompte__bloc">
+              <strong data-unite="heures">--</strong>
+              <span>{{ 'general.decompte.heures' | t }}</span>
+            </div>
+            <div class="decompte__bloc">
+              <strong data-unite="minutes">--</strong>
+              <span>{{ 'general.decompte.minutes' | t }}</span>
+            </div>
+            <div class="decompte__bloc">
+              <strong data-unite="secondes">--</strong>
+              <span>{{ 'general.decompte.secondes' | t }}</span>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.lien_texte != blank -%}
+          <div class="btn-row">
+            <a class="btn btn--lg" href="{{ section.settings.lien }}">{{ section.settings.lien_texte }}</a>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.mention != blank -%}
+          <p class="mention">{{ section.settings.mention }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Offre limitée",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Offre de la semaine" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "La sélection soleil à prix réduit" },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte",
+      "default": "<p>Une poignée de pièces choisies, disponibles le temps de l'opération. Les tailles les plus demandées partent en premier.</p>"
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "text",
+      "id": "date_fin",
+      "label": "Fin de l'offre",
+      "info": "Format AAAA-MM-JJ HH:MM, par exemple 2026-09-15 23:59. Laissez vide pour masquer le décompte.",
+      "default": "2026-09-15 23:59"
+    },
+    {
+      "type": "text",
+      "id": "texte_fin",
+      "label": "Message une fois l'offre terminée",
+      "default": "Cette offre est terminée."
+    },
+    { "type": "text", "id": "lien_texte", "label": "Texte du bouton", "default": "Voir la sélection" },
+    { "type": "url", "id": "lien", "label": "Lien du bouton" },
+    {
+      "type": "text",
+      "id": "mention",
+      "label": "Mention sous le bouton",
+      "info": "Le prix barré doit correspondre au prix le plus bas pratiqué durant les 30 derniers jours.",
+      "default": "Dans la limite des stocks disponibles."
+    },
+    { "type": "checkbox", "id": "fond_alterne", "label": "Fond alterné", "default": true }
+  ],
+  "presets": [{ "name": "Offre limitée" }]
+}
+{% endschema %}

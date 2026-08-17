@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "comparateur": {
+      "type": "main-comparateur",
+      "settings": {}
+    }
+  },
+  "order": [
+    "comparateur"
+  ]
+}

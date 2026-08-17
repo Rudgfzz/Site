@@ -1,0 +1,29 @@
+<section class="section">
+  <div class="container" style="max-width:460px">
+    <h1 style="font-size:1.7rem;text-align:center">Activer mon compte</h1>
+    <p class="lead" style="text-align:center">Choisissez un mot de passe pour finaliser la création de votre compte.</p>
+
+    {%- form 'activate_customer_password' -%}
+      {%- if form.errors -%}
+        <div class="alerte alerte--err">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+
+      <div class="field">
+        <label for="activate-password">Mot de passe</label>
+        <input class="input" id="activate-password" type="password" name="customer[password]"
+               autocomplete="new-password" required>
+      </div>
+      <div class="field">
+        <label for="activate-confirm">Confirmation</label>
+        <input class="input" id="activate-confirm" type="password" name="customer[password_confirmation]"
+               autocomplete="new-password" required>
+      </div>
+
+      <button class="btn btn--block btn--lg" type="submit">Activer mon compte</button>
+
+      <div class="btn-row" style="justify-content:center;margin-top:14px">
+        <button class="btn btn--ghost btn--sm" type="submit" name="decline">Refuser l'invitation</button>
+      </div>
+    {%- endform -%}
+  </div>
+</section>

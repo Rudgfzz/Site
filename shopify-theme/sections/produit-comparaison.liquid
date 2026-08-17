@@ -1,0 +1,43 @@
+{%- comment -%}
+  Section utilitaire : expose les données d'un produit en JSON, métachamps
+  compris. Appelée via /products/{handle}?section_id=produit-comparaison
+  par la page Comparateur.
+{%- endcomment -%}
+{%- assign v = product.selected_or_first_available_variant -%}
+{%- capture specs_json -%}
+  {%- assign specs = product.metafields.custom.caracteristiques.value -%}
+  {%- if specs != blank -%}
+    {%- for ligne in specs -%}
+      {%- assign paire = ligne | split: ' : ' -%}
+      {{ paire[0] | json }}: {{ paire[1] | default: '—' | json }}{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+<script type="application/json" id="comparaison-json">
+{
+  "handle": {{ product.handle | json }},
+  "titre": {{ product.title | json }},
+  "url": {{ product.url | json }},
+  "image": {{ product.featured_media | image_url: width: 600 | json }},
+  "marque": {{ product.vendor | json }},
+  "type": {{ product.type | json }},
+  "prix": {{ v.price | default: 0 }},
+  "prix_barre": {{ v.compare_at_price | default: 0 }},
+  "disponible": {{ product.available | json }},
+  "note": {{ product.metafields.reviews.rating.value | default: 0 }},
+  "nb_avis": {{ product.metafields.reviews.rating_count.value | default: 0 }},
+  "garantie": {{ product.metafields.custom.garantie | default: '' | json }},
+  "options": [
+    {%- for option in product.options_with_values -%}
+      { "nom": {{ option.name | json }}, "valeurs": {{ option.values | json }} }
+      {%- unless forloop.last %},{% endunless -%}
+    {%- endfor -%}
+  ],
+  "specs": { {{ specs_json | strip }} }
+}
+</script>
+
+{% schema %}
+{ "name": "Données comparaison" }
+{% endschema %}

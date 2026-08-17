@@ -1,0 +1,389 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "p1": {
+          "type": "puce",
+          "settings": {
+            "icone": "camion",
+            "texte": "Livraison offerte dès 100 €"
+          }
+        },
+        "p2": {
+          "type": "puce",
+          "settings": {
+            "icone": "retour",
+            "texte": "Retours gratuits sous 14 jours"
+          }
+        },
+        "s1": {
+          "type": "stat",
+          "settings": {
+            "chiffre": "24 h",
+            "libelle": "expédition"
+          }
+        },
+        "s2": {
+          "type": "stat",
+          "settings": {
+            "chiffre": "14 j",
+            "libelle": "pour retourner"
+          }
+        },
+        "s3": {
+          "type": "stat",
+          "settings": {
+            "chiffre": "6",
+            "libelle": "catégories"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "titre": "La garde-robe",
+        "titre_accent": "des beaux jours",
+        "texte": "<p>Des pièces légères, choisies une par une : t-shirts, chaussures, casquettes, sacs, claquettes et pulls fins. Rien de superflu, rien qui gratte.</p>",
+        "bouton_1_texte": "Voir la collection",
+        "bouton_2_texte": "Guide des tailles"
+      }
+    },
+    "confiance": {
+      "type": "bandeau-confiance",
+      "blocks": {
+        "a1": {
+          "type": "argument",
+          "settings": {
+            "icone": "camion",
+            "titre": "Livraison offerte dès 100 €",
+            "texte": "Expédition sous 24 h ouvrées"
+          }
+        },
+        "a2": {
+          "type": "argument",
+          "settings": {
+            "icone": "retour",
+            "titre": "Retours gratuits sous 14 jours",
+            "texte": "Étiquette prépayée incluse"
+          }
+        },
+        "a3": {
+          "type": "argument",
+          "settings": {
+            "icone": "regle",
+            "titre": "Mesures réelles",
+            "texte": "Un guide des tailles par article"
+          }
+        },
+        "a4": {
+          "type": "argument",
+          "settings": {
+            "icone": "carte",
+            "titre": "Paiement sécurisé",
+            "texte": "Carte, Apple Pay, Google Pay"
+          }
+        }
+      },
+      "block_order": [
+        "a1",
+        "a2",
+        "a3",
+        "a4"
+      ],
+      "settings": {}
+    },
+    "categories": {
+      "type": "collection-list",
+      "blocks": {
+        "c1": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c2": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c3": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c4": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c5": {
+          "type": "collection",
+          "settings": {}
+        },
+        "c6": {
+          "type": "collection",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6"
+      ],
+      "settings": {
+        "surtitre": "Le vestiaire",
+        "titre": "Six catégories, rien de plus",
+        "texte": "T-shirts, chaussures, casquettes, sacs, claquettes et pulls légers. Reliez chaque bloc à une collection de votre boutique.",
+        "fond_alterne": true
+      }
+    },
+    "nouveautes": {
+      "type": "featured-collection",
+      "settings": {
+        "surtitre": "Arrivages",
+        "titre": "Les nouveautés de la semaine",
+        "texte": "Les dernières pièces rentrées en stock, avant qu'elles ne partent.",
+        "nombre": 8,
+        "fond_alterne": false
+      }
+    },
+    "offre": {
+      "type": "compte-a-rebours",
+      "settings": {
+        "surtitre": "Offre de la semaine",
+        "titre": "La sélection soleil à prix réduit",
+        "texte": "<p>Une poignée de pièces choisies, disponibles le temps de l'opération. Les tailles les plus demandées partent en premier.</p>",
+        "texte_fin": "Cette offre est terminée.",
+        "lien_texte": "Voir la sélection",
+        "mention": "Dans la limite des stocks disponibles.",
+        "fond_alterne": true
+      }
+    },
+    "etapes": {
+      "type": "etapes",
+      "blocks": {
+        "e1": {
+          "type": "etape",
+          "settings": {
+            "icone": "loupe",
+            "titre": "Choisissez votre pièce",
+            "texte": "Parcourez les six catégories et ouvrez la fiche du modèle qui vous plaît."
+          }
+        },
+        "e2": {
+          "type": "etape",
+          "settings": {
+            "icone": "regle",
+            "titre": "Prenez la bonne taille",
+            "texte": "Chaque fiche indique les mesures réelles du vêtement, à plat. En cas d'hésitation, prenez la taille au-dessus."
+          }
+        },
+        "e3": {
+          "type": "etape",
+          "settings": {
+            "icone": "colis",
+            "titre": "Recevez et essayez",
+            "texte": "Expédition sous 24 h ouvrées. Si la coupe ne va pas, le retour est gratuit pendant 14 jours."
+          }
+        }
+      },
+      "block_order": [
+        "e1",
+        "e2",
+        "e3"
+      ],
+      "settings": {
+        "surtitre": "En pratique",
+        "titre": "Commander en trois étapes",
+        "texte": "De la sélection de la taille à la réception du colis.",
+        "afficher_numeros": true,
+        "fond_alterne": false
+      }
+    },
+    "avis": {
+      "type": "testimonials",
+      "blocks": {
+        "t1": {
+          "type": "avis",
+          "settings": {
+            "etoiles": 5,
+            "texte": "À REMPLACER par un avis réellement reçu d'un client. Publier un faux avis est sanctionné par la DGCCRF : supprimez cette section tant que vous n'en avez pas.",
+            "auteur": "Prénom N. — Ville"
+          }
+        },
+        "t2": {
+          "type": "avis",
+          "settings": {
+            "etoiles": 5,
+            "texte": "À REMPLACER par un avis réellement reçu d'un client.",
+            "auteur": "Prénom N. — Ville"
+          }
+        },
+        "t3": {
+          "type": "avis",
+          "settings": {
+            "etoiles": 5,
+            "texte": "À REMPLACER par un avis réellement reçu d'un client.",
+            "auteur": "Prénom N. — Ville"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "surtitre": "Vos retours",
+        "titre": "Ce que disent les clients",
+        "fond_alterne": true
+      }
+    },
+    "tailles": {
+      "type": "guide-tailles",
+      "blocks": {
+        "l1": {
+          "type": "ligne",
+          "settings": {
+            "valeurs": "XS; 88; 65; 40"
+          }
+        },
+        "l2": {
+          "type": "ligne",
+          "settings": {
+            "valeurs": "S; 96; 68; 43"
+          }
+        },
+        "l3": {
+          "type": "ligne",
+          "settings": {
+            "valeurs": "M; 104; 71; 46"
+          }
+        },
+        "l4": {
+          "type": "ligne",
+          "settings": {
+            "valeurs": "L; 112; 74; 49"
+          }
+        },
+        "l5": {
+          "type": "ligne",
+          "settings": {
+            "valeurs": "XL; 120; 77; 52"
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3",
+        "l4",
+        "l5"
+      ],
+      "settings": {
+        "surtitre": "Guide des tailles",
+        "titre": "Trouvez votre taille du premier coup",
+        "texte": "Mesures indicatives, prises à plat sur le vêtement. Remplacez-les par les mesures réelles fournies par votre fournisseur.",
+        "colonnes": "Taille; Poitrine (cm); Longueur (cm); Épaules (cm)",
+        "note": "<p>Une tolérance de 1 à 2 cm est normale d'un article à l'autre. Le retour est gratuit sous 14 jours si la taille ne convient pas.</p>",
+        "fond_alterne": true
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Quels sont les délais de livraison ?",
+            "reponse": "<p>Les commandes passées avant 15 h partent le jour ouvré suivant. Comptez ensuite 2 à 4 jours ouvrés en France métropolitaine.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Comment retourner un article ?",
+            "reponse": "<p>Vous disposez de 14 jours après réception. L'article doit être non porté et étiquette attachée. L'étiquette de retour est prépayée.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Comment choisir ma taille ?",
+            "reponse": "<p>Chaque fiche produit affiche les mesures du vêtement à plat. Comparez-les à une pièce que vous portez déjà : c'est plus fiable qu'une correspondance générale.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "La livraison est-elle offerte ?",
+            "reponse": "<p>Oui, dès 100 € d'achat. En dessous, les frais s'affichent au panier avant tout paiement.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "surtitre": "Questions fréquentes",
+        "titre": "Bon à savoir avant de commander",
+        "ouvrir_premiere": true,
+        "fond_alterne": false
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "surtitre": "Restons en contact",
+        "titre": "Les arrivages, avant tout le monde",
+        "texte": "<p>Un message quand une nouvelle pièce arrive ou qu'une taille est réapprovisionnée. Rien d'autre.</p>",
+        "bouton": "Je m'inscris",
+        "mention": "Désinscription en un clic. Aucune revente de données."
+      }
+    },
+    "vedette": {
+      "type": "featured-collection",
+      "settings": {
+        "surtitre": "La sélection",
+        "titre": "Les pièces de la saison",
+        "texte": "Ce que nous portons nous-mêmes cet été.",
+        "nombre": 4,
+        "fond_alterne": false
+      }
+    },
+    "journal": {
+      "type": "journal",
+      "settings": {
+        "surtitre": "Le journal",
+        "titre": "Conseils et coulisses",
+        "texte": "Entretien des matières, choix des coupes, arrivages.",
+        "lien_texte": "Tous les articles",
+        "nombre": 3,
+        "afficher_date": true,
+        "afficher_extrait": true,
+        "fond_alterne": false
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "confiance",
+    "vedette",
+    "offre",
+    "nouveautes",
+    "categories",
+    "etapes",
+    "avis",
+    "faq",
+    "tailles",
+    "journal",
+    "newsletter"
+  ]
+}

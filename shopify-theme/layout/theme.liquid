@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64 }}">
+  {%- endif -%}
+
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+    {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% render 'meta-tags' %}
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  {%- comment -%} Les réglages du thème pilotent les variables CSS. {%- endcomment -%}
+  {{ settings.font_titres | font_face: font_display: 'swap' }}
+  {{ settings.font_texte | font_face: font_display: 'swap' }}
+  {%- assign titres_gras = settings.font_titres | font_modify: 'weight', 'bolder' -%}
+  {%- if titres_gras -%}{{ titres_gras | font_face: font_display: 'swap' }}{%- endif -%}
+
+  {% style %}
+    :root {
+      --accent: {{ settings.color_accent | default: '#b4654a' }};
+      --accent-2: {{ settings.color_accent_2 | default: '#d9a05b' }};
+      --accent-ink: {{ settings.color_accent_ink | default: '#ffffff' }};
+      --accent-soft: {{ settings.color_accent | default: '#b4654a' | color_modify: 'alpha', 0.12 }};
+      --ring: 0 0 0 3px {{ settings.color_accent | default: '#b4654a' | color_modify: 'alpha', 0.32 }};
+      --r: {{ settings.radius | default: 8 }}px;
+      --r-xs: {{ settings.radius | default: 8 | divided_by: 2 | at_least: 2 }}px;
+      --r-sm: {{ settings.radius | default: 8 | minus: 3 | at_least: 3 }}px;
+      --r-lg: {{ settings.radius | default: 8 | plus: 6 }}px;
+      --r-xl: {{ settings.radius | default: 8 | plus: 12 }}px;
+      --ratio-produit: {{ settings.product_ratio | default: '3 / 4' }};
+      {%- comment -%}
+        Une police non renseignée sortirait « --font: , ; », déclaration
+        invalide qui emporterait toute la règle. D'où le repli explicite.
+      {%- endcomment -%}
+      {%- if settings.font_texte.family != blank -%}
+        --font: {{ settings.font_texte.family }}, {{ settings.font_texte.fallback_families }};
+      {%- endif -%}
+      {%- if settings.font_titres.family != blank -%}
+        --font-titres: {{ settings.font_titres.family }}, {{ settings.font_titres.fallback_families }};
+      {%- endif -%}
+    }
+    [data-theme="dark"] {
+      --accent: {{ settings.color_accent_sombre | default: '#d98366' }};
+      --accent-2: {{ settings.color_accent_2_sombre | default: '#e8bb7c' }};
+      --accent-soft: {{ settings.color_accent_sombre | default: '#d98366' | color_modify: 'alpha', 0.16 }};
+      --ring: 0 0 0 3px {{ settings.color_accent_sombre | default: '#d98366' | color_modify: 'alpha', 0.35 }};
+    }
+    h1, h2, h3, h4, .titre-section, .eyebrow {
+      font-family: var(--font-titres);
+    }
+    h1, h2, h3, h4 {
+      font-weight: {{ settings.titres_graisse | default: 700 }};
+      text-transform: {{ settings.titres_casse | default: 'none' }};
+      letter-spacing: {{ settings.titres_espacement | default: 0 }}px;
+    }
+    .produit__media { aspect-ratio: var(--ratio-produit, 4 / 3); }
+
+    {%- comment -%} Affichage des images sur la fiche produit. {%- endcomment -%}
+    {%- if template.name == 'product' -%}
+      {%- if settings.fiche_ratio == 'auto' and product.featured_media -%}
+        .galerie__principale, .galerie__vignettes button {
+          aspect-ratio: {{ product.featured_media.aspect_ratio }};
+        }
+      {%- elsif settings.fiche_ratio != 'auto' -%}
+        .galerie__principale, .galerie__vignettes button {
+          aspect-ratio: {{ settings.fiche_ratio | default: '3 / 4' }};
+        }
+      {%- endif -%}
+      .galerie__principale, .galerie__vignettes button {
+        background: {{ settings.fiche_fond | default: '#f6f2ec' }};
+      }
+      .galerie__principale img, .galerie__vignettes img {
+        object-fit: {{ settings.fiche_ajustement | default: 'cover' }};
+      }
+      {%- if settings.fiche_ajustement == 'contain' -%}
+        .galerie__principale { padding: 4%; }
+      {%- endif -%}
+    {%- endif -%}
+  {% endstyle %}
+
+  <script>
+    /* Applique le thème avant le premier rendu, pour éviter que la page
+       n'apparaisse une fraction de seconde dans la mauvaise couleur. */
+    (function () {
+      var defaut = {{ settings.theme_defaut | default: 'systeme' | json }};
+      try {
+        var t = JSON.parse(localStorage.getItem('orbit_theme'));
+        if (t !== 'clair' && t !== 'sombre') {
+          if (defaut === 'clair') { t = 'clair'; }
+          else if (defaut === 'sombre') { t = 'sombre'; }
+          else { t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'clair' : 'sombre'; }
+        }
+        document.documentElement.setAttribute('data-theme', t === 'clair' ? 'light' : 'dark');
+      } catch (e) { /* stockage indisponible : on garde le thème par défaut */ }
+    })();
+  </script>
+
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+  {{ content_for_header }}
+</head>
+
+<body class="page template-{{ template.name | handle }}">
+  <a class="skip-link" href="#contenu">{{ 'general.navigation.aller_au_contenu' | t }}</a>
+
+  {% section 'annonce' %}
+  {% section 'header' %}
+
+  <main id="contenu" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'footer' %}
+
+  {%- comment -%} Surcouches communes à toutes les pages. {%- endcomment -%}
+  <div class="voile" id="voile"></div>
+
+  <aside class="tiroir" id="tiroir-panier" aria-label="{{ 'cart.general.titre_tiroir' | t }}">
+    <div class="tiroir__head">
+      <h2>{{ 'cart.general.titre_tiroir' | t }}</h2>
+      <button class="icon-btn" type="button" data-fermer-tiroir aria-label="{{ 'cart.general.fermer_tiroir' | t }}">
+        {% render 'icon', nom: 'croix' %}
+      </button>
+    </div>
+    <div class="tiroir__corps" id="tiroir-corps"></div>
+    <div class="tiroir__pied" id="tiroir-pied"></div>
+  </aside>
+
+  <div class="recherche" id="recherche" role="dialog" aria-modal="true" aria-label="{{ 'general.recherche_barre.ouvrir' | t }}">
+    <div class="recherche__boite">
+      <form class="recherche__champ" action="{{ routes.search_url }}" method="get" role="search">
+        {% render 'icon', nom: 'loupe' %}
+        <label class="sr-only" for="champ-recherche">{{ 'general.recherche_barre.label' | t }}</label>
+        <input id="champ-recherche" type="search" name="q" autocomplete="off"
+               placeholder="{{ 'general.recherche_barre.placeholder' | t }}">
+        <span class="kbd">{{ 'general.navigation.echap' | t }}</span>
+      </form>
+      <div class="recherche__resultats" id="resultats-recherche"></div>
+    </div>
+  </div>
+
+  <div class="barre-comparateur" id="barre-comparateur" data-visible="false">
+    <div class="barre-comparateur__vignettes"></div>
+    <span data-compare-texte></span>
+    <a class="btn btn--sm" href="{{ settings.page_comparateur.url | default: '/pages/comparateur' }}">{{ 'products.product.comparer' | t }}</a>
+  </div>
+
+  <div class="barre-achat" id="barre-achat" data-visible="false"></div>
+
+  <script>
+    /* Réglages lus par assets/theme.js */
+    window.ORBIT = {
+      routes: {
+        cart_add: '{{ routes.cart_add_url }}',
+        cart_change: '{{ routes.cart_change_url }}',
+        cart: '{{ routes.cart_url }}',
+        predictive: '{{ routes.predictive_search_url }}',
+        search: '{{ routes.search_url }}'
+      },
+      pages: {
+        comparateur: {{ settings.page_comparateur.url | default: '/pages/comparateur' | json }},
+        favoris: {{ settings.page_favoris.url | default: '/pages/favoris' | json }}
+      },
+      seuilLivraisonGratuite: {{ settings.seuil_livraison_gratuite | default: 0 | times: 100 }},
+      moneyFormat: {{ shop.money_format | json }},
+      {%- comment -%}
+        Textes du tiroir panier et des notifications. Ils se modifient dans
+        Thèmes → Modifier le contenu par défaut du thème, sans toucher au code.
+      {%- endcomment -%}
+      textes: {
+        panierVideTitre: {{ 'cart.general.vide_titre' | t | json }},
+        panierVideTexte: {{ 'cart.general.vide_texte' | t | json }},
+        panierVideBouton: {{ 'cart.general.vide_bouton' | t | json }},
+        voirPanier: {{ 'cart.general.voir_panier' | t | json }},
+        commander: {{ 'cart.general.commander_tiroir' | t | json }},
+        sousTotal: {{ 'cart.general.sous_total_tiroir' | t | json }},
+        retirer: {{ 'cart.general.retirer' | t | json }},
+        diminuer: {{ 'products.product.diminuer' | t | json }},
+        augmenter: {{ 'products.product.augmenter' | t | json }},
+        livraisonOfferte: {{ 'cart.general.livraison_offerte_ok' | t | json }},
+        resteAvant: {{ 'cart.general.livraison_reste_avant' | t | json }},
+        resteApres: {{ 'cart.general.livraison_reste_apres' | t | json }},
+        ajouteAuPanier: {{ 'cart.general.ajoute_au_panier' | t | json }},
+        ajoutImpossible: {{ 'cart.general.ajout_impossible' | t | json }},
+        comparaisonLimite: {{ 'cart.general.comparaison_limite' | t | json }},
+        favoriAjoute: {{ 'cart.general.favori_ajoute' | t | json }},
+        favoriRetire: {{ 'cart.general.favori_retire' | t | json }},
+        enStock: {{ 'products.product.en_stock' | t | json }},
+        rupture: {{ 'products.product.rupture' | t | json }},
+        decompteJours: {{ 'general.decompte.jours' | t | json }},
+        decompteHeures: {{ 'general.decompte.heures' | t | json }},
+        decompteMinutes: {{ 'general.decompte.minutes' | t | json }},
+        decompteSecondes: {{ 'general.decompte.secondes' | t | json }},
+        offreTerminee: {{ 'general.decompte.offre_terminee' | t | json }}
+      }
+    };
+  </script>
+</body>
+</html>

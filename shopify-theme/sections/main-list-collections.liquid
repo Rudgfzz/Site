@@ -1,0 +1,45 @@
+<div class="container">
+  <nav class="fil" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>{{ section.settings.titre }}
+  </nav>
+</div>
+
+<section class="section" style="padding-top:26px">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        {%- if section.settings.surtitre != blank -%}<p class="eyebrow">{{ section.settings.surtitre }}</p>{%- endif -%}
+        <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">{{ section.settings.titre }}</h1>
+        {%- if section.settings.texte != blank -%}<p>{{ section.settings.texte }}</p>{%- endif -%}
+      </div>
+    </div>
+
+    <div class="cat-grid">
+      {%- for collection in collections -%}
+        <a class="cat-card reveal" href="{{ collection.url }}">
+          <div>
+            <strong>{{ collection.title }}</strong>
+            <span>{{ collection.products_count }} produit{% if collection.products_count > 1 %}s{% endif %}</span>
+          </div>
+          {%- if collection.featured_image and section.settings.afficher_images -%}
+            {{ collection.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: collection.title }}
+          {%- endif -%}
+        </a>
+      {%- else -%}
+        <div class="vide"><h3>Aucune catégorie</h3><p>Créez des collections dans votre admin.</p></div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Liste des catégories",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Catalogue" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Toutes les catégories" },
+    { "type": "text", "id": "texte", "label": "Texte" },
+    { "type": "checkbox", "id": "afficher_images", "label": "Afficher les images de collection", "default": true }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+{%- comment -%}
+  Pagination. À placer dans un bloc paginate.
+  Paramètre : paginate (obligatoire)
+{%- endcomment -%}
+
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" role="navigation" aria-label="Pagination">
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" aria-label="Page précédente">←</a>
+    {%- endif -%}
+
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+        <a href="{{ part.url }}" aria-label="Page {{ part.title }}">{{ part.title }}</a>
+      {%- elsif part.title == paginate.current_page -%}
+        <span class="is-current" aria-current="page">{{ part.title }}</span>
+      {%- else -%}
+        {%- comment -%} Séparateur « … » entre deux plages de pages. {%- endcomment -%}
+        <span>{{ part.title }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" aria-label="Page suivante">→</a>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

@@ -1,0 +1,89 @@
+{%- comment -%}
+  Journal : les derniers billets du blog choisi.
+  Sans blog sélectionné, la section reste discrète plutôt que d'afficher
+  un bloc vide sur la page d'accueil.
+{%- endcomment -%}
+
+{%- assign blog_choisi = blogs[section.settings.blog] -%}
+
+<section class="section{% if section.settings.fond_alterne %} section--alt{% endif %}">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        {%- if section.settings.surtitre != blank -%}
+          <p class="eyebrow">{{ section.settings.surtitre }}</p>
+        {%- endif -%}
+        <h2>{{ section.settings.titre }}</h2>
+        {%- if section.settings.texte != blank -%}<p>{{ section.settings.texte }}</p>{%- endif -%}
+      </div>
+      {%- if blog_choisi.articles_count > 0 -%}
+        <a class="btn btn--ghost" href="{{ blog_choisi.url }}">{{ section.settings.lien_texte }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if blog_choisi.articles_count > 0 -%}
+      <div class="grille-produits">
+        {%- for billet in blog_choisi.articles limit: section.settings.nombre -%}
+          <article class="produit">
+            <a class="produit__media" href="{{ billet.url }}">
+              {%- if billet.image -%}
+                {%- assign b_l = billet.image | image_url: width: 900 -%}
+                {%- assign b_s = billet.image | image_url: width: 450 -%}
+                <img src="{{ b_l }}" srcset="{{ b_s }} 450w, {{ b_l }} 900w"
+                     sizes="(min-width: 700px) 33vw, 100vw"
+                     width="900" height="675" loading="lazy"
+                     alt="{{ billet.image.alt | default: billet.title | escape }}">
+              {%- else -%}
+                {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </a>
+
+            <div class="produit__corps">
+              {%- if section.settings.afficher_date -%}
+                <p class="produit__marque">{{ billet.published_at | date: '%d.%m.%Y' }}</p>
+              {%- endif -%}
+              <h3 class="produit__nom"><a href="{{ billet.url }}">{{ billet.title }}</a></h3>
+              {%- if section.settings.afficher_extrait -%}
+                <p class="produit__desc" style="display:block;color:var(--muted);font-size:.9rem">
+                  {{ billet.excerpt_or_content | strip_html | truncate: 120 }}
+                </p>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="vide">{{ section.settings.texte_vide }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Journal",
+  "tag": "section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Le journal" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Conseils et coulisses" },
+    {
+      "type": "text",
+      "id": "texte",
+      "label": "Texte",
+      "default": "Entretien des matières, choix des coupes, arrivages."
+    },
+    { "type": "text", "id": "lien_texte", "label": "Texte du bouton", "default": "Tous les articles" },
+    { "type": "range", "id": "nombre", "min": 2, "max": 6, "step": 1, "label": "Nombre d'articles", "default": 3 },
+    { "type": "checkbox", "id": "afficher_date", "label": "Afficher la date", "default": true },
+    { "type": "checkbox", "id": "afficher_extrait", "label": "Afficher un extrait", "default": true },
+    {
+      "type": "text",
+      "id": "texte_vide",
+      "label": "Message si aucun article",
+      "default": "Choisissez un blog dans les réglages de cette section."
+    },
+    { "type": "checkbox", "id": "fond_alterne", "label": "Fond alterné", "default": false }
+  ],
+  "presets": [{ "name": "Journal" }]
+}
+{% endschema %}

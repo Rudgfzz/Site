@@ -1,0 +1,38 @@
+<section class="section">
+  <div class="container" style="max-width:460px">
+    <h1 style="font-size:1.7rem;text-align:center">Créer un compte</h1>
+
+    {%- form 'create_customer' -%}
+      {%- if form.errors -%}
+        <div class="alerte alerte--err">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+
+      <div class="field">
+        <label for="register-prenom">Prénom</label>
+        <input class="input" id="register-prenom" type="text" name="customer[first_name]"
+               autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="register-nom">Nom</label>
+        <input class="input" id="register-nom" type="text" name="customer[last_name]"
+               autocomplete="family-name">
+      </div>
+      <div class="field">
+        <label for="register-email">E-mail</label>
+        <input class="input" id="register-email" type="email" name="customer[email]"
+               autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="register-password">Mot de passe</label>
+        <input class="input" id="register-password" type="password" name="customer[password]"
+               autocomplete="new-password" required>
+      </div>
+
+      <button class="btn btn--block btn--lg" type="submit">Créer mon compte</button>
+
+      <p class="form-note" style="margin-top:16px;text-align:center">
+        Déjà inscrit ? <a href="{{ routes.account_login_url }}">Se connecter</a>
+      </p>
+    {%- endform -%}
+  </div>
+</section>

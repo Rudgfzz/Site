@@ -1,0 +1,177 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close",
+      "menu": "Menu",
+      "cart": "Cart",
+      "search": "Search"
+    },
+    "search": {
+      "title": "Search",
+      "placeholder": "Search for a product…",
+      "submit": "Search",
+      "no_results": "No results for “{{ terms }}”."
+    },
+    "pagination": {
+      "previous": "Previous page",
+      "next": "Next page"
+    },
+    "404": {
+      "title": "Page not found",
+      "subtext": "The page you are looking for does not exist or has moved."
+    },
+    "newsletter": {
+      "submit": "Subscribe",
+      "success": "Thanks! Your subscription is confirmed."
+    },
+    "navigation": {
+      "accueil": "Home",
+      "boutique": "Shop",
+      "tout_le_catalogue": "Browse everything",
+      "fil_ariane": "Breadcrumb",
+      "aller_au_contenu": "Skip to content",
+      "fermer": "Close",
+      "echap": "Esc"
+    },
+    "recherche_barre": {
+      "ouvrir": "Search",
+      "placeholder": "Search for a product, a brand…",
+      "label": "Search for a product"
+    },
+    "decompte": {
+      "jours": "days",
+      "heures": "hours",
+      "minutes": "min",
+      "secondes": "sec",
+      "offre_terminee": "This offer has ended."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "included": "What's included",
+      "specs": "Specifications",
+      "related": "Related products",
+      "from_price": "From {{ price }}",
+      "quantite": "Quantity",
+      "diminuer": "Decrease quantity",
+      "augmenter": "Increase quantity",
+      "aucune_description": "No description for this product.",
+      "choisir_version": "Choose a version",
+      "favoris": "Wishlist",
+      "comparer": "Compare",
+      "ajouter": "Add",
+      "indisponible": "Unavailable",
+      "en_stock": "In stock",
+      "rupture": "Out of stock",
+      "etiquette_rupture": "Sold out",
+      "etiquette_nouveau": "New",
+      "etiquette_best_seller": "Best seller",
+      "avis_suffixe": "reviews",
+      "sur_cinq": "out of 5",
+      "voir": "View",
+      "apercu_image": "Preview"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your cart",
+      "empty": "Your cart is empty",
+      "continue_shopping": "Browse the shop",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "shipping": "Delivery",
+      "checkout": "Check out",
+      "update": "Update cart",
+      "remove": "Remove",
+      "note": "Order instructions",
+      "taxes_note": "Taxes and discounts calculated at checkout.",
+      "titre_tiroir": "Your cart",
+      "ouvrir": "View cart",
+      "fermer_tiroir": "Close cart",
+      "vide_titre": "Your cart is empty",
+      "vide_texte": "Browse the catalogue to fill it.",
+      "vide_bouton": "Browse the shop",
+      "voir_panier": "View cart",
+      "commander_tiroir": "Check out",
+      "sous_total_tiroir": "Subtotal",
+      "livraison_offerte_ok": "Free delivery unlocked",
+      "livraison_reste_avant": "Only",
+      "livraison_reste_apres": "away from free delivery.",
+      "retirer": "Remove",
+      "ajoute_au_panier": "added to cart",
+      "ajout_impossible": "Could not add, please retry",
+      "comparaison_limite": "Compare up to 4 products",
+      "favori_ajoute": "Added to wishlist",
+      "favori_retire": "Removed from wishlist"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Your name",
+      "email": "Your email",
+      "subject": "Subject",
+      "message": "Your message",
+      "send": "Send message",
+      "success": "Message sent. We'll get back to you within one business day."
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "My account",
+      "details": "My details",
+      "view_addresses": "View addresses",
+      "return": "Back to my account",
+      "orders": "My orders",
+      "no_orders": "You haven't placed any order yet."
+    },
+    "login": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "submit": "Sign in",
+      "create_account": "Create an account",
+      "guest_continue": "Continue as guest"
+    },
+    "register": {
+      "title": "Create an account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "submit": "Create my account"
+    },
+    "recover_password": {
+      "title": "Reset password",
+      "subtext": "Enter your email and we'll send you a reset link.",
+      "submit": "Send",
+      "success": "An email is on its way.",
+      "cancel": "Cancel"
+    },
+    "addresses": {
+      "title": "My addresses",
+      "add": "Add an address",
+      "edit": "Edit",
+      "delete": "Delete",
+      "default": "Default address"
+    },
+    "orders": {
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment",
+      "fulfillment_status": "Fulfillment",
+      "total": "Total"
+    }
+  },
+  "blogs": {
+    "article": {
+      "all_articles": "All articles",
+      "comments": "Comments",
+      "post_comment": "Post",
+      "success": "Thanks, your comment has been submitted."
+    }
+  }
+}

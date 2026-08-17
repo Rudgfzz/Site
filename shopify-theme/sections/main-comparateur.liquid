@@ -1,0 +1,202 @@
+<div class="container">
+  <nav class="fil" aria-label="Fil d'Ariane">
+    <a href="{{ routes.root_url }}">Accueil</a><span>/</span>{{ page.title | default: section.settings.titre }}
+  </nav>
+
+  <div style="padding:26px 0 24px">
+    {%- if section.settings.surtitre != blank -%}<p class="eyebrow">{{ section.settings.surtitre }}</p>{%- endif -%}
+    <h1 style="font-size:clamp(1.7rem,3.4vw,2.4rem)">{{ page.title | default: section.settings.titre }}</h1>
+    {%- if section.settings.texte != blank -%}
+      <div class="lead" style="margin:0">{{ section.settings.texte }}</div>
+    {%- endif -%}
+  </div>
+
+  {%- if page.content != blank -%}<div class="prose">{{ page.content }}</div>{%- endif -%}
+
+  <div id="zone-comparateur" style="padding-bottom:70px"></div>
+</div>
+
+<script>
+  (function () {
+    var zone = document.getElementById('zone-comparateur');
+
+    function api() { return (window.ORBIT && window.ORBIT.api) || null; }
+
+    function esc(v) {
+      return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    function etoiles(note) {
+      var pleines = Math.round(note || 0);
+      return '★'.repeat(pleines) + '☆'.repeat(5 - pleines);
+    }
+
+    /* Le rendu de section permet de récupérer aussi les métachamps,
+       que l'API produit JSON standard n'expose pas. */
+    function charger(handle) {
+      return fetch('/products/' + encodeURIComponent(handle) + '?section_id=produit-comparaison')
+        .then(function (r) { return r.ok ? r.text() : null; })
+        .then(function (html) {
+          if (!html) return null;
+          var doc = new DOMParser().parseFromString(html, 'text/html');
+          var script = doc.querySelector('#comparaison-json');
+          return script ? JSON.parse(script.textContent) : null;
+        })
+        .catch(function () { return null; });
+    }
+
+    function rendre() {
+      var a = api();
+      if (!a) return;
+      var handles = a.comparateur();
+
+      if (!handles.length) {
+        zone.innerHTML =
+          '<div class="vide" style="margin:30px 0"><h3>{{ section.settings.titre_vide | escape }}</h3>' +
+          '<p>{{ section.settings.texte_vide | escape }}</p>' +
+          '<a class="btn" href="{{ routes.all_products_collection_url }}">Voir la boutique</a></div>';
+        return;
+      }
+
+      zone.innerHTML = '<div class="squelette" style="height:420px"></div>';
+
+      Promise.all(handles.map(charger)).then(function (resultats) {
+        var produits = resultats.filter(Boolean);
+        if (!produits.length) {
+          zone.innerHTML = '<div class="vide"><h3>Produits indisponibles</h3>' +
+            '<p>Ces produits ne sont plus au catalogue.</p></div>';
+          return;
+        }
+
+        var prixMin = Math.min.apply(null, produits.map(function (p) { return p.prix; }));
+        var noteMax = Math.max.apply(null, produits.map(function (p) { return p.note || 0; }));
+
+        /* Union des caractéristiques, en conservant l'ordre d'apparition. */
+        var cles = [];
+        produits.forEach(function (p) {
+          Object.keys(p.specs || {}).forEach(function (k) {
+            if (cles.indexOf(k) === -1) cles.push(k);
+          });
+        });
+
+        var entetes = produits.map(function (p) {
+          return '<th class="compare__carte">' +
+            '<a href="' + esc(p.url) + '">' +
+              (p.image ? '<img src="' + esc(p.image) + '" alt="' + esc(p.titre) + '" loading="lazy">' : '') +
+              '<strong>' + esc(p.titre) + '</strong>' +
+            '</a>' +
+            '<span class="prix' + (p.prix === prixMin ? ' mieux' : '') + '">' + a.argent(p.prix) + '</span>' +
+            '<div class="btn-row" style="margin-top:12px">' +
+              '<button class="btn btn--ghost btn--sm" type="button" data-retirer="' + esc(p.handle) + '">Retirer</button>' +
+            '</div>' +
+          '</th>';
+        }).join('');
+
+        function ligne(titre, cellules) {
+          return '<tr><th scope="row">' + esc(titre) + '</th>' + cellules + '</tr>';
+        }
+
+        var corps = '';
+
+        corps += ligne('Note', produits.map(function (p) {
+          if (!p.note) return '<td>—</td>';
+          return '<td class="' + (p.note === noteMax ? 'mieux' : '') + '">' +
+            '<span class="etoiles">' + etoiles(p.note) + '</span> ' + p.note.toFixed(1) +
+            (p.nb_avis ? '<br><span style="color:var(--muted);font-size:.84rem">' + p.nb_avis + ' avis</span>' : '') +
+            '</td>';
+        }).join(''));
+
+        corps += ligne('Disponibilité', produits.map(function (p) {
+          return '<td><span class="stock ' + (p.disponible ? 'stock--ok' : 'stock--non') + '">' +
+            (p.disponible ? 'En stock' : 'Rupture de stock') + '</span></td>';
+        }).join(''));
+
+        corps += ligne('Marque', produits.map(function (p) {
+          return '<td>' + esc(p.marque || '—') + '</td>';
+        }).join(''));
+
+        /* Une ligne par option de produit (coloris, capacité…). */
+        var nomsOptions = [];
+        produits.forEach(function (p) {
+          (p.options || []).forEach(function (o) {
+            if (nomsOptions.indexOf(o.nom) === -1) nomsOptions.push(o.nom);
+          });
+        });
+        nomsOptions.forEach(function (nom) {
+          corps += ligne(nom, produits.map(function (p) {
+            var o = (p.options || []).filter(function (x) { return x.nom === nom; })[0];
+            return '<td>' + (o ? esc(o.valeurs.join(', ')) : '—') + '</td>';
+          }).join(''));
+        });
+
+        cles.forEach(function (cle) {
+          corps += ligne(cle, produits.map(function (p) {
+            return '<td>' + esc((p.specs || {})[cle] || '—') + '</td>';
+          }).join(''));
+        });
+
+        if (produits.some(function (p) { return p.garantie; })) {
+          corps += ligne('Garantie', produits.map(function (p) {
+            return '<td>' + esc(p.garantie || '—') + '</td>';
+          }).join(''));
+        }
+
+        zone.innerHTML =
+          '<div class="compare-wrap"><table class="compare">' +
+            '<thead><tr><th></th>' + entetes + '</tr></thead>' +
+            '<tbody>' + corps + '</tbody>' +
+          '</table></div>' +
+          '<div class="btn-row" style="margin-top:26px">' +
+            '<button class="btn btn--ghost" type="button" id="vider-comparateur">Vider le comparateur</button>' +
+            '<a class="btn btn--soft" href="{{ routes.all_products_collection_url }}">Ajouter un produit</a>' +
+          '</div>';
+      });
+    }
+
+    zone.addEventListener('click', function (e) {
+      var a = api();
+      if (!a) return;
+
+      var retirer = e.target.closest('[data-retirer]');
+      if (retirer) {
+        var liste = a.comparateur().filter(function (h) { return h !== retirer.dataset.retirer; });
+        a.ecrire('orbit_comparateur', liste);
+        a.majCompteurs();
+        a.majBarreComparateur();
+        rendre();
+        return;
+      }
+
+      if (e.target.closest('#vider-comparateur')) {
+        a.ecrire('orbit_comparateur', []);
+        a.majCompteurs();
+        a.majBarreComparateur();
+        rendre();
+      }
+    });
+
+    document.addEventListener('comparateur:maj', rendre);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', rendre);
+    else setTimeout(rendre, 0);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Page comparateur",
+  "settings": [
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Aide à la décision" },
+    { "type": "text", "id": "titre", "label": "Titre si la page n'en a pas", "default": "Comparateur" },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte d'introduction",
+      "default": "<p>Jusqu'à quatre produits côte à côte. Les meilleures valeurs de chaque ligne sont mises en évidence.</p>"
+    },
+    { "type": "text", "id": "titre_vide", "label": "Titre si vide", "default": "Aucun produit à comparer" },
+    { "type": "text", "id": "texte_vide", "label": "Texte si vide", "default": "Ajoutez jusqu'à 4 produits depuis la boutique avec l'icône de comparaison." }
+  ]
+}
+{% endschema %}
