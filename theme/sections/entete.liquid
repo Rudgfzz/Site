@@ -9,7 +9,7 @@
 {%- endif -%}
 
 <header class="entete" data-entete data-transparent="{{ transparent }}"
-        style="--logo-largeur:{{ settings.logo_largeur }}px">
+        style="--logo-largeur:{{ settings.logo_largeur | default: 140 }}px">
   <div class="enveloppe entete__grille">
     <nav class="nav" data-nav aria-label="{{ section.settings.titre_menu | escape }}">
       <button class="bouton-icone burger" type="button" data-burger

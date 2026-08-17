@@ -28,8 +28,8 @@ body {
   background: var(--fond);
   color: var(--texte);
   font-family: var(--police-texte);
-  font-size: var(--texte-taille);
-  line-height: var(--texte-interligne);
+  font-size: var(--texte-taille, 16px);
+  line-height: var(--texte-interligne, 1.65);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -69,15 +69,15 @@ table { border-collapse: collapse; width: 100%; }
 h1, h2, h3, h4, h5 {
   margin: 0;
   font-family: var(--police-titres);
-  font-weight: var(--titre-graisse);
-  line-height: var(--titre-interligne);
-  letter-spacing: var(--titre-espacement);
-  text-transform: var(--titre-casse);
+  font-weight: var(--titre-graisse, 700);
+  line-height: var(--titre-interligne, .9);
+  letter-spacing: var(--titre-espacement, -.03em);
+  text-transform: var(--titre-casse, none);
 }
 
 /* Le titre de chapitre : la pièce maîtresse du thème. */
 .titre-geant {
-  font-size: clamp(2.4rem, var(--titre-taille), 13rem);
+  font-size: clamp(2.4rem, var(--titre-taille, 9vw), 13rem);
   hyphens: none;
 }
 .titre-moyen { font-size: clamp(1.9rem, 4.4vw, 3.6rem); }
@@ -179,13 +179,13 @@ h1, h2, h3, h4, h5 {
 /* ---------- 3. Structure ---------- */
 .enveloppe {
   width: 100%;
-  max-width: var(--largeur);
+  max-width: var(--largeur, 1480px);
   margin-inline: auto;
-  padding-inline: var(--marge);
+  padding-inline: var(--marge, 32px);
 }
 .enveloppe--etroite { max-width: 880px; }
 
-.section { padding-block: var(--espace); }
+.section { padding-block: var(--espace, 120px); }
 .section--serree { padding-block: calc(var(--espace) * .5); }
 .section--sombre { background: var(--encre); color: var(--texte-clair); }
 .section--sombre .surtitre, .section--sombre .doux { color: var(--texte-clair); opacity: .62; }
@@ -537,10 +537,10 @@ h1, h2, h3, h4, h5 {
 .article__media {
   position: relative;
   display: block;
-  aspect-ratio: var(--ratio-produit);
+  aspect-ratio: var(--ratio-produit, 3 / 4);
   overflow: hidden;
   background: var(--fond-photo);
-  border-radius: var(--arrondi);
+  border-radius: var(--arrondi, 0);
 }
 .article__media img {
   width: 100%; height: 100%;
@@ -952,7 +952,8 @@ h1, h2, h3, h4, h5 {
 .notification[data-visible="true"] { opacity: 1; transform: none; }
 
 /* Pied de page */
-.pied { background: var(--encre); color: var(--texte-clair); padding-block: clamp(50px, 7vw, 90px) 30px; }
+.pied { line-height: var(--texte-interligne, 1.65);
+  background: var(--encre); color: var(--texte-clair); padding-block: clamp(50px, 7vw, 90px) 30px; }
 .pied a:hover { opacity: .65; }
 .pied__grille {
   display: grid;
