@@ -4,6 +4,16 @@
     <h1 class="titre-geant" style="margin:18px 0" data-anim>{{ section.settings.titre }}</h1>
     <p class="doux mesure" style="margin:0 auto 30px" data-anim>{{ section.settings.texte }}</p>
     <a class="bouton" href="{{ routes.root_url }}" data-anim>{{ section.settings.bouton }}</a>
+
+    {%- if section.settings.afficher_adresse -%}
+      {%- comment -%}
+        L'adresse demandée, affichée discrètement : sans elle, un 404 est
+        impossible à diagnostiquer. À décocher une fois la boutique en ligne.
+      {%- endcomment -%}
+      <p class="doux" style="margin-top:40px;font-size:.72rem;letter-spacing:.1em">
+        {{ section.settings.intitule_adresse }} <code>{{ request.path }}</code>
+      </p>
+    {%- endif -%}
   </div>
 </section>
 
@@ -13,7 +23,15 @@
   "settings": [
     { "type": "text", "id": "titre", "label": "Titre", "default": "Page introuvable" },
     { "type": "text", "id": "texte", "label": "Texte", "default": "Cette adresse ne mène nulle part. Elle a peut-être changé." },
-    { "type": "text", "id": "bouton", "label": "Bouton", "default": "Retour à l'accueil" }
+    { "type": "text", "id": "bouton", "label": "Bouton", "default": "Retour à l'accueil" },
+    {
+      "type": "checkbox",
+      "id": "afficher_adresse",
+      "label": "Afficher l'adresse demandée",
+      "info": "Utile pour diagnostiquer. À décocher avant l'ouverture de la boutique.",
+      "default": true
+    },
+    { "type": "text", "id": "intitule_adresse", "label": "Intitulé", "default": "Adresse demandée :" }
   ]
 }
 {% endschema %}

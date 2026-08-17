@@ -197,22 +197,66 @@
 {
   "name": "Fiche produit",
   "settings": [
-    { "type": "header", "content": "Achat" },
-    { "type": "text", "id": "texte_bouton", "label": "Texte du bouton", "default": "Ajouter au panier" },
-    { "type": "checkbox", "id": "afficher_quantite", "label": "Sélecteur de quantité", "default": true },
-    { "type": "checkbox", "id": "paiement_rapide", "label": "Bouton de paiement accéléré", "default": true },
-    { "type": "checkbox", "id": "afficher_disponibilite", "label": "Mention de disponibilité", "default": true },
-    { "type": "header", "content": "Informations" },
-    { "type": "checkbox", "id": "afficher_marque", "label": "Afficher la marque", "default": true },
-    { "type": "checkbox", "id": "afficher_accroche", "label": "Afficher l'accroche (métachamp)", "default": true },
-    { "type": "checkbox", "id": "afficher_remise", "label": "Afficher le pourcentage de remise", "default": true },
+    {
+      "type": "header",
+      "content": "Achat"
+    },
+    {
+      "type": "text",
+      "id": "texte_bouton",
+      "label": "Texte du bouton",
+      "default": "Ajouter au panier"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_quantite",
+      "label": "Sélecteur de quantité",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "paiement_rapide",
+      "label": "Bouton de paiement accéléré",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_disponibilite",
+      "label": "Mention de disponibilité",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Informations"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_marque",
+      "label": "Afficher la marque",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_accroche",
+      "label": "Afficher l'accroche (métachamp)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_remise",
+      "label": "Afficher le pourcentage de remise",
+      "default": true
+    },
     {
       "type": "text",
       "id": "mention_taxes",
       "label": "Mention sous le prix",
       "default": "TVA incluse, frais de port calculés au paiement."
     },
-    { "type": "header", "content": "Variantes" },
+    {
+      "type": "header",
+      "content": "Variantes"
+    },
     {
       "type": "text",
       "id": "option_pastilles",
@@ -220,41 +264,96 @@
       "info": "Nom exact de l'option, par exemple « Couleur ». Vide = détection automatique.",
       "default": "Couleur"
     },
-    { "type": "url", "id": "lien_tailles", "label": "Lien vers le guide des tailles" },
-    { "type": "header", "content": "Produits similaires" },
-    { "type": "checkbox", "id": "afficher_similaires", "label": "Afficher la section", "default": true },
-    { "type": "text", "id": "numero_similaires", "label": "Numéro", "default": "—" },
-    { "type": "text", "id": "titre_similaires", "label": "Titre", "default": "Dans le même esprit" },
-    { "type": "range", "id": "nombre_similaires", "min": 3, "max": 12, "step": 1, "label": "Nombre de produits", "default": 8 }
+    {
+      "type": "url",
+      "id": "lien_tailles",
+      "label": "Lien vers le guide des tailles"
+    },
+    {
+      "type": "header",
+      "content": "Produits similaires"
+    },
+    {
+      "type": "checkbox",
+      "id": "afficher_similaires",
+      "label": "Afficher la section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "numero_similaires",
+      "label": "Numéro",
+      "default": "—"
+    },
+    {
+      "type": "text",
+      "id": "titre_similaires",
+      "label": "Titre",
+      "default": "Dans le même esprit"
+    },
+    {
+      "type": "range",
+      "id": "nombre_similaires",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "label": "Nombre de produits",
+      "default": 8
+    }
   ],
   "blocks": [
     {
       "type": "description",
       "name": "Description du produit",
       "settings": [
-        { "type": "text", "id": "titre", "label": "Titre du repli", "default": "Description" },
-        { "type": "checkbox", "id": "ouvert", "label": "Ouvert par défaut", "default": true }
+        {
+          "type": "text",
+          "id": "titre",
+          "label": "Titre du repli",
+          "default": "Description"
+        },
+        {
+          "type": "checkbox",
+          "id": "ouvert",
+          "label": "Ouvert par défaut",
+          "default": true
+        }
       ]
     },
     {
       "type": "texte",
       "name": "Texte libre",
       "settings": [
-        { "type": "text", "id": "titre", "label": "Titre du repli", "default": "Livraison & retours" },
+        {
+          "type": "text",
+          "id": "titre",
+          "label": "Titre du repli",
+          "default": "Livraison & retours"
+        },
         {
           "type": "richtext",
           "id": "texte",
           "label": "Contenu",
           "default": "<p>Expédition sous 24 h ouvrées. Retours gratuits sous 14 jours, article non porté et étiquette attachée.</p>"
         },
-        { "type": "checkbox", "id": "ouvert", "label": "Ouvert par défaut", "default": false }
+        {
+          "type": "checkbox",
+          "id": "ouvert",
+          "label": "Ouvert par défaut",
+          "default": false
+        }
       ]
     },
     {
       "type": "metachamp",
       "name": "Métachamp produit",
       "settings": [
-        { "type": "text", "id": "titre", "label": "Titre du repli", "default": "Composition & entretien" },
+        {
+          "type": "text",
+          "id": "titre",
+          "label": "Titre du repli",
+          "default": "Composition & entretien"
+        },
         {
           "type": "text",
           "id": "cle",
@@ -268,9 +367,40 @@
           "label": "Texte si le métachamp est vide",
           "default": "<p>Composition et conseils d'entretien à renseigner sur la fiche du produit.</p>"
         },
-        { "type": "checkbox", "id": "ouvert", "label": "Ouvert par défaut", "default": false }
+        {
+          "type": "checkbox",
+          "id": "ouvert",
+          "label": "Ouvert par défaut",
+          "default": false
+        }
       ]
     }
-  ]
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "description",
+        "settings": {
+          "titre": "Description",
+          "ouvert": true
+        }
+      },
+      {
+        "type": "metachamp",
+        "settings": {
+          "titre": "Composition & entretien",
+          "cle": "composition",
+          "ouvert": false
+        }
+      },
+      {
+        "type": "texte",
+        "settings": {
+          "titre": "Livraison & retours",
+          "ouvert": false
+        }
+      }
+    ]
+  }
 }
 {% endschema %}

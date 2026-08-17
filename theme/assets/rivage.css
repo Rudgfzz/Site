@@ -985,8 +985,19 @@ h1, h2, h3, h4, h5 {
 .reseaux { display: flex; gap: 14px; margin-top: 18px; }
 .reseaux svg { width: 19px; height: 19px; }
 
-@media (max-width: 800px) {
-  .pied__grille { grid-template-columns: 1fr 1fr; }
+/* Sur tablette, le bloc de tête prend toute la largeur : le titre et le
+   formulaire ne tiennent pas dans une colonne de grille. */
+@media (max-width: 900px) {
+  .pied__grille { grid-template-columns: repeat(3, 1fr); gap: 32px 24px; }
+  .pied__grille > :first-child { grid-column: 1 / -1; }
+}
+/* Sur téléphone, une seule colonne : deux colonnes tombaient à ~150 px,
+   largeur à laquelle le texte se tasse et devient illisible. */
+@media (max-width: 620px) {
+  .pied__grille { grid-template-columns: 1fr; gap: 30px; padding-bottom: 34px; }
+  .pied__grille > :first-child { grid-column: 1; }
+  .pied .champ input, .pied .bouton { width: 100%; }
+  .pied__bas { flex-direction: column; gap: 8px; }
 }
 
 /* ---------- 10. Animations ---------- */

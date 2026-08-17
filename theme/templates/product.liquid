@@ -1,0 +1,11 @@
+{%- comment -%}
+  Modèle Liquid volontairement, et non JSON.
+
+  Un modèle JSON qui référence une section refusée par Shopify renvoie un
+  404 sans le moindre message : impossible à diagnostiquer. Rendue par
+  « {% section %} », la moindre erreur s'affiche en clair sur la page.
+
+  Les replis d'information viennent de la clé « default » du schéma.
+{%- endcomment -%}
+
+{% section 'main-produit' %}
