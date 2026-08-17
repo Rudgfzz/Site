@@ -1,0 +1,93 @@
+{%- comment -%} Page panier complète (repli si le tiroir est désactivé). {%- endcomment -%}
+
+<section class="section section--serree">
+  <div class="enveloppe">
+    <div class="tete">
+      <span class="numero">{{ cart.item_count }}</span>
+      <h1 class="tete__titre titre-moyen">{{ section.settings.titre }}</h1>
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      {%- form 'cart', cart -%}
+        <table>
+          <thead>
+            <tr style="border-bottom:var(--filet)">
+              <th style="text-align:left;padding-bottom:14px" colspan="2">{{ section.settings.colonne_article }}</th>
+              <th style="text-align:left;padding-bottom:14px">{{ 'produits.produit.quantite' | t }}</th>
+              <th style="text-align:right;padding-bottom:14px">{{ 'clients.compte.total' | t }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for item in cart.items -%}
+              <tr style="border-bottom:var(--filet)">
+                <td style="padding:20px 16px 20px 0;width:110px">
+                  {%- if item.image -%}
+                    <img src="{{ item.image | image_url: width: 220 }}" width="110" height="147"
+                         loading="lazy" alt="{{ item.title | escape }}"
+                         style="width:110px;aspect-ratio:var(--ratio-produit);object-fit:cover;background:var(--fond-photo)">
+                  {%- endif -%}
+                </td>
+                <td style="padding:20px 16px 20px 0">
+                  <a class="titre-petit" href="{{ item.url }}">{{ item.product.title }}</a>
+                  {%- unless item.variant.title contains 'Default' -%}
+                    <p class="doux" style="margin:4px 0 0;font-size:.85rem">{{ item.variant.title }}</p>
+                  {%- endunless -%}
+                  <p style="margin:8px 0 0"><a class="lien-retirer" href="{{ item.url_to_remove }}">{{ 'panier.general.retirer' | t }}</a></p>
+                </td>
+                <td style="padding:20px 16px 20px 0">
+                  <span class="quantite">
+                    <label class="lecteur-seul" for="qte-{{ item.index | plus: 1 }}">{{ 'produits.produit.quantite' | t }}</label>
+                    <input id="qte-{{ item.index | plus: 1 }}" type="number" name="updates[]"
+                           value="{{ item.quantity }}" min="0" inputmode="numeric">
+                  </span>
+                </td>
+                <td style="padding:20px 0;text-align:right">{{ item.final_line_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+
+        {%- if settings.afficher_note_commande -%}
+          <label class="champ" style="margin-top:26px;max-width:520px">
+            <span>{{ 'panier.general.note' | t }}</span>
+            <textarea name="note" placeholder="{{ 'panier.general.note_placeholder' | t | escape }}">{{ cart.note }}</textarea>
+          </label>
+        {%- endif -%}
+
+        <div style="display:flex;justify-content:flex-end;margin-top:34px">
+          <div style="min-width:min(340px,100%)">
+            <div class="total">
+              <span>{{ 'panier.general.sous_total' | t }}</span>
+              <strong>{{ cart.total_price | money }}</strong>
+            </div>
+            <p class="doux" style="font-size:.8rem">{{ 'panier.general.taxes' | t }}</p>
+            <button class="bouton bouton--large" type="submit" name="checkout">
+              {{ 'panier.general.commander' | t }}
+            </button>
+            <p style="text-align:center;margin-top:16px">
+              <a class="lien" href="{{ routes.all_products_collection_url }}">{{ 'panier.general.continuer' | t }}</a>
+            </p>
+          </div>
+        </div>
+      {%- endform -%}
+    {%- else -%}
+      <div class="vide">
+        <h2 class="titre-petit">{{ 'panier.general.vide_titre' | t }}</h2>
+        <p>{{ 'panier.general.vide_texte' | t }}</p>
+        <a class="bouton" href="{{ routes.all_products_collection_url }}">
+          {{ 'panier.general.vide_bouton' | t }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page panier",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Votre panier" },
+    { "type": "text", "id": "colonne_article", "label": "Colonne « article »", "default": "Article" }
+  ]
+}
+{% endschema %}

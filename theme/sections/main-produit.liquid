@@ -1,0 +1,276 @@
+{%- comment -%}
+  Fiche produit.
+
+  La galerie défile normalement pendant que la colonne d'achat reste
+  collée : sur un vêtement, on veut voir toutes les vues sans perdre le
+  bouton d'ajout.
+{%- endcomment -%}
+
+{%- assign v = product.selected_or_first_available_variant -%}
+{%- assign solde = false -%}
+{%- if v.compare_at_price > v.price -%}{%- assign solde = true -%}{%- endif -%}
+
+<section class="section section--serree" data-fiche>
+  <div class="enveloppe">
+    <div class="fiche">
+      {%- comment -%} ---------- Galerie ---------- {%- endcomment -%}
+      <div class="fiche__galerie">
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media -%}
+            <div class="fiche__vue" {% if forloop.first %}data-vue-principale{% endif %}>
+              {%- assign m_l = media | image_url: width: 1400 -%}
+              {%- assign m_m = media | image_url: width: 900 -%}
+              <img src="{{ m_l }}"
+                   srcset="{{ m_m }} 900w, {{ m_l }} 1400w"
+                   sizes="(min-width: 900px) 60vw, 100vw"
+                   width="1400" height="2100"
+                   {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                   alt="{{ media.alt | default: product.title | escape }}">
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="fiche__vue" data-vue-principale>
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ---------- Colonne d'achat ---------- {%- endcomment -%}
+      <div class="fiche__infos">
+        {%- if section.settings.afficher_marque and product.vendor != blank -%}
+          <p class="surtitre">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="fiche__titre titre-moyen">{{ product.title }}</h1>
+
+        <div class="fiche__prix">
+          <span data-prix>{{ v.price | money }}</span>
+          <s data-prix-barre {% unless solde %}hidden{% endunless %}>{{ v.compare_at_price | money }}</s>
+          {%- if solde and section.settings.afficher_remise -%}
+            {%- assign remise = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round -%}
+            <span class="fiche__remise">−{{ remise }} %</span>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.mention_taxes != blank -%}
+          <p class="doux" style="font-size:.78rem">{{ section.settings.mention_taxes }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.afficher_accroche and product.metafields.custom.accroche != blank -%}
+          <p style="margin-top:18px">{{ product.metafields.custom.accroche }}</p>
+        {%- endif -%}
+
+        {%- form 'product', product, id: 'formulaire-produit' -%}
+          <input type="hidden" name="id" value="{{ v.id }}" data-variante-id>
+
+          {% render 'options-produit',
+             produit: product,
+             option_pastilles: section.settings.option_pastilles %}
+
+          {%- if section.settings.lien_tailles != blank -%}
+            <p style="margin-top:14px">
+              <a class="lien" href="{{ section.settings.lien_tailles }}">
+                {{ 'produits.produit.guide_tailles' | t }}
+              </a>
+            </p>
+          {%- endif -%}
+
+          <div class="achat">
+            {%- if section.settings.afficher_quantite -%}
+              <span class="quantite">
+                <button type="button" data-quantite="-1"
+                        aria-label="{{ 'produits.produit.diminuer' | t }}">−</button>
+                <label class="lecteur-seul" for="quantite">{{ 'produits.produit.quantite' | t }}</label>
+                <input id="quantite" name="quantity" type="number" value="1" min="1"
+                       inputmode="numeric" data-champ-quantite>
+                <button type="button" data-quantite="1"
+                        aria-label="{{ 'produits.produit.augmenter' | t }}">+</button>
+              </span>
+            {%- endif -%}
+
+            <button class="bouton" type="submit" name="add" data-ajouter
+                    {% unless product.available %}disabled{% endunless %}>
+              {%- if product.available -%}
+                {{ section.settings.texte_bouton | default: 'Ajouter au panier' }}
+              {%- else -%}
+                {{ 'produits.produit.epuise' | t }}
+              {%- endif -%}
+            </button>
+          </div>
+
+          {%- if section.settings.paiement_rapide -%}
+            <div style="margin-top:10px">{{ form | payment_button }}</div>
+          {%- endif -%}
+        {%- endform -%}
+
+        {%- if section.settings.afficher_disponibilite -%}
+          <p class="disponibilite" data-disponibilite
+             data-etat="{% if product.available %}ok{% else %}non{% endif %}">
+            {%- if product.available -%}
+              {{ 'produits.produit.en_stock' | t }}
+            {%- else -%}
+              {{ 'produits.produit.rupture' | t }}
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+
+        {%- comment -%} ---------- Replis d'information ---------- {%- endcomment -%}
+        <div class="replis">
+          {%- for block in section.blocks -%}
+            <details class="repli" {% if block.settings.ouvert %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.titre }}</summary>
+              <div class="repli__corps prose">
+                {%- case block.type -%}
+                  {%- when 'description' -%}
+                    {%- if product.description != blank -%}
+                      {{ product.description }}
+                    {%- else -%}
+                      <p>{{ 'produits.produit.aucune_description' | t }}</p>
+                    {%- endif -%}
+                  {%- when 'metachamp' -%}
+                    {%- assign valeur = product.metafields.custom[block.settings.cle] -%}
+                    {%- if valeur != blank -%}
+                      {{ valeur }}
+                    {%- else -%}
+                      {{ block.settings.repli }}
+                    {%- endif -%}
+                  {%- else -%}
+                    {{ block.settings.texte }}
+                {%- endcase -%}
+              </div>
+            </details>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%}
+    Les variantes alimentent la sélection côté navigateur.
+  {%- endcomment -%}
+  <script type="application/json" data-variantes>
+    {{ product | json }}
+  </script>
+</section>
+
+{%- if section.settings.afficher_similaires -%}
+  {%- assign source = collections[product.collections.first.handle].products | default: collections.all.products -%}
+  <section class="section">
+    <div class="enveloppe">
+      <div class="tete">
+        <span class="numero">{{ section.settings.numero_similaires }}</span>
+        <h2 class="tete__titre titre-moyen" data-anim>{{ section.settings.titre_similaires }}</h2>
+      </div>
+
+      <div class="rail" data-rail data-anim-groupe="{{ settings.anim_decalage }}">
+        {%- assign compte = 0 -%}
+        {%- for autre in source -%}
+          {%- if autre.id != product.id and compte < section.settings.nombre_similaires -%}
+            {% render 'carte-produit', produit: autre, etiquettes: true %}
+            {%- assign compte = compte | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <div class="rail-barre">
+        <span class="rail-piste"><span class="rail-pouce" data-rail-pouce></span></span>
+        <span class="rail-fleches">
+          <button class="bouton-icone" type="button" data-rail-fleche="-1"
+                  aria-label="{{ 'general.navigation.precedent' | t }}">
+            {% render 'icone', nom: 'fleche-gauche' %}
+          </button>
+          <button class="bouton-icone" type="button" data-rail-fleche="1"
+                  aria-label="{{ 'general.navigation.suivant' | t }}">
+            {% render 'icone', nom: 'fleche-droite' %}
+          </button>
+        </span>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Fiche produit",
+  "settings": [
+    { "type": "header", "content": "Achat" },
+    { "type": "text", "id": "texte_bouton", "label": "Texte du bouton", "default": "Ajouter au panier" },
+    { "type": "checkbox", "id": "afficher_quantite", "label": "Sélecteur de quantité", "default": true },
+    { "type": "checkbox", "id": "paiement_rapide", "label": "Bouton de paiement accéléré", "default": true },
+    { "type": "checkbox", "id": "afficher_disponibilite", "label": "Mention de disponibilité", "default": true },
+    { "type": "header", "content": "Informations" },
+    { "type": "checkbox", "id": "afficher_marque", "label": "Afficher la marque", "default": true },
+    { "type": "checkbox", "id": "afficher_accroche", "label": "Afficher l'accroche (métachamp)", "default": true },
+    { "type": "checkbox", "id": "afficher_remise", "label": "Afficher le pourcentage de remise", "default": true },
+    {
+      "type": "text",
+      "id": "mention_taxes",
+      "label": "Mention sous le prix",
+      "default": "TVA incluse, frais de port calculés au paiement."
+    },
+    { "type": "header", "content": "Variantes" },
+    {
+      "type": "text",
+      "id": "option_pastilles",
+      "label": "Option affichée en pastilles",
+      "info": "Nom exact de l'option, par exemple « Couleur ». Vide = détection automatique.",
+      "default": "Couleur"
+    },
+    { "type": "url", "id": "lien_tailles", "label": "Lien vers le guide des tailles" },
+    { "type": "header", "content": "Produits similaires" },
+    { "type": "checkbox", "id": "afficher_similaires", "label": "Afficher la section", "default": true },
+    { "type": "text", "id": "numero_similaires", "label": "Numéro", "default": "—" },
+    { "type": "text", "id": "titre_similaires", "label": "Titre", "default": "Dans le même esprit" },
+    { "type": "range", "id": "nombre_similaires", "min": 3, "max": 12, "step": 1, "label": "Nombre de produits", "default": 8 }
+  ],
+  "blocks": [
+    {
+      "type": "description",
+      "name": "Description du produit",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre du repli", "default": "Description" },
+        { "type": "checkbox", "id": "ouvert", "label": "Ouvert par défaut", "default": true }
+      ]
+    },
+    {
+      "type": "texte",
+      "name": "Texte libre",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre du repli", "default": "Livraison & retours" },
+        {
+          "type": "richtext",
+          "id": "texte",
+          "label": "Contenu",
+          "default": "<p>Expédition sous 24 h ouvrées. Retours gratuits sous 14 jours, article non porté et étiquette attachée.</p>"
+        },
+        { "type": "checkbox", "id": "ouvert", "label": "Ouvert par défaut", "default": false }
+      ]
+    },
+    {
+      "type": "metachamp",
+      "name": "Métachamp produit",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre du repli", "default": "Composition & entretien" },
+        {
+          "type": "text",
+          "id": "cle",
+          "label": "Clé du métachamp",
+          "info": "Espace de noms « custom ». Exemple : composition.",
+          "default": "composition"
+        },
+        {
+          "type": "richtext",
+          "id": "repli",
+          "label": "Texte si le métachamp est vide",
+          "default": "<p>Composition et conseils d'entretien à renseigner sur la fiche du produit.</p>"
+        },
+        { "type": "checkbox", "id": "ouvert", "label": "Ouvert par défaut", "default": false }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,128 @@
+{
+  "sections": {
+    "ouverture": {
+      "type": "chapitre",
+      "settings": {
+        "numero": "01",
+        "surtitre": "Été 2026",
+        "titre": "La garde-robe",
+        "titre_2": "des beaux jours",
+        "texte": "<p>Des pièces légères, choisies une par une. Rien de superflu, rien qui gratte.</p>",
+        "lien_1_texte": "Voir la collection",
+        "lien_2_texte": "Le journal",
+        "hauteur": 92,
+        "voile": 45,
+        "texte_clair": true,
+        "position": "bas",
+        "indicateur": true,
+        "priorite": true
+      }
+    },
+    "vestiaire": {
+      "type": "mosaique",
+      "blocks": {
+        "t1": { "type": "tuile", "settings": { "format": "large", "titre": "T-shirts" } },
+        "t2": { "type": "tuile", "settings": { "format": "standard", "titre": "Casquettes" } },
+        "t3": { "type": "tuile", "settings": { "format": "standard", "titre": "Chaussures" } },
+        "t4": { "type": "tuile", "settings": { "format": "standard", "titre": "Sacs" } },
+        "t5": { "type": "tuile", "settings": { "format": "large", "titre": "Claquettes" } },
+        "t6": { "type": "tuile", "settings": { "format": "standard", "titre": "Pulls" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4", "t5", "t6"],
+      "settings": {
+        "numero": "02",
+        "titre": "Le vestiaire",
+        "texte": "Six catégories, rien de plus. Reliez chaque tuile à une collection de la boutique.",
+        "afficher_nombre": true
+      }
+    },
+    "arrivages": {
+      "type": "rail-produits",
+      "settings": {
+        "numero": "03",
+        "titre": "Les arrivages",
+        "texte": "Les dernières pièces rentrées en stock.",
+        "lien_texte": "Tout voir",
+        "nombre": 8,
+        "afficher_barre": true,
+        "etiquettes": true,
+        "fond": "normal"
+      }
+    },
+    "facon": {
+      "type": "manifeste",
+      "blocks": {
+        "l1": { "type": "ligne", "settings": { "texte": "Des matières qui <em>respirent</em>." } },
+        "l2": { "type": "ligne", "settings": { "texte": "Des coupes qui tiennent au lavage." } },
+        "l3": { "type": "ligne", "settings": { "texte": "Des mesures données à plat, pas approximées." } },
+        "a1": { "type": "appui", "settings": { "chiffre": "24 h", "libelle": "Expédition depuis la France" } },
+        "a2": { "type": "appui", "settings": { "chiffre": "14 j", "libelle": "Pour changer d'avis, retour gratuit" } },
+        "a3": { "type": "appui", "settings": { "chiffre": "6", "libelle": "Catégories, pas une de plus" } }
+      },
+      "block_order": ["l1", "l2", "l3", "a1", "a2", "a3"],
+      "settings": {
+        "numero": "04",
+        "surtitre": "Notre façon de faire",
+        "lien_texte": "En savoir plus",
+        "fond": "sombre"
+      }
+    },
+    "matiere": {
+      "type": "duo",
+      "settings": {
+        "numero": "05",
+        "surtitre": "La matière",
+        "titre": "Le lin, sans compromis",
+        "texte": "<p>Le lin laisse passer l'air. Il se froisse : c'est le propre de la matière, pas un défaut. Il s'assouplit lavage après lavage.</p>",
+        "lien_texte": "Voir les pièces en lin",
+        "inverse": false
+      }
+    },
+    "selection": {
+      "type": "rail-produits",
+      "settings": {
+        "numero": "06",
+        "titre": "La sélection soleil",
+        "texte": "Une poignée de pièces, le temps de la saison.",
+        "lien_texte": "Tout voir",
+        "nombre": 8,
+        "large": true,
+        "afficher_barre": true,
+        "etiquettes": true,
+        "fond": "teinte"
+      }
+    },
+    "journal": {
+      "type": "journal",
+      "settings": {
+        "numero": "07",
+        "titre": "Le journal",
+        "texte": "Entretien des matières, coupes, coulisses.",
+        "lien_texte": "Tous les articles",
+        "nombre": 3,
+        "afficher_extrait": true
+      }
+    },
+    "lettre": {
+      "type": "infolettre",
+      "settings": {
+        "numero": "08",
+        "titre": "Les arrivages, avant tout le monde",
+        "texte": "<p>Un message quand une pièce arrive ou qu'une taille est réapprovisionnée. Rien d'autre.</p>",
+        "bouton": "Je m'inscris",
+        "mention": "Désinscription en un clic. Aucune revente de données.",
+        "fond": "teinte"
+      }
+    }
+  },
+  "order": [
+    "ouverture",
+    "vestiaire",
+    "arrivages",
+    "facon",
+    "matiere",
+    "selection",
+    "journal",
+    "lettre"
+  ]
+}

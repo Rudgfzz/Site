@@ -1,0 +1,99 @@
+<footer class="pied">
+  <div class="enveloppe">
+    <div class="pied__grille">
+      <div>
+        <p class="titre-petit" style="margin-bottom:14px">{{ section.settings.titre }}</p>
+        {%- if section.settings.texte != blank -%}
+          <div class="prose" style="opacity:.7;font-size:.92rem">{{ section.settings.texte }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.afficher_infolettre -%}
+          {%- form 'customer', class: 'infolettre-pied', style: 'margin-top:22px;max-width:340px' -%}
+            <input type="hidden" name="contact[tags]" value="infolettre">
+            {%- if form.posted_successfully? -%}
+              <p class="message">{{ 'general.infolettre.confirmation' | t }}</p>
+            {%- else -%}
+              <label class="champ">
+                <span>{{ section.settings.titre_infolettre }}</span>
+                <input type="email" name="contact[email]" required
+                       placeholder="{{ 'general.infolettre.placeholder' | t | escape }}">
+              </label>
+              <button class="bouton" type="submit">{{ 'general.infolettre.bouton' | t }}</button>
+            {%- endif -%}
+          {%- endform -%}
+        {%- endif -%}
+
+        {%- assign a_reseaux = false -%}
+        {%- if settings.rs_instagram != blank or settings.rs_tiktok != blank
+             or settings.rs_pinterest != blank or settings.rs_facebook != blank -%}
+          {%- assign a_reseaux = true -%}
+        {%- endif -%}
+
+        {%- if a_reseaux -%}
+          <div class="reseaux">
+            {%- if settings.rs_instagram != blank -%}
+              <a href="{{ settings.rs_instagram }}" aria-label="Instagram" rel="noopener" target="_blank">
+                {% render 'icone', nom: 'instagram' %}</a>
+            {%- endif -%}
+            {%- if settings.rs_tiktok != blank -%}
+              <a href="{{ settings.rs_tiktok }}" aria-label="TikTok" rel="noopener" target="_blank">
+                {% render 'icone', nom: 'tiktok' %}</a>
+            {%- endif -%}
+            {%- if settings.rs_pinterest != blank -%}
+              <a href="{{ settings.rs_pinterest }}" aria-label="Pinterest" rel="noopener" target="_blank">
+                {% render 'icone', nom: 'pinterest' %}</a>
+            {%- endif -%}
+            {%- if settings.rs_facebook != blank -%}
+              <a href="{{ settings.rs_facebook }}" aria-label="Facebook" rel="noopener" target="_blank">
+                {% render 'icone', nom: 'facebook' %}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        <div {{ block.shopify_attributes }}>
+          <p class="pied__titre">{{ block.settings.titre }}</p>
+          <ul class="pied__liens">
+            {%- for lien in block.settings.menu.links -%}
+              <li><a href="{{ lien.url }}">{{ lien.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="pied__bas">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.mention }}</p>
+      <p>{{ powered_by_link }}</p>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pied de page",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Le vestiaire des beaux jours" },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte",
+      "default": "<p>Des pièces légères, choisies une par une, expédiées depuis la France.</p>"
+    },
+    { "type": "checkbox", "id": "afficher_infolettre", "label": "Formulaire d'inscription", "default": true },
+    { "type": "text", "id": "titre_infolettre", "label": "Titre du formulaire", "default": "Recevoir les arrivages" },
+    { "type": "text", "id": "mention", "label": "Mention légale", "default": "Tous droits réservés." }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Colonne de liens",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Boutique" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    }
+  ]
+}
+{% endschema %}

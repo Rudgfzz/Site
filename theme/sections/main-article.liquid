@@ -1,0 +1,50 @@
+{%- comment -%} Article de blog. {%- endcomment -%}
+
+<article class="section section--serree">
+  <div class="enveloppe enveloppe--etroite">
+    <p class="billet__date" data-anim>{{ article.published_at | date: '%d.%m.%Y' }}</p>
+    <h1 class="titre-moyen" style="margin:12px 0 20px" data-anim>{{ article.title }}</h1>
+
+    {%- if section.settings.afficher_auteur and article.author != blank -%}
+      <p class="doux" style="font-size:.85rem" data-anim>
+        {{ 'blog.general.par' | t }} {{ article.author }}
+      </p>
+    {%- endif -%}
+  </div>
+
+  {%- if article.image and section.settings.afficher_image -%}
+    <div class="enveloppe" style="margin-block:36px">
+      {%- assign a_l = article.image | image_url: width: 1800 -%}
+      {%- assign a_s = article.image | image_url: width: 900 -%}
+      <img src="{{ a_l }}" srcset="{{ a_s }} 900w, {{ a_l }} 1800w"
+           sizes="100vw" width="1800" height="1200"
+           alt="{{ article.image.alt | default: article.title | escape }}"
+           style="width:100%;border-radius:var(--arrondi)">
+    </div>
+  {%- endif -%}
+
+  <div class="enveloppe enveloppe--etroite">
+    <div class="prose">{{ article.content }}</div>
+
+    {%- if blog.next_article or blog.previous_article -%}
+      <nav class="pagination" style="justify-content:space-between">
+        {%- if blog.previous_article -%}
+          <a class="lien" href="{{ blog.previous_article.url }}">{{ 'general.navigation.precedent' | t }}</a>
+        {%- else -%}<span></span>{%- endif -%}
+        {%- if blog.next_article -%}
+          <a class="lien" href="{{ blog.next_article.url }}">{{ 'general.navigation.suivant' | t }}</a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    { "type": "checkbox", "id": "afficher_image", "label": "Afficher l'image en tête", "default": true },
+    { "type": "checkbox", "id": "afficher_auteur", "label": "Afficher l'auteur", "default": false }
+  ]
+}
+{% endschema %}

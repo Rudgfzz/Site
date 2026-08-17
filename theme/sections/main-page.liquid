@@ -1,0 +1,24 @@
+{%- comment -%} Page de contenu simple. {%- endcomment -%}
+
+<section class="section section--serree">
+  <div class="enveloppe{% if section.settings.etroite %} enveloppe--etroite{% endif %}">
+    <div class="tete">
+      {%- if section.settings.numero != blank -%}
+        <span class="numero">{{ section.settings.numero }}</span>
+      {%- endif -%}
+      <h1 class="tete__titre titre-moyen" data-anim>{{ page.title }}</h1>
+    </div>
+
+    <div class="prose" data-anim>{{ page.content }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    { "type": "text", "id": "numero", "label": "Numéro affiché" },
+    { "type": "checkbox", "id": "etroite", "label": "Colonne étroite (lecture)", "default": true }
+  ]
+}
+{% endschema %}

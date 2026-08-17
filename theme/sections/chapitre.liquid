@@ -1,0 +1,130 @@
+{%- comment -%}
+  Chapitre plein écran : une image, un numéro, un titre géant qui mord sur
+  la photo. C'est la brique de base de la page d'accueil ; on en empile
+  autant que nécessaire, chacune reliée à une collection ou une page.
+{%- endcomment -%}
+
+{%- liquid
+  assign classe = 'chapitre'
+  if section.settings.texte_clair == false
+    assign classe = classe | append: ' chapitre--clair'
+  endif
+  if section.settings.position == 'centre'
+    assign classe = classe | append: ' chapitre--centre'
+  elsif section.settings.position == 'haut'
+    assign classe = classe | append: ' chapitre--haut'
+  endif
+-%}
+
+<section class="{{ classe }}"
+         style="--hauteur:{{ section.settings.hauteur }}svh;--voile:{{ section.settings.voile | divided_by: 100.0 }}">
+  <div class="chapitre__fond">
+    {%- if section.settings.image != blank -%}
+      {%- assign img_l = section.settings.image | image_url: width: 2200 -%}
+      {%- assign img_m = section.settings.image | image_url: width: 1400 -%}
+      {%- assign img_s = section.settings.image | image_url: width: 800 -%}
+      <img src="{{ img_l }}"
+           srcset="{{ img_s }} 800w, {{ img_m }} 1400w, {{ img_l }} 2200w"
+           sizes="100vw" width="2200" height="1400"
+           {% if section.settings.priorite %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+           alt="{{ section.settings.image.alt | escape }}">
+    {%- endif -%}
+  </div>
+
+  <div class="chapitre__voile"></div>
+
+  <div class="chapitre__contenu">
+    {%- if section.settings.numero != blank or section.settings.surtitre != blank -%}
+      <div class="chapitre__meta">
+        {%- if section.settings.numero != blank -%}
+          <span class="numero">{{ section.settings.numero }}</span>
+        {%- endif -%}
+        <span class="chapitre__trait"></span>
+        {%- if section.settings.surtitre != blank -%}
+          <span class="surtitre">{{ section.settings.surtitre }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <h2 class="titre-geant">
+      {%- if settings.anim_titres -%}
+        <span class="devoile"><span>{{ section.settings.titre }}</span></span>
+        {%- if section.settings.titre_2 != blank -%}
+          <span class="devoile"><span style="--retard:110ms">{{ section.settings.titre_2 }}</span></span>
+        {%- endif -%}
+      {%- else -%}
+        {{ section.settings.titre }}
+        {%- if section.settings.titre_2 != blank %} {{ section.settings.titre_2 }}{% endif -%}
+      {%- endif -%}
+    </h2>
+
+    {%- if section.settings.texte != blank -%}
+      <div class="chapitre__texte prose" data-anim>{{ section.settings.texte }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.lien_1_texte != blank or section.settings.lien_2_texte != blank -%}
+      <div class="chapitre__liens" data-anim>
+        {%- if section.settings.lien_1_texte != blank -%}
+          <a class="bouton" href="{{ section.settings.lien_1 }}">{{ section.settings.lien_1_texte }}</a>
+        {%- endif -%}
+        {%- if section.settings.lien_2_texte != blank -%}
+          <a class="bouton bouton--vide" href="{{ section.settings.lien_2 }}">{{ section.settings.lien_2_texte }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.indicateur -%}
+    <div class="defiler">
+      <span>{{ 'general.navigation.defiler' | t }}</span>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Chapitre plein écran",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image de fond" },
+    { "type": "text", "id": "numero", "label": "Numéro", "default": "01" },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Été 2026" },
+    { "type": "text", "id": "titre", "label": "Titre, première ligne", "default": "La garde-robe" },
+    { "type": "text", "id": "titre_2", "label": "Titre, deuxième ligne", "default": "des beaux jours" },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte",
+      "default": "<p>Des pièces légères, choisies une par une. Rien de superflu.</p>"
+    },
+    { "type": "text", "id": "lien_1_texte", "label": "Bouton principal", "default": "Voir la collection" },
+    { "type": "url", "id": "lien_1", "label": "Lien du bouton principal" },
+    { "type": "text", "id": "lien_2_texte", "label": "Bouton secondaire" },
+    { "type": "url", "id": "lien_2", "label": "Lien du bouton secondaire" },
+    { "type": "header", "content": "Apparence" },
+    { "type": "range", "id": "hauteur", "min": 40, "max": 100, "step": 5, "unit": "%", "label": "Hauteur d'écran", "default": 88 },
+    { "type": "range", "id": "voile", "min": 0, "max": 85, "step": 5, "unit": "%", "label": "Voile sur l'image", "default": 42 },
+    { "type": "checkbox", "id": "texte_clair", "label": "Texte clair", "default": true },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position du contenu",
+      "options": [
+        { "value": "bas", "label": "En bas à gauche" },
+        { "value": "centre", "label": "Au centre" },
+        { "value": "haut", "label": "En haut à gauche" }
+      ],
+      "default": "bas"
+    },
+    { "type": "checkbox", "id": "indicateur", "label": "Indicateur « faire défiler »", "default": false },
+    {
+      "type": "checkbox",
+      "id": "priorite",
+      "label": "Image prioritaire au chargement",
+      "info": "À cocher uniquement pour le premier chapitre de la page.",
+      "default": false
+    }
+  ],
+  "presets": [{ "name": "Chapitre plein écran" }]
+}
+{% endschema %}

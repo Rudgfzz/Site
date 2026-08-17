@@ -1,0 +1,78 @@
+{%- comment -%}
+  Duo d'images désaxées avec un texte en regard. La deuxième image est
+  volontairement décalée vers le bas : c'est ce décalage qui donne le
+  rythme éditorial de la page.
+{%- endcomment -%}
+
+<section class="section">
+  <div class="enveloppe">
+    <div class="duo{% if section.settings.inverse %} duo--inverse{% endif %}"
+         data-anim-groupe="{{ settings.anim_decalage }}">
+      <div class="duo__image duo__a" data-anim>
+        {%- if section.settings.image_1 != blank -%}
+          {%- assign a_l = section.settings.image_1 | image_url: width: 1200 -%}
+          {%- assign a_s = section.settings.image_1 | image_url: width: 600 -%}
+          <img src="{{ a_l }}" srcset="{{ a_s }} 600w, {{ a_l }} 1200w"
+               sizes="(min-width: 800px) 45vw, 100vw"
+               width="1200" height="1500" loading="lazy"
+               alt="{{ section.settings.image_1.alt | escape }}">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
+        {%- endif -%}
+      </div>
+
+      <div class="duo__texte" data-anim>
+        {%- if section.settings.numero != blank -%}
+          <p class="numero" style="margin-bottom:14px">{{ section.settings.numero }}</p>
+        {%- endif -%}
+        {%- if section.settings.surtitre != blank -%}
+          <p class="surtitre">{{ section.settings.surtitre }}</p>
+        {%- endif -%}
+        <h2 class="titre-moyen" style="margin:12px 0 18px">{{ section.settings.titre }}</h2>
+        {%- if section.settings.texte != blank -%}
+          <div class="prose doux">{{ section.settings.texte }}</div>
+        {%- endif -%}
+        {%- if section.settings.lien_texte != blank -%}
+          <p style="margin-top:26px">
+            <a class="lien" href="{{ section.settings.lien }}">{{ section.settings.lien_texte }}</a>
+          </p>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.image_2 != blank -%}
+        <div class="duo__image duo__b" data-anim>
+          {%- assign b_l = section.settings.image_2 | image_url: width: 1000 -%}
+          {%- assign b_s = section.settings.image_2 | image_url: width: 500 -%}
+          <img src="{{ b_l }}" srcset="{{ b_s }} 500w, {{ b_l }} 1000w"
+               sizes="(min-width: 800px) 38vw, 100vw"
+               width="1000" height="1333" loading="lazy"
+               alt="{{ section.settings.image_2.alt | escape }}">
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Duo d'images",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image_1", "label": "Grande image" },
+    { "type": "image_picker", "id": "image_2", "label": "Image décalée" },
+    { "type": "text", "id": "numero", "label": "Numéro", "default": "05" },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "La matière" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Le lin, sans compromis" },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte",
+      "default": "<p>Le lin laisse passer l'air. Il se froisse : c'est le propre de la matière, pas un défaut. Il s'assouplit lavage après lavage.</p>"
+    },
+    { "type": "text", "id": "lien_texte", "label": "Texte du lien", "default": "Voir les pièces en lin" },
+    { "type": "url", "id": "lien", "label": "Lien" },
+    { "type": "checkbox", "id": "inverse", "label": "Inverser image et texte", "default": false }
+  ],
+  "presets": [{ "name": "Duo d'images" }]
+}
+{% endschema %}

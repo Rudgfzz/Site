@@ -1,0 +1,19 @@
+<section class="section">
+  <div class="enveloppe" style="text-align:center">
+    <p class="numero" data-anim>404</p>
+    <h1 class="titre-geant" style="margin:18px 0" data-anim>{{ section.settings.titre }}</h1>
+    <p class="doux mesure" style="margin:0 auto 30px" data-anim>{{ section.settings.texte }}</p>
+    <a class="bouton" href="{{ routes.root_url }}" data-anim>{{ section.settings.bouton }}</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page 404",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Page introuvable" },
+    { "type": "text", "id": "texte", "label": "Texte", "default": "Cette adresse ne mène nulle part. Elle a peut-être changé." },
+    { "type": "text", "id": "bouton", "label": "Bouton", "default": "Retour à l'accueil" }
+  ]
+}
+{% endschema %}

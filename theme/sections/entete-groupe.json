@@ -1,0 +1,22 @@
+{
+  "type": "header",
+  "name": "En-tête",
+  "sections": {
+    "annonce": {
+      "type": "bandeau",
+      "settings": {
+        "style": "accent",
+        "vitesse": 34,
+        "taille": "petit"
+      },
+      "blocks": {
+        "b1": { "type": "mot", "settings": { "texte": "Livraison offerte dès 100 €" } },
+        "b2": { "type": "mot", "settings": { "texte": "Retours gratuits sous 14 jours" } },
+        "b3": { "type": "mot", "settings": { "texte": "Expédition sous 24 h" } }
+      },
+      "block_order": ["b1", "b2", "b3"]
+    },
+    "entete": { "type": "entete", "settings": {} }
+  },
+  "order": ["annonce", "entete"]
+}

@@ -1,0 +1,53 @@
+{%- comment -%} Liste des articles d'un blog. {%- endcomment -%}
+
+<section class="section section--serree">
+  <div class="enveloppe">
+    <div class="tete">
+      <span class="numero">{{ blog.articles_count }}</span>
+      <h1 class="tete__titre titre-moyen" data-anim>{{ blog.title }}</h1>
+    </div>
+
+    {%- paginate blog.articles by section.settings.par_page -%}
+      {%- if blog.articles_count > 0 -%}
+        <div class="grille" style="--colonnes:{{ section.settings.colonnes }}"
+             data-anim-groupe="{{ settings.anim_decalage }}">
+          {%- for billet in blog.articles -%}
+            <article class="billet" data-anim>
+              <a href="{{ billet.url }}">
+                <div class="billet__media">
+                  {%- if billet.image -%}
+                    {%- assign b_l = billet.image | image_url: width: 900 -%}
+                    {%- assign b_s = billet.image | image_url: width: 450 -%}
+                    <img src="{{ b_l }}" srcset="{{ b_s }} 450w, {{ b_l }} 900w"
+                         sizes="(min-width: 700px) 33vw, 100vw"
+                         width="900" height="675" loading="lazy"
+                         alt="{{ billet.image.alt | default: billet.title | escape }}">
+                  {%- else -%}
+                    {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder' }}
+                  {%- endif -%}
+                </div>
+                <p class="billet__date">{{ billet.published_at | date: '%d.%m.%Y' }}</p>
+                <h2 class="billet__titre titre-petit">{{ billet.title }}</h2>
+                <p class="billet__extrait">{{ billet.excerpt_or_content | strip_html | truncate: 140 }}</p>
+              </a>
+            </article>
+          {%- endfor -%}
+        </div>
+
+        {% render 'pagination', paginate: paginate %}
+      {%- else -%}
+        <div class="vide"><h2 class="titre-petit">{{ 'blog.general.aucun_article' | t }}</h2></div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page blog",
+  "settings": [
+    { "type": "range", "id": "colonnes", "min": 2, "max": 4, "step": 1, "label": "Colonnes", "default": 3 },
+    { "type": "range", "id": "par_page", "min": 3, "max": 24, "step": 3, "label": "Articles par page", "default": 9 }
+  ]
+}
+{% endschema %}

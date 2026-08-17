@@ -1,0 +1,95 @@
+{%- comment -%}
+  Rail de produits : une bande qui glisse horizontalement, avec une barre
+  de progression et deux flèches. Sur mobile, le doigt suffit ; la barre
+  reste un repère visuel.
+{%- endcomment -%}
+
+{%- assign col = section.settings.collection -%}
+{%- assign produits = col.products -%}
+{%- if produits == blank or produits.size == 0 -%}
+  {%- assign produits = collections.all.products -%}
+{%- endif -%}
+
+<section class="section{% if section.settings.fond == 'teinte' %} section--teinte{% elsif section.settings.fond == 'sombre' %} section--sombre{% endif %}">
+  <div class="enveloppe">
+    <div class="tete">
+      {%- if section.settings.numero != blank -%}
+        <span class="numero">{{ section.settings.numero }}</span>
+      {%- endif -%}
+      <h2 class="tete__titre titre-moyen" data-anim>{{ section.settings.titre }}</h2>
+      {%- if section.settings.texte != blank -%}
+        <p class="tete__texte" data-anim>{{ section.settings.texte }}</p>
+      {%- endif -%}
+      {%- if section.settings.lien_texte != blank -%}
+        <p class="tete__lien" data-anim>
+          <a class="lien" href="{{ section.settings.lien | default: col.url | default: routes.all_products_collection_url }}">
+            {{ section.settings.lien_texte }}
+          </a>
+        </p>
+      {%- endif -%}
+    </div>
+
+    {%- if produits.size > 0 -%}
+      <div class="rail{% if section.settings.large %} rail--large{% endif %}" data-rail
+           data-anim-groupe="{{ settings.anim_decalage }}">
+        {%- for produit in produits limit: section.settings.nombre -%}
+          {% render 'carte-produit',
+             produit: produit,
+             afficher_marque: section.settings.afficher_marque,
+             etiquettes: section.settings.etiquettes %}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.afficher_barre -%}
+        <div class="rail-barre">
+          <span class="rail-piste"><span class="rail-pouce" data-rail-pouce></span></span>
+          <span class="rail-fleches">
+            <button class="bouton-icone" type="button" data-rail-fleche="-1"
+                    aria-label="{{ 'general.navigation.precedent' | t }}">
+              {% render 'icone', nom: 'fleche-gauche' %}
+            </button>
+            <button class="bouton-icone" type="button" data-rail-fleche="1"
+                    aria-label="{{ 'general.navigation.suivant' | t }}">
+              {% render 'icone', nom: 'fleche-droite' %}
+            </button>
+          </span>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="doux">{{ 'produits.facettes.aucun_produit' | t }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rail de produits",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "numero", "label": "Numéro", "default": "03" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Les arrivages" },
+    { "type": "text", "id": "texte", "label": "Texte", "default": "Les dernières pièces rentrées en stock." },
+    { "type": "text", "id": "lien_texte", "label": "Texte du lien", "default": "Tout voir" },
+    { "type": "url", "id": "lien", "label": "Lien", "info": "Vide = page de la collection." },
+    { "type": "range", "id": "nombre", "min": 3, "max": 16, "step": 1, "label": "Nombre de produits", "default": 8 },
+    { "type": "header", "content": "Apparence" },
+    { "type": "checkbox", "id": "large", "label": "Vignettes plus larges", "default": false },
+    { "type": "checkbox", "id": "afficher_barre", "label": "Barre de progression et flèches", "default": true },
+    { "type": "checkbox", "id": "afficher_marque", "label": "Afficher la marque", "default": false },
+    { "type": "checkbox", "id": "etiquettes", "label": "Pastilles « Soldé » et « Épuisé »", "default": true },
+    {
+      "type": "select",
+      "id": "fond",
+      "label": "Fond",
+      "options": [
+        { "value": "normal", "label": "Fond de page" },
+        { "value": "teinte", "label": "Teinté" },
+        { "value": "sombre", "label": "Sombre" }
+      ],
+      "default": "normal"
+    }
+  ],
+  "presets": [{ "name": "Rail de produits" }]
+}
+{% endschema %}

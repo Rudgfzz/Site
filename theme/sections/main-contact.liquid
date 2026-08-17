@@ -1,0 +1,87 @@
+{%- comment -%} Formulaire de contact. {%- endcomment -%}
+
+<section class="section section--serree">
+  <div class="enveloppe">
+    <div class="duo">
+      <div class="duo__texte" style="grid-column:1 / 6;align-self:start">
+        <div class="tete" style="padding-bottom:20px">
+          {%- if section.settings.numero != blank -%}
+            <span class="numero">{{ section.settings.numero }}</span>
+          {%- endif -%}
+          <h1 class="tete__titre titre-moyen" data-anim>{{ section.settings.titre }}</h1>
+        </div>
+
+        {%- if section.settings.texte != blank -%}
+          <div class="prose doux" data-anim>{{ section.settings.texte }}</div>
+        {%- endif -%}
+
+        {%- for block in section.blocks -%}
+          <div style="padding-block:16px;border-top:var(--filet)" {{ block.shopify_attributes }}>
+            <p class="option__nom">{{ block.settings.intitule }}</p>
+            <p style="margin:6px 0 0">{{ block.settings.valeur }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="duo__texte" style="grid-column:7 / 13;align-self:start">
+        {%- form 'contact' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="message">{{ 'contact.formulaire.confirmation' | t }}</p>
+          {%- endif -%}
+
+          {%- if form.errors -%}
+            <p class="message">{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+
+          <label class="champ">
+            <span>{{ 'contact.formulaire.nom' | t }}</span>
+            <input type="text" name="contact[name]" required>
+          </label>
+
+          <label class="champ">
+            <span>{{ 'contact.formulaire.email' | t }}</span>
+            <input type="email" name="contact[email]" required>
+          </label>
+
+          <label class="champ">
+            <span>{{ 'contact.formulaire.telephone' | t }}</span>
+            <input type="tel" name="contact[phone]">
+          </label>
+
+          <label class="champ">
+            <span>{{ 'contact.formulaire.message' | t }}</span>
+            <textarea name="contact[body]" required></textarea>
+          </label>
+
+          <button class="bouton" type="submit">{{ 'contact.formulaire.envoyer' | t }}</button>
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [
+    { "type": "text", "id": "numero", "label": "Numéro", "default": "—" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Nous écrire" },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte",
+      "default": "<p>Une question sur une taille, une commande, un retour ? Nous répondons sous un jour ouvré.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Information",
+      "settings": [
+        { "type": "text", "id": "intitule", "label": "Intitulé", "default": "Écrire" },
+        { "type": "text", "id": "valeur", "label": "Valeur", "default": "bonjour@exemple.fr" }
+      ]
+    }
+  ]
+}
+{% endschema %}

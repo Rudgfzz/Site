@@ -1,0 +1,147 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Rivage",
+    "theme_version": "1.0.0",
+    "theme_author": "Thème sur mesure",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/manual/online-store/themes"
+  },
+  {
+    "name": "Identité",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo" },
+      { "type": "range", "id": "logo_largeur", "min": 60, "max": 320, "step": 10, "unit": "px", "label": "Largeur du logo", "default": 140 },
+      {
+        "type": "text",
+        "id": "logo_texte",
+        "label": "Logo en toutes lettres",
+        "info": "Utilisé si aucune image de logo n'est chargée. Vide = nom de la boutique.",
+        "default": ""
+      },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
+      { "type": "image_picker", "id": "image_partage", "label": "Image de partage sur les réseaux" }
+    ]
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      { "type": "header", "content": "Fonds" },
+      { "type": "color", "id": "c_fond", "label": "Fond principal", "default": "#f4f1ea" },
+      { "type": "color", "id": "c_fond_2", "label": "Fond secondaire", "default": "#e8e2d6" },
+      { "type": "color", "id": "c_encre", "label": "Fond des blocs sombres", "default": "#161614" },
+      { "type": "header", "content": "Textes" },
+      { "type": "color", "id": "c_texte", "label": "Texte", "default": "#161614" },
+      { "type": "color", "id": "c_texte_doux", "label": "Texte atténué", "default": "#6b665c" },
+      { "type": "color", "id": "c_texte_clair", "label": "Texte sur fond sombre", "default": "#f4f1ea" },
+      { "type": "header", "content": "Accent" },
+      { "type": "color", "id": "c_accent", "label": "Accent", "default": "#c4491f" },
+      { "type": "color", "id": "c_accent_texte", "label": "Texte sur l'accent", "default": "#ffffff" },
+      { "type": "color", "id": "c_trait", "label": "Filets et bordures", "default": "#161614" },
+      { "type": "range", "id": "trait_opacite", "min": 5, "max": 100, "step": 5, "unit": "%", "label": "Opacité des filets", "default": 15 }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      { "type": "font_picker", "id": "police_titres", "label": "Police des titres", "default": "assistant_n4" },
+      { "type": "font_picker", "id": "police_texte", "label": "Police du texte", "default": "assistant_n4" },
+      { "type": "header", "content": "Titres géants" },
+      { "type": "range", "id": "titre_taille", "min": 5, "max": 16, "step": 0.5, "unit": "vw", "label": "Taille des titres de chapitre", "default": 9 },
+      { "type": "range", "id": "titre_graisse", "min": 300, "max": 900, "step": 100, "label": "Graisse", "default": 700 },
+      { "type": "range", "id": "titre_interligne", "min": 70, "max": 130, "step": 2, "unit": "%", "label": "Interligne", "default": 88 },
+      { "type": "range", "id": "titre_espacement", "min": -60, "max": 40, "step": 5, "label": "Espacement des lettres (millièmes de cadratin)", "default": -30 },
+      {
+        "type": "select",
+        "id": "titre_casse",
+        "label": "Casse des titres",
+        "options": [
+          { "value": "none", "label": "Normale" },
+          { "value": "uppercase", "label": "Majuscules" },
+          { "value": "lowercase", "label": "Minuscules" }
+        ],
+        "default": "uppercase"
+      },
+      { "type": "header", "content": "Texte courant" },
+      { "type": "range", "id": "texte_taille", "min": 14, "max": 21, "step": 1, "unit": "px", "label": "Taille du texte", "default": 16 },
+      { "type": "range", "id": "texte_interligne", "min": 130, "max": 200, "step": 5, "unit": "%", "label": "Interligne du texte", "default": 165 }
+    ]
+  },
+  {
+    "name": "Animations",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Les animations se coupent automatiquement pour les visiteurs qui ont demandé à leur système de réduire les effets de mouvement."
+      },
+      { "type": "checkbox", "id": "anim_apparition", "label": "Apparition des blocs au défilement", "default": true },
+      { "type": "range", "id": "anim_duree", "min": 200, "max": 1600, "step": 50, "unit": "ms", "label": "Durée de l'apparition", "default": 800 },
+      { "type": "range", "id": "anim_decalage", "min": 0, "max": 300, "step": 10, "unit": "ms", "label": "Décalage entre deux éléments", "default": 90 },
+      { "type": "range", "id": "anim_distance", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Distance parcourue", "default": 34 },
+      { "type": "checkbox", "id": "anim_images", "label": "Zoom lent des images de chapitre", "default": true },
+      { "type": "checkbox", "id": "anim_titres", "label": "Titres qui se dévoilent ligne à ligne", "default": true },
+      { "type": "checkbox", "id": "anim_survol_photo", "label": "Deuxième photo au survol d'un produit", "default": true },
+      { "type": "checkbox", "id": "anim_curseur", "label": "Curseur agrandi sur les zones cliquables", "default": false }
+    ]
+  },
+  {
+    "name": "Mise en page",
+    "settings": [
+      { "type": "range", "id": "largeur_max", "min": 1100, "max": 1800, "step": 20, "unit": "px", "label": "Largeur maximale du contenu", "default": 1480 },
+      { "type": "range", "id": "marge_laterale", "min": 12, "max": 80, "step": 2, "unit": "px", "label": "Marge sur les côtés", "default": 32 },
+      { "type": "range", "id": "espace_sections", "min": 40, "max": 200, "step": 10, "unit": "px", "label": "Espace entre les sections", "default": 120 },
+      { "type": "range", "id": "arrondi", "min": 0, "max": 28, "step": 2, "unit": "px", "label": "Arrondi des images", "default": 0 },
+      { "type": "header", "content": "Visuels produits" },
+      {
+        "type": "select",
+        "id": "ratio_produit",
+        "label": "Format des photos produits",
+        "options": [
+          { "value": "3 / 4", "label": "Portrait (3:4)" },
+          { "value": "2 / 3", "label": "Portrait allongé (2:3)" },
+          { "value": "1 / 1", "label": "Carré" },
+          { "value": "4 / 3", "label": "Paysage (4:3)" }
+        ],
+        "default": "2 / 3"
+      },
+      {
+        "type": "select",
+        "id": "ajustement_produit",
+        "label": "Cadrage",
+        "options": [
+          { "value": "cover", "label": "Remplir le cadre (recadre)" },
+          { "value": "contain", "label": "Afficher en entier (marges)" }
+        ],
+        "default": "cover"
+      },
+      { "type": "color", "id": "c_fond_photo", "label": "Fond derrière les photos", "default": "#e8e2d6" }
+    ]
+  },
+  {
+    "name": "Panier",
+    "settings": [
+      {
+        "type": "select",
+        "id": "type_panier",
+        "label": "Au clic sur « Ajouter »",
+        "options": [
+          { "value": "tiroir", "label": "Ouvrir le panier latéral" },
+          { "value": "page", "label": "Aller à la page panier" },
+          { "value": "rien", "label": "Rester sur la page" }
+        ],
+        "default": "tiroir"
+      },
+      { "type": "number", "id": "seuil_franco", "label": "Livraison offerte à partir de (0 = désactivé)", "default": 100 },
+      { "type": "checkbox", "id": "afficher_note_commande", "label": "Champ « note de commande »", "default": false }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      { "type": "url", "id": "rs_instagram", "label": "Instagram" },
+      { "type": "url", "id": "rs_tiktok", "label": "TikTok" },
+      { "type": "url", "id": "rs_pinterest", "label": "Pinterest" },
+      { "type": "url", "id": "rs_facebook", "label": "Facebook" }
+    ]
+  }
+]

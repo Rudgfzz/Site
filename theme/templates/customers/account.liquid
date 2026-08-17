@@ -1,0 +1,38 @@
+<section class="section section--serree">
+  <div class="enveloppe">
+    <div class="tete">
+      <span class="numero">{{ customer.orders_count }}</span>
+      <h1 class="tete__titre titre-moyen">{{ 'clients.compte.titre' | t }}</h1>
+      <p class="tete__lien">
+        <a class="lien" href="{{ routes.account_addresses_url }}">{{ 'clients.compte.adresses' | t }}</a>
+        &nbsp;·&nbsp;
+        <a class="lien" href="{{ routes.account_logout_url }}">{{ 'clients.compte.deconnexion' | t }}</a>
+      </p>
+    </div>
+
+    {%- if customer.orders.size > 0 -%}
+      <table>
+        <thead>
+          <tr style="border-bottom:var(--filet)">
+            <th style="text-align:left;padding-bottom:14px">{{ 'clients.compte.commande' | t }}</th>
+            <th style="text-align:left;padding-bottom:14px">{{ 'clients.compte.date' | t }}</th>
+            <th style="text-align:left;padding-bottom:14px">{{ 'clients.compte.statut' | t }}</th>
+            <th style="text-align:right;padding-bottom:14px">{{ 'clients.compte.total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for commande in customer.orders -%}
+            <tr style="border-bottom:var(--filet)">
+              <td style="padding:16px 0"><a class="lien" href="{{ commande.customer_url }}">{{ commande.name }}</a></td>
+              <td style="padding:16px 0">{{ commande.created_at | date: '%d.%m.%Y' }}</td>
+              <td style="padding:16px 0">{{ commande.fulfillment_status_label }}</td>
+              <td style="padding:16px 0;text-align:right">{{ commande.total_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    {%- else -%}
+      <div class="vide"><p>{{ 'clients.compte.aucune_commande' | t }}</p></div>
+    {%- endif -%}
+  </div>
+</section>

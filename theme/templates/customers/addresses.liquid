@@ -1,0 +1,37 @@
+<section class="section section--serree">
+  <div class="enveloppe enveloppe--etroite">
+    <h1 class="titre-moyen" style="margin-bottom:26px">{{ 'clients.compte.adresses' | t }}</h1>
+
+    {%- paginate customer.addresses by 6 -%}
+      {%- for adresse in customer.addresses -%}
+        <div style="padding-block:20px;border-top:var(--filet)">
+          {{ adresse | format_address }}
+        </div>
+      {%- endfor -%}
+      {% render 'pagination', paginate: paginate %}
+    {%- endpaginate -%}
+
+    {%- form 'customer_address', customer.new_address -%}
+      {%- if form.errors -%}<p class="message">{{ form.errors | default_errors }}</p>{%- endif -%}
+
+      <label class="champ">
+        <span>{{ 'clients.compte.prenom' | t }}</span>
+        <input type="text" name="address[first_name]" autocomplete="given-name">
+      </label>
+      <label class="champ">
+        <span>{{ 'clients.compte.nom' | t }}</span>
+        <input type="text" name="address[last_name]" autocomplete="family-name">
+      </label>
+      <label class="champ">
+        <span>{{ 'clients.compte.adresses' | t }}</span>
+        <input type="text" name="address[address1]" autocomplete="address-line1">
+      </label>
+
+      <button class="bouton" type="submit">{{ 'clients.compte.envoyer' | t }}</button>
+    {%- endform -%}
+
+    <p style="margin-top:24px">
+      <a class="lien" href="{{ routes.account_url }}">{{ 'clients.compte.retour_compte' | t }}</a>
+    </p>
+  </div>
+</section>

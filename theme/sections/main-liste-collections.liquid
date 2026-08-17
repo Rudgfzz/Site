@@ -1,0 +1,42 @@
+{%- comment -%} Liste de toutes les collections. {%- endcomment -%}
+
+<section class="section section--serree">
+  <div class="enveloppe">
+    <div class="tete">
+      <span class="numero">{{ collections.size }}</span>
+      <h1 class="tete__titre titre-moyen" data-anim>{{ section.settings.titre }}</h1>
+    </div>
+
+    <div class="mosaique" data-anim-groupe="{{ settings.anim_decalage }}">
+      {%- for col in collections -%}
+        {%- comment -%} Une tuile large toutes les trois, pour casser l'alignement. {%- endcomment -%}
+        {%- assign rang = forloop.index0 | modulo: 3 -%}
+        {%- assign classe_tuile = 'tuile' -%}
+        {%- if rang == 0 -%}{%- assign classe_tuile = 'tuile tuile--large' -%}{%- endif -%}
+
+        <a class="{{ classe_tuile }}" href="{{ col.url }}" data-anim>
+          {%- if col.featured_image -%}
+            {%- assign c_l = col.featured_image | image_url: width: 1200 -%}
+            <img src="{{ c_l }}" width="1200" height="900" loading="lazy"
+                 alt="{{ col.featured_image.alt | default: col.title | escape }}">
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder' }}
+          {%- endif -%}
+          <span class="tuile__legende">
+            <span class="titre-petit">{{ col.title }}</span>
+            <span class="tuile__nb">{{ col.products_count }}</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Liste des collections",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Toutes les collections" }
+  ]
+}
+{% endschema %}

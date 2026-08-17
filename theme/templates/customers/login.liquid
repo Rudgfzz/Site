@@ -1,0 +1,31 @@
+<section class="section section--serree">
+  <div class="enveloppe enveloppe--etroite">
+    <h1 class="titre-moyen" style="margin-bottom:26px">{{ 'clients.compte.connexion' | t }}</h1>
+
+    {%- form 'customer_login' -%}
+      {%- if form.errors -%}<p class="message">{{ form.errors | default_errors }}</p>{%- endif -%}
+
+      <label class="champ">
+        <span>{{ 'clients.compte.email' | t }}</span>
+        <input type="email" name="customer[email]" autocomplete="email" required>
+      </label>
+
+      <label class="champ">
+        <span>{{ 'clients.compte.mot_de_passe' | t }}</span>
+        <input type="password" name="customer[password]" autocomplete="current-password" required>
+      </label>
+
+      <button class="bouton" type="submit">{{ 'clients.compte.connexion' | t }}</button>
+    {%- endform -%}
+
+    {%- form 'recover_customer_password' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="message" style="margin-top:20px">{{ 'clients.compte.mot_de_passe_oublie' | t }}</p>
+      {%- endif -%}
+    {%- endform -%}
+
+    <p style="margin-top:24px">
+      <a class="lien" href="{{ routes.account_register_url }}">{{ 'clients.compte.inscription' | t }}</a>
+    </p>
+  </div>
+</section>

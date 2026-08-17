@@ -1,0 +1,146 @@
+{
+  "general": {
+    "navigation": {
+      "aller_contenu": "Aller au contenu",
+      "menu": "Menu",
+      "fermer": "Fermer",
+      "accueil": "Accueil",
+      "boutique": "Boutique",
+      "retour": "Retour",
+      "echap": "Échap",
+      "precedent": "Précédent",
+      "suivant": "Suivant",
+      "page": "Page",
+      "defiler": "Faire défiler"
+    },
+    "recherche": {
+      "titre": "Rechercher",
+      "ouvrir": "Ouvrir la recherche",
+      "placeholder": "Un t-shirt, une pointure, une couleur…",
+      "label": "Rechercher un article",
+      "aucun_resultat": "Aucun résultat pour cette recherche.",
+      "suggestion": "Essayez un mot plus court, ou parcourez le vestiaire.",
+      "voir_tout": "Voir tous les résultats",
+      "resultats": "résultats"
+    },
+    "infolettre": {
+      "placeholder": "Votre adresse e-mail",
+      "bouton": "Je m'inscris",
+      "confirmation": "Merci, votre inscription est enregistrée.",
+      "erreur": "Cette adresse n'a pas pu être enregistrée."
+    },
+    "partage": {
+      "titre": "Partager",
+      "copie": "Lien copié"
+    }
+  },
+  "produits": {
+    "produit": {
+      "ajouter": "Ajouter au panier",
+      "ajout_en_cours": "Ajout…",
+      "epuise": "Épuisé",
+      "indisponible": "Indisponible",
+      "en_stock": "En stock",
+      "stock_faible": "Plus que quelques pièces",
+      "rupture": "Rupture de stock",
+      "prix": "Prix",
+      "prix_barre": "Prix habituel",
+      "economie": "Économisez",
+      "quantite": "Quantité",
+      "diminuer": "Diminuer la quantité",
+      "augmenter": "Augmenter la quantité",
+      "choisir_taille": "Choisir une taille",
+      "choisir_variante": "Choisir une version",
+      "guide_tailles": "Guide des tailles",
+      "description": "Description",
+      "aucune_description": "La description de cet article sera bientôt disponible.",
+      "voir_article": "Voir l'article",
+      "nouveau": "Nouveau",
+      "solde": "Soldé",
+      "vignette": "Voir la photo",
+      "photo_de": "Photo {{ position }} de {{ titre }}",
+      "taxes_incluses": "TVA incluse, frais de port calculés au paiement.",
+      "selection": "Sélection"
+    },
+    "facettes": {
+      "filtrer": "Filtrer",
+      "trier": "Trier",
+      "effacer": "Tout effacer",
+      "appliquer": "Appliquer",
+      "aucun_produit": "Aucun article ne correspond à ces filtres.",
+      "articles": "articles"
+    }
+  },
+  "panier": {
+    "general": {
+      "titre": "Panier",
+      "ouvrir": "Ouvrir le panier",
+      "fermer": "Fermer le panier",
+      "vide_titre": "Votre panier est vide",
+      "vide_texte": "Le vestiaire vous attend.",
+      "vide_bouton": "Parcourir la boutique",
+      "sous_total": "Sous-total",
+      "commander": "Passer commande",
+      "voir_panier": "Voir le panier",
+      "continuer": "Continuer mes achats",
+      "retirer": "Retirer",
+      "article_ajoute": "Article ajouté au panier",
+      "ajout_impossible": "Cet article n'a pas pu être ajouté.",
+      "franco_atteint": "Livraison offerte",
+      "franco_avant": "Plus que",
+      "franco_apres": "pour la livraison offerte",
+      "note": "Note de commande",
+      "note_placeholder": "Une précision pour la préparation ?",
+      "taxes": "Frais de port et taxes calculés au paiement."
+    }
+  },
+  "clients": {
+    "compte": {
+      "titre": "Mon compte",
+      "connexion": "Se connecter",
+      "deconnexion": "Se déconnecter",
+      "inscription": "Créer un compte",
+      "commandes": "Mes commandes",
+      "aucune_commande": "Aucune commande pour le moment.",
+      "adresses": "Mes adresses",
+      "email": "Adresse e-mail",
+      "mot_de_passe": "Mot de passe",
+      "mot_de_passe_oublie": "Mot de passe oublié ?",
+      "prenom": "Prénom",
+      "nom": "Nom",
+      "envoyer": "Valider",
+      "retour_compte": "Retour au compte",
+      "commande": "Commande",
+      "date": "Date",
+      "statut": "Statut",
+      "total": "Total"
+    }
+  },
+  "blog": {
+    "general": {
+      "titre": "Journal",
+      "lire": "Lire",
+      "par": "par",
+      "aucun_article": "Aucun article publié pour l'instant.",
+      "commentaires": "Commentaires",
+      "temps_lecture": "min de lecture"
+    }
+  },
+  "contact": {
+    "formulaire": {
+      "nom": "Votre nom",
+      "email": "Votre adresse e-mail",
+      "telephone": "Téléphone (facultatif)",
+      "message": "Votre message",
+      "envoyer": "Envoyer",
+      "confirmation": "Message envoyé. Nous répondons sous un jour ouvré."
+    }
+  },
+  "erreur": {
+    "404": {
+      "titre": "Page introuvable",
+      "texte": "Cette adresse ne mène nulle part. Elle a peut-être changé.",
+      "bouton": "Retour à l'accueil"
+    }
+  }
+}

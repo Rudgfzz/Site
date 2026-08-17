@@ -1,0 +1,72 @@
+{%- comment -%}
+  Journal : les derniers billets du blog choisi, en trois colonnes.
+{%- endcomment -%}
+
+{%- assign blog_choisi = blogs[section.settings.blog] -%}
+
+<section class="section">
+  <div class="enveloppe">
+    <div class="tete">
+      {%- if section.settings.numero != blank -%}
+        <span class="numero">{{ section.settings.numero }}</span>
+      {%- endif -%}
+      <h2 class="tete__titre titre-moyen" data-anim>{{ section.settings.titre }}</h2>
+      {%- if section.settings.texte != blank -%}
+        <p class="tete__texte" data-anim>{{ section.settings.texte }}</p>
+      {%- endif -%}
+      {%- if blog_choisi.articles_count > 0 -%}
+        <p class="tete__lien" data-anim>
+          <a class="lien" href="{{ blog_choisi.url }}">{{ section.settings.lien_texte }}</a>
+        </p>
+      {%- endif -%}
+    </div>
+
+    {%- if blog_choisi.articles_count > 0 -%}
+      <div class="grille" style="--colonnes:3" data-anim-groupe="{{ settings.anim_decalage }}">
+        {%- for billet in blog_choisi.articles limit: section.settings.nombre -%}
+          <article class="billet" data-anim>
+            <a href="{{ billet.url }}">
+              <div class="billet__media">
+                {%- if billet.image -%}
+                  {%- assign b_l = billet.image | image_url: width: 900 -%}
+                  {%- assign b_s = billet.image | image_url: width: 450 -%}
+                  <img src="{{ b_l }}" srcset="{{ b_s }} 450w, {{ b_l }} 900w"
+                       sizes="(min-width: 700px) 33vw, 100vw"
+                       width="900" height="675" loading="lazy"
+                       alt="{{ billet.image.alt | default: billet.title | escape }}">
+                {%- else -%}
+                  {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder' }}
+                {%- endif -%}
+              </div>
+
+              <p class="billet__date">{{ billet.published_at | date: '%d.%m.%Y' }}</p>
+              <h3 class="billet__titre titre-petit">{{ billet.title }}</h3>
+              {%- if section.settings.afficher_extrait -%}
+                <p class="billet__extrait">{{ billet.excerpt_or_content | strip_html | truncate: 120 }}</p>
+              {%- endif -%}
+            </a>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="doux">{{ 'blog.general.aucun_article' | t }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Journal",
+  "tag": "section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "text", "id": "numero", "label": "Numéro", "default": "06" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Le journal" },
+    { "type": "text", "id": "texte", "label": "Texte", "default": "Entretien des matières, coupes, coulisses." },
+    { "type": "text", "id": "lien_texte", "label": "Texte du lien", "default": "Tous les articles" },
+    { "type": "range", "id": "nombre", "min": 2, "max": 6, "step": 1, "label": "Nombre d'articles", "default": 3 },
+    { "type": "checkbox", "id": "afficher_extrait", "label": "Afficher un extrait", "default": true }
+  ],
+  "presets": [{ "name": "Journal" }]
+}
+{% endschema %}

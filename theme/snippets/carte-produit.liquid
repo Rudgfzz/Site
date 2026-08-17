@@ -1,0 +1,57 @@
+{%- comment -%}
+  Carte produit utilisée dans les grilles, les rails et la recherche.
+
+  Paramètres :
+    produit         (obligatoire)
+    afficher_marque  booléen
+    etiquettes       booléen — pastilles Nouveau / Soldé
+    index            entier — sert au décalage de l'animation
+{%- endcomment -%}
+
+{%- assign v = produit.selected_or_first_available_variant -%}
+{%- assign solde = false -%}
+{%- if v.compare_at_price > v.price -%}{%- assign solde = true -%}{%- endif -%}
+
+<article class="article" data-anim>
+  <a class="article__media" href="{{ produit.url }}" aria-label="{{ produit.title | escape }}">
+    {%- if etiquettes -%}
+      {%- if produit.available == false -%}
+        <span class="etiquette">{{ 'produits.produit.epuise' | t }}</span>
+      {%- elsif solde -%}
+        <span class="etiquette etiquette--accent">{{ 'produits.produit.solde' | t }}</span>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if produit.featured_media -%}
+      {%- assign large = produit.featured_media | image_url: width: 900 -%}
+      {%- assign moyen = produit.featured_media | image_url: width: 600 -%}
+      <img class="premiere" src="{{ large }}"
+           srcset="{{ moyen }} 600w, {{ large }} 900w"
+           sizes="(min-width: 1000px) 25vw, 50vw"
+           width="900" height="1350" loading="lazy"
+           alt="{{ produit.featured_media.alt | default: produit.title | escape }}">
+
+      {%- if settings.anim_survol_photo and produit.media[1] -%}
+        {%- assign seconde = produit.media[1] | image_url: width: 900 -%}
+        <img class="seconde" src="{{ seconde }}" width="900" height="1350"
+             loading="lazy" aria-hidden="true" alt="">
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+    {%- endif -%}
+  </a>
+
+  <div class="article__corps">
+    <div>
+      <h3 class="article__nom titre-petit"><a href="{{ produit.url }}">{{ produit.title }}</a></h3>
+      {%- if afficher_marque and produit.vendor != blank -%}
+        <p class="article__meta">{{ produit.vendor }}</p>
+      {%- endif -%}
+    </div>
+
+    <p class="article__prix">
+      {%- if solde -%}<s>{{ v.compare_at_price | money }}</s>{%- endif -%}
+      {{ v.price | money }}
+    </p>
+  </div>
+</article>

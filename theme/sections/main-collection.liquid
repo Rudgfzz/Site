@@ -1,0 +1,97 @@
+{%- comment -%}
+  Page collection : en-tête éditoriale, filtres Shopify natifs, grille.
+{%- endcomment -%}
+
+<section class="section section--serree">
+  <div class="enveloppe">
+    {%- if section.settings.afficher_entete -%}
+      <div class="tete">
+        <span class="numero">{{ collection.products_count }}</span>
+        <h1 class="tete__titre titre-moyen" data-anim>
+          {{ collection.title | default: 'produits.facettes.articles' | t }}
+        </h1>
+        {%- if collection.description != blank and section.settings.afficher_description -%}
+          <div class="tete__texte prose" data-anim>{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- paginate collection.products by section.settings.par_page -%}
+      {%- if section.settings.afficher_filtres and collection.filters.size > 0 -%}
+        <form class="barre-filtres" id="filtres-collection">
+          <div class="filtres">
+            {%- for filtre in collection.filters -%}
+              {%- if filtre.type == 'list' and filtre.values.size > 0 -%}
+                <details>
+                  <summary>{{ filtre.label }}{% if filtre.active_values.size > 0 %} ({{ filtre.active_values.size }}){% endif %}</summary>
+                  <div class="filtres__menu">
+                    {%- for valeur in filtre.values -%}
+                      <label>
+                        <input type="checkbox" name="{{ valeur.param_name }}" value="{{ valeur.value }}"
+                               {% if valeur.active %}checked{% endif %}
+                               {% if valeur.count == 0 and valeur.active == false %}disabled{% endif %}
+                               onchange="this.form.submit()">
+                        <span>{{ valeur.label }} ({{ valeur.count }})</span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </details>
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- if collection.filters.size > 0 -%}
+              <a class="lien" href="{{ collection.url }}">{{ 'produits.facettes.effacer' | t }}</a>
+            {%- endif -%}
+          </div>
+
+          <label>
+            <span class="lecteur-seul">{{ 'produits.facettes.trier' | t }}</span>
+            <select name="sort_by" onchange="this.form.submit()"
+                    style="border:0;background:none;font:inherit;text-transform:uppercase;letter-spacing:.14em">
+              {%- assign tri_actuel = collection.sort_by | default: collection.default_sort_by -%}
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}" {% if option.value == tri_actuel %}selected{% endif %}>
+                  {{ option.name }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </label>
+        </form>
+      {%- endif -%}
+
+      {%- if collection.products.size > 0 -%}
+        <div class="grille" style="--colonnes:{{ section.settings.colonnes }}"
+             data-anim-groupe="{{ settings.anim_decalage }}">
+          {%- for produit in collection.products -%}
+            {% render 'carte-produit',
+               produit: produit,
+               afficher_marque: section.settings.afficher_marque,
+               etiquettes: section.settings.etiquettes %}
+          {%- endfor -%}
+        </div>
+
+        {% render 'pagination', paginate: paginate %}
+      {%- else -%}
+        <div class="vide">
+          <h2 class="titre-petit">{{ 'produits.facettes.aucun_produit' | t }}</h2>
+          <a class="bouton" href="{{ collection.url }}">{{ 'produits.facettes.effacer' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page collection",
+  "settings": [
+    { "type": "checkbox", "id": "afficher_entete", "label": "Afficher le titre", "default": true },
+    { "type": "checkbox", "id": "afficher_description", "label": "Afficher la description", "default": true },
+    { "type": "checkbox", "id": "afficher_filtres", "label": "Afficher les filtres et le tri", "default": true },
+    { "type": "range", "id": "colonnes", "min": 2, "max": 5, "step": 1, "label": "Colonnes", "default": 4 },
+    { "type": "range", "id": "par_page", "min": 8, "max": 48, "step": 4, "label": "Produits par page", "default": 24 },
+    { "type": "checkbox", "id": "afficher_marque", "label": "Afficher la marque", "default": false },
+    { "type": "checkbox", "id": "etiquettes", "label": "Pastilles « Soldé » et « Épuisé »", "default": true }
+  ]
+}
+{% endschema %}

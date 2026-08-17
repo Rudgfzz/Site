@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64 }}">
+  {%- endif -%}
+
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} — {{ current_tags | join: ', ' }}{% endif -%}
+    {%- if current_page != 1 %} — {{ 'general.navigation.page' | t }} {{ current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} — {{ shop.name }}{% endunless -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% render 'meta' %}
+
+  {{ 'rivage.css' | asset_url | stylesheet_tag }}
+
+  {{ settings.police_titres | font_face: font_display: 'swap' }}
+  {{ settings.police_texte | font_face: font_display: 'swap' }}
+  {%- assign titres_gras = settings.police_titres | font_modify: 'weight', 'bolder' -%}
+  {%- if titres_gras -%}{{ titres_gras | font_face: font_display: 'swap' }}{%- endif -%}
+  {%- assign texte_italique = settings.police_texte | font_modify: 'style', 'italic' -%}
+  {%- if texte_italique -%}{{ texte_italique | font_face: font_display: 'swap' }}{%- endif -%}
+
+  {%- comment -%}
+    Chaque réglage du thème devient une variable CSS : la feuille de style
+    ne contient aucune valeur en dur, tout se pilote depuis l'éditeur.
+  {%- endcomment -%}
+  {% style %}
+    :root {
+      --fond: {{ settings.c_fond }};
+      --fond-2: {{ settings.c_fond_2 }};
+      --encre: {{ settings.c_encre }};
+      --texte: {{ settings.c_texte }};
+      --texte-doux: {{ settings.c_texte_doux }};
+      --texte-clair: {{ settings.c_texte_clair }};
+      --accent: {{ settings.c_accent }};
+      --accent-texte: {{ settings.c_accent_texte }};
+      --trait: {{ settings.c_trait | color_modify: 'alpha', 1.0 }};
+      --trait-opacite: {{ settings.trait_opacite | divided_by: 100.0 }};
+      --filet: 1px solid {{ settings.c_trait | color_modify: 'alpha', 0.15 }};
+      --fond-photo: {{ settings.c_fond_photo }};
+
+      --police-titres: {{ settings.police_titres.family }}, {{ settings.police_titres.fallback_families }};
+      --police-texte: {{ settings.police_texte.family }}, {{ settings.police_texte.fallback_families }};
+      --titre-taille: {{ settings.titre_taille }}vw;
+      --titre-graisse: {{ settings.titre_graisse }};
+      --titre-interligne: {{ settings.titre_interligne | divided_by: 100.0 }};
+      --titre-espacement: {{ settings.titre_espacement | divided_by: 1000.0 }}em;
+      --titre-casse: {{ settings.titre_casse }};
+      --texte-taille: {{ settings.texte_taille }}px;
+      --texte-interligne: {{ settings.texte_interligne | divided_by: 100.0 }};
+
+      --largeur: {{ settings.largeur_max }}px;
+      --marge: {{ settings.marge_laterale }}px;
+      --espace: {{ settings.espace_sections }}px;
+      --arrondi: {{ settings.arrondi }}px;
+      --ratio-produit: {{ settings.ratio_produit }};
+      --ajustement-produit: {{ settings.ajustement_produit }};
+
+      --anim-duree: {{ settings.anim_duree }}ms;
+      --anim-decalage: {{ settings.anim_decalage }}ms;
+      --anim-distance: {{ settings.anim_distance }}px;
+    }
+  {% endstyle %}
+
+  <script>
+    /* Réglages lus par rivage.js. Défini avant le script pour qu'aucune
+       animation ne démarre sans connaître les préférences du marchand. */
+    window.RIVAGE = {
+      routes: {
+        panier: {{ routes.cart_url | json }},
+        ajout: {{ routes.cart_add_url | json }},
+        modifier: {{ routes.cart_change_url | json }},
+        recherche: {{ routes.search_url | json }},
+        predictif: {{ routes.predictive_search_url | json }}
+      },
+      formatMonnaie: {{ shop.money_format | json }},
+      panierType: {{ settings.type_panier | json }},
+      seuilFranco: {{ settings.seuil_franco | default: 0 | times: 100 }},
+      anim: {
+        apparition: {{ settings.anim_apparition | json }},
+        images: {{ settings.anim_images | json }},
+        titres: {{ settings.anim_titres | json }},
+        survolPhoto: {{ settings.anim_survol_photo | json }},
+        curseur: {{ settings.anim_curseur | json }}
+      },
+      textes: {
+        ajouter: {{ 'produits.produit.ajouter' | t | json }},
+        ajoutEnCours: {{ 'produits.produit.ajout_en_cours' | t | json }},
+        epuise: {{ 'produits.produit.epuise' | t | json }},
+        indisponible: {{ 'produits.produit.indisponible' | t | json }},
+        enStock: {{ 'produits.produit.en_stock' | t | json }},
+        rupture: {{ 'produits.produit.rupture' | t | json }},
+        articleAjoute: {{ 'panier.general.article_ajoute' | t | json }},
+        ajoutImpossible: {{ 'panier.general.ajout_impossible' | t | json }},
+        panierVideTitre: {{ 'panier.general.vide_titre' | t | json }},
+        panierVideTexte: {{ 'panier.general.vide_texte' | t | json }},
+        panierVideBouton: {{ 'panier.general.vide_bouton' | t | json }},
+        sousTotal: {{ 'panier.general.sous_total' | t | json }},
+        commander: {{ 'panier.general.commander' | t | json }},
+        voirPanier: {{ 'panier.general.voir_panier' | t | json }},
+        retirer: {{ 'panier.general.retirer' | t | json }},
+        diminuer: {{ 'produits.produit.diminuer' | t | json }},
+        augmenter: {{ 'produits.produit.augmenter' | t | json }},
+        francoAtteint: {{ 'panier.general.franco_atteint' | t | json }},
+        francoAvant: {{ 'panier.general.franco_avant' | t | json }},
+        francoApres: {{ 'panier.general.franco_apres' | t | json }},
+        taxes: {{ 'panier.general.taxes' | t | json }},
+        aucunResultat: {{ 'general.recherche.aucun_resultat' | t | json }},
+        suggestion: {{ 'general.recherche.suggestion' | t | json }},
+        voirTout: {{ 'general.recherche.voir_tout' | t | json }},
+        lienCopie: {{ 'general.partage.copie' | t | json }}
+      }
+    };
+  </script>
+
+  <script src="{{ 'rivage.js' | asset_url }}" defer></script>
+
+  {{ content_for_header }}
+</head>
+
+<body class="modele-{{ template.name | handle }}{% if settings.anim_curseur %} curseur-perso{% endif %}">
+  <a class="saut" href="#contenu">{{ 'general.navigation.aller_contenu' | t }}</a>
+
+  {% sections 'entete-groupe' %}
+
+  <main id="contenu">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'pied-groupe' %}
+
+  {%- comment -%} Surcouches communes : voile, panier latéral, recherche. {%- endcomment -%}
+  <div class="voile" data-voile hidden></div>
+
+  <aside class="tiroir" data-tiroir="panier" aria-label="{{ 'panier.general.titre' | t }}" hidden>
+    <header class="tiroir__tete">
+      <p class="tiroir__titre">{{ 'panier.general.titre' | t }}</p>
+      <button class="bouton-icone" type="button" data-fermer aria-label="{{ 'panier.general.fermer' | t }}">
+        {% render 'icone', nom: 'croix' %}
+      </button>
+    </header>
+    <div class="tiroir__corps" data-panier-corps></div>
+    <footer class="tiroir__pied" data-panier-pied></footer>
+  </aside>
+
+  <div class="recherche" data-recherche role="dialog" aria-modal="true"
+       aria-label="{{ 'general.recherche.titre' | t }}" hidden>
+    <form class="recherche__champ" action="{{ routes.search_url }}" method="get" role="search">
+      <input type="hidden" name="type" value="product">
+      {% render 'icone', nom: 'loupe' %}
+      <label class="lecteur-seul" for="recherche-champ">{{ 'general.recherche.label' | t }}</label>
+      <input id="recherche-champ" type="search" name="q" autocomplete="off"
+             placeholder="{{ 'general.recherche.placeholder' | t | escape }}" data-recherche-champ>
+      <button class="bouton-icone" type="button" data-fermer aria-label="{{ 'general.navigation.fermer' | t }}">
+        <span class="touche">{{ 'general.navigation.echap' | t }}</span>
+      </button>
+    </form>
+    <div class="recherche__resultats" data-recherche-resultats></div>
+  </div>
+
+  <div class="notifications" role="status" aria-live="polite" data-notifications></div>
+
+  {%- if settings.anim_curseur -%}
+    <div class="curseur" data-curseur aria-hidden="true"></div>
+  {%- endif -%}
+</body>
+</html>

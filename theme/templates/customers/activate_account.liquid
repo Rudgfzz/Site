@@ -1,0 +1,16 @@
+<section class="section section--serree">
+  <div class="enveloppe enveloppe--etroite">
+    <h1 class="titre-moyen" style="margin-bottom:26px">{{ 'clients.compte.inscription' | t }}</h1>
+
+    {%- form 'activate_customer_password' -%}
+      {%- if form.errors -%}<p class="message">{{ form.errors | default_errors }}</p>{%- endif -%}
+
+      <label class="champ">
+        <span>{{ 'clients.compte.mot_de_passe' | t }}</span>
+        <input type="password" name="customer[password]" autocomplete="new-password" required>
+      </label>
+
+      <button class="bouton" type="submit">{{ 'clients.compte.envoyer' | t }}</button>
+    {%- endform -%}
+  </div>
+</section>

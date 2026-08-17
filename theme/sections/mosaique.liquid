@@ -1,0 +1,117 @@
+{%- comment -%}
+  Mosaïque de catégories : des tuiles de tailles inégales, chacune reliée à
+  une collection. Le format de chaque tuile se choisit bloc par bloc, ce qui
+  permet de composer une grille volontairement désaxée.
+{%- endcomment -%}
+
+<section class="section">
+  <div class="enveloppe">
+    {%- if section.settings.titre != blank -%}
+      <div class="tete">
+        {%- if section.settings.numero != blank -%}
+          <span class="numero">{{ section.settings.numero }}</span>
+        {%- endif -%}
+        <h2 class="tete__titre titre-moyen" data-anim>{{ section.settings.titre }}</h2>
+        {%- if section.settings.texte != blank -%}
+          <p class="tete__texte" data-anim>{{ section.settings.texte }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mosaique" data-anim-groupe="{{ settings.anim_decalage }}">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign col = block.settings.collection
+          assign classe = 'tuile'
+          if block.settings.format == 'large'
+            assign classe = 'tuile tuile--large'
+          elsif block.settings.format == 'haute'
+            assign classe = 'tuile tuile--haute'
+          elsif block.settings.format == 'pleine'
+            assign classe = 'tuile tuile--pleine'
+          endif
+
+          assign titre = block.settings.titre | default: col.title
+          assign lien = block.settings.lien | default: col.url
+          assign image = block.settings.image | default: col.featured_image
+        -%}
+
+        <a class="{{ classe }}" href="{{ lien | default: routes.all_products_collection_url }}"
+           data-anim {{ block.shopify_attributes }}>
+          {%- if image != blank -%}
+            {%- assign i_l = image | image_url: width: 1400 -%}
+            {%- assign i_s = image | image_url: width: 700 -%}
+            <img src="{{ i_l }}" srcset="{{ i_s }} 700w, {{ i_l }} 1400w"
+                 sizes="(min-width: 800px) 50vw, 100vw"
+                 width="1400" height="1050" loading="lazy"
+                 alt="{{ image.alt | default: titre | escape }}">
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder' }}
+          {%- endif -%}
+
+          <span class="tuile__legende">
+            <span class="titre-petit">{{ titre | default: 'Collection' }}</span>
+            {%- if section.settings.afficher_nombre and col != blank -%}
+              <span class="tuile__nb">{{ col.products_count }} {{ 'produits.facettes.articles' | t }}</span>
+            {%- endif -%}
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Mosaïque de catégories",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "numero", "label": "Numéro", "default": "02" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Le vestiaire" },
+    {
+      "type": "text",
+      "id": "texte",
+      "label": "Texte",
+      "default": "Six catégories, rien de plus. Reliez chaque tuile à une collection de la boutique."
+    },
+    { "type": "checkbox", "id": "afficher_nombre", "label": "Afficher le nombre d'articles", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "tuile",
+      "name": "Tuile",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        {
+          "type": "select",
+          "id": "format",
+          "label": "Format",
+          "options": [
+            { "value": "standard", "label": "Standard (1/3)" },
+            { "value": "large", "label": "Large (2/3)" },
+            { "value": "haute", "label": "Haute (1/3, allongée)" },
+            { "value": "pleine", "label": "Pleine largeur" }
+          ],
+          "default": "standard"
+        },
+        { "type": "text", "id": "titre", "label": "Titre affiché", "info": "Vide = nom de la collection." },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Vide = image de la collection." },
+        { "type": "url", "id": "lien", "label": "Lien", "info": "Vide = page de la collection." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mosaïque de catégories",
+      "blocks": [
+        { "type": "tuile", "settings": { "format": "large" } },
+        { "type": "tuile", "settings": { "format": "standard" } },
+        { "type": "tuile", "settings": { "format": "standard" } },
+        { "type": "tuile", "settings": { "format": "standard" } },
+        { "type": "tuile", "settings": { "format": "large" } },
+        { "type": "tuile", "settings": { "format": "standard" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

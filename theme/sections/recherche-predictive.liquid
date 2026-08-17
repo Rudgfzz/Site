@@ -1,0 +1,35 @@
+{%- comment -%}
+  Résultats de la recherche instantanée.
+
+  Cette section n'apparaît sur aucune page : elle est appelée seule par
+  rivage.js via l'API de rendu de section, et son contenu est injecté
+  dans la barre de recherche.
+{%- endcomment -%}
+
+<div data-resultats-predictifs>
+  {%- assign resultats = predictive_search.resources.products -%}
+
+  {%- if predictive_search.performed and resultats.size > 0 -%}
+    <div class="grille" style="--colonnes:6">
+      {%- for produit in resultats -%}
+        {% render 'carte-produit', produit: produit, etiquettes: false %}
+      {%- endfor -%}
+    </div>
+
+    <p style="margin-top:26px">
+      <a class="lien" href="{{ routes.search_url }}?q={{ predictive_search.terms | escape }}">
+        {{ 'general.recherche.voir_tout' | t }}
+      </a>
+    </p>
+
+  {%- elsif predictive_search.performed -%}
+    <p class="doux">{{ 'general.recherche.aucun_resultat' | t }}</p>
+    <p class="doux" style="font-size:.86rem">{{ 'general.recherche.suggestion' | t }}</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Recherche instantanée"
+}
+{% endschema %}

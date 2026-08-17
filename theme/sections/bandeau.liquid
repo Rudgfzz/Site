@@ -1,0 +1,84 @@
+{%- comment -%}
+  Bandeau défilant. La piste est dupliquée pour que la boucle se referme
+  sans saut visible ; la copie est masquée aux lecteurs d'écran.
+{%- endcomment -%}
+
+{%- assign classe = 'bandeau' -%}
+{%- if section.settings.style == 'accent' -%}{%- assign classe = 'bandeau bandeau--accent' -%}{%- endif -%}
+{%- if section.settings.style == 'sombre' -%}{%- assign classe = 'bandeau bandeau--sombre' -%}{%- endif -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="{{ classe }}" style="--vitesse:{{ section.settings.vitesse }}s
+       {%- if section.settings.taille == 'petit' %};font-size:.8rem{% endif -%}">
+    {%- for repetition in (1..2) -%}
+      <div class="bandeau__piste" {% if repetition == 2 %}aria-hidden="true"{% endif %}>
+        {%- for block in section.blocks -%}
+          {%- if block.settings.lien != blank -%}
+            <a class="bandeau__item" href="{{ block.settings.lien }}" {{ block.shopify_attributes }}>
+              {{ block.settings.texte }}
+            </a>
+          {%- else -%}
+            <span class="bandeau__item" {{ block.shopify_attributes }}>{{ block.settings.texte }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Bandeau défilant",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "clair", "label": "Fond de page" },
+        { "value": "accent", "label": "Couleur d'accent" },
+        { "value": "sombre", "label": "Sombre" }
+      ],
+      "default": "accent"
+    },
+    {
+      "type": "select",
+      "id": "taille",
+      "label": "Taille du texte",
+      "options": [
+        { "value": "petit", "label": "Discrète" },
+        { "value": "grand", "label": "Affirmée" }
+      ],
+      "default": "petit"
+    },
+    {
+      "type": "range",
+      "id": "vitesse",
+      "min": 10,
+      "max": 90,
+      "step": 2,
+      "unit": "s",
+      "label": "Durée d'un tour",
+      "info": "Plus la valeur est grande, plus le défilement est lent. Le survol met en pause.",
+      "default": 34
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mot",
+      "name": "Mention",
+      "settings": [
+        { "type": "text", "id": "texte", "label": "Texte", "default": "Livraison offerte dès 100 €" },
+        { "type": "url", "id": "lien", "label": "Lien (facultatif)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bandeau défilant",
+      "blocks": [{ "type": "mot" }, { "type": "mot" }, { "type": "mot" }]
+    }
+  ]
+}
+{% endschema %}

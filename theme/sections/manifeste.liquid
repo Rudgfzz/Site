@@ -1,0 +1,116 @@
+{%- comment -%}
+  Manifeste : quelques lignes affirmées qui se dévoilent l'une après
+  l'autre, avec une colonne d'appuis chiffrés en regard.
+{%- endcomment -%}
+
+<section class="section{% if section.settings.fond == 'sombre' %} section--sombre{% elsif section.settings.fond == 'teinte' %} section--teinte{% endif %}">
+  <div class="enveloppe">
+    <div class="tete">
+      {%- if section.settings.numero != blank -%}
+        <span class="numero">{{ section.settings.numero }}</span>
+      {%- endif -%}
+      <div class="tete__titre">
+        {%- if section.settings.surtitre != blank -%}
+          <p class="surtitre" data-anim>{{ section.settings.surtitre }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="duo">
+      <div class="duo__a" style="grid-column:1 / 8;aspect-ratio:auto">
+        <p class="manifeste">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'ligne' -%}
+              {%- if settings.anim_titres -%}
+                <span class="manifeste__ligne devoile" {{ block.shopify_attributes }}>
+                  <span style="--retard:{{ forloop.index0 | times: settings.anim_decalage }}ms">
+                    {{- block.settings.texte -}}
+                  </span>
+                </span>
+              {%- else -%}
+                <span class="manifeste__ligne" {{ block.shopify_attributes }}>{{ block.settings.texte }}</span>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </p>
+
+        {%- if section.settings.lien_texte != blank -%}
+          <p style="margin-top:36px" data-anim>
+            <a class="lien" href="{{ section.settings.lien }}">{{ section.settings.lien_texte }}</a>
+          </p>
+        {%- endif -%}
+      </div>
+
+      <div class="duo__texte" style="grid-column:9 / 13" data-anim-groupe="{{ settings.anim_decalage }}">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'appui' -%}
+            <div style="padding-block:20px;border-top:var(--filet)" data-anim {{ block.shopify_attributes }}>
+              <p class="titre-moyen" style="font-size:clamp(1.5rem,2.6vw,2.2rem)">{{ block.settings.chiffre }}</p>
+              <p class="doux" style="margin:6px 0 0;font-size:.9rem">{{ block.settings.libelle }}</p>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Manifeste",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "numero", "label": "Numéro", "default": "04" },
+    { "type": "text", "id": "surtitre", "label": "Surtitre", "default": "Notre façon de faire" },
+    { "type": "text", "id": "lien_texte", "label": "Texte du lien", "default": "En savoir plus" },
+    { "type": "url", "id": "lien", "label": "Lien" },
+    {
+      "type": "select",
+      "id": "fond",
+      "label": "Fond",
+      "options": [
+        { "value": "normal", "label": "Fond de page" },
+        { "value": "teinte", "label": "Teinté" },
+        { "value": "sombre", "label": "Sombre" }
+      ],
+      "default": "sombre"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ligne",
+      "name": "Ligne du manifeste",
+      "settings": [
+        {
+          "type": "text",
+          "id": "texte",
+          "label": "Texte de la ligne",
+          "info": "Une ligne courte. Entourez un mot de <em>…</em> pour le colorer.",
+          "default": "Des matières qui respirent."
+        }
+      ]
+    },
+    {
+      "type": "appui",
+      "name": "Chiffre",
+      "settings": [
+        { "type": "text", "id": "chiffre", "label": "Chiffre", "default": "24 h" },
+        { "type": "text", "id": "libelle", "label": "Libellé", "default": "Expédition depuis la France" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Manifeste",
+      "blocks": [
+        { "type": "ligne" },
+        { "type": "ligne" },
+        { "type": "ligne" },
+        { "type": "appui" },
+        { "type": "appui" },
+        { "type": "appui" }
+      ]
+    }
+  ]
+}
+{% endschema %}

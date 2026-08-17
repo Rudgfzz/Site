@@ -1,0 +1,36 @@
+<section class="section section--serree">
+  <div class="enveloppe">
+    <div class="tete">
+      <span class="numero">{{ order.name }}</span>
+      <h1 class="tete__titre titre-moyen">{{ 'clients.compte.commande' | t }}</h1>
+      <p class="tete__texte">{{ order.created_at | date: '%d.%m.%Y' }} — {{ order.financial_status_label }}</p>
+    </div>
+
+    <table>
+      <tbody>
+        {%- for ligne in order.line_items -%}
+          <tr style="border-bottom:var(--filet)">
+            <td style="padding:16px 0">
+              {{ ligne.title }}
+              <span class="doux">× {{ ligne.quantity }}</span>
+            </td>
+            <td style="padding:16px 0;text-align:right">{{ ligne.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+
+    <div style="display:flex;justify-content:flex-end;margin-top:26px">
+      <div style="min-width:min(320px,100%)">
+        <div class="total">
+          <span>{{ 'clients.compte.total' | t }}</span>
+          <strong>{{ order.total_price | money }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:26px">
+      <a class="lien" href="{{ routes.account_url }}">{{ 'clients.compte.retour_compte' | t }}</a>
+    </p>
+  </div>
+</section>

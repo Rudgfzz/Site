@@ -1,0 +1,68 @@
+{%- comment -%} Page des résultats de recherche. {%- endcomment -%}
+
+<section class="section section--serree">
+  <div class="enveloppe">
+    <div class="tete">
+      <span class="numero">{{ search.results_count }}</span>
+      <h1 class="tete__titre titre-moyen">
+        {%- if search.performed -%}
+          {{ search.terms }}
+        {%- else -%}
+          {{ 'general.recherche.titre' | t }}
+        {%- endif -%}
+      </h1>
+      {%- if search.performed -%}
+        <p class="tete__texte">{{ search.results_count }} {{ 'general.recherche.resultats' | t }}</p>
+      {%- endif -%}
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" style="max-width:520px;margin-bottom:40px">
+      <label class="champ">
+        <span>{{ 'general.recherche.label' | t }}</span>
+        <input type="search" name="q" value="{{ search.terms | escape }}"
+               placeholder="{{ 'general.recherche.placeholder' | t | escape }}">
+      </label>
+      <button class="bouton" type="submit">{{ 'general.recherche.titre' | t }}</button>
+    </form>
+
+    {%- paginate search.results by section.settings.par_page -%}
+      {%- if search.performed and search.results_count > 0 -%}
+        <div class="grille" style="--colonnes:{{ section.settings.colonnes }}"
+             data-anim-groupe="{{ settings.anim_decalage }}">
+          {%- for resultat in search.results -%}
+            {%- if resultat.object_type == 'product' -%}
+              {% render 'carte-produit', produit: resultat, etiquettes: true %}
+            {%- else -%}
+              <article class="billet" data-anim>
+                <a href="{{ resultat.url }}">
+                  <h3 class="titre-petit">{{ resultat.title }}</h3>
+                  <p class="billet__extrait">{{ resultat.content | strip_html | truncate: 130 }}</p>
+                </a>
+              </article>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {% render 'pagination', paginate: paginate %}
+      {%- elsif search.performed -%}
+        <div class="vide">
+          <h2 class="titre-petit">{{ 'general.recherche.aucun_resultat' | t }}</h2>
+          <p>{{ 'general.recherche.suggestion' | t }}</p>
+          <a class="bouton" href="{{ routes.all_products_collection_url }}">
+            {{ 'general.navigation.boutique' | t }}
+          </a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page recherche",
+  "settings": [
+    { "type": "range", "id": "colonnes", "min": 2, "max": 5, "step": 1, "label": "Colonnes", "default": 4 },
+    { "type": "range", "id": "par_page", "min": 8, "max": 48, "step": 4, "label": "Résultats par page", "default": 24 }
+  ]
+}
+{% endschema %}
