@@ -1,0 +1,52 @@
+<section class="bloc bloc--serre">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ search.results_count }}</span>
+      <div>
+        <h1 class="titre-l">{% if search.performed %}{{ search.terms }}{% else %}{{ 'general.recherche.titre' | t }}{% endif %}</h1>
+        {%- if search.performed -%}
+          <p class="entete-bloc__texte">{{ search.results_count }} {{ 'general.recherche.resultats' | t }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" style="max-width:480px;margin-bottom:32px">
+      <label class="champ">
+        <span>{{ 'general.recherche.label' | t }}</span>
+        <input type="search" name="q" value="{{ search.terms | escape }}"
+               placeholder="{{ 'general.recherche.placeholder' | t | escape }}">
+      </label>
+      <button class="bouton" type="submit">{{ 'general.recherche.titre' | t }}</button>
+    </form>
+
+    {%- paginate search.results by 24 -%}
+      {%- if search.performed and search.results_count > 0 -%}
+        <div class="grille" style="--colonnes:4" data-groupe="{{ settings.anim_decalage }}">
+          {%- for resultat in search.results -%}
+            {%- if resultat.object_type == 'product' -%}
+              {% render 'carte-piece', produit: resultat, marques: true, tailles: true %}
+            {%- else -%}
+              <article data-anim>
+                <a href="{{ resultat.url }}">
+                  <h3 class="titre-m">{{ resultat.title }}</h3>
+                  <p class="billet__extrait">{{ resultat.content | strip_html | truncate: 120 }}</p>
+                </a>
+              </article>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {% render 'pagination', paginate: paginate %}
+      {%- elsif search.performed -%}
+        <div class="rien">
+          <h2 class="titre-m">{{ 'general.recherche.aucun' | t }}</h2>
+          <p>{{ 'general.recherche.conseil' | t }}</p>
+          <a class="bouton" href="{{ routes.all_products_collection_url }}">{{ 'general.nav.boutique' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Page recherche" }
+{% endschema %}

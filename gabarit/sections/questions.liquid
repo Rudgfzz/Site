@@ -1,0 +1,49 @@
+<section class="bloc{% if section.settings.fond == 'teinte' %} bloc--teinte{% endif %}">
+  <div class="zone zone--etroite">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ section.settings.reference }}</span>
+      <div><h2 class="titre-l" data-anim>{{ section.settings.titre }}</h2></div>
+    </div>
+    <div class="replis" style="margin-top:0" data-groupe="{{ settings.anim_decalage }}">
+      {%- for block in section.blocks -%}
+        <details class="repli" {% if forloop.first and section.settings.ouvrir_premiere %}open{% endif %} {{ block.shopify_attributes }}>
+          <summary>{{ block.settings.question }}</summary>
+          <div class="repli__corps prose">{{ block.settings.reponse }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Questions",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "reference", "label": "Référence", "default": "05" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Questions fréquentes" },
+    { "type": "checkbox", "id": "ouvrir_premiere", "label": "Ouvrir la première", "default": true },
+    {
+      "type": "select", "id": "fond", "label": "Fond",
+      "options": [{ "value": "normal", "label": "Papier" }, { "value": "teinte", "label": "Papier teinté" }],
+      "default": "normal"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Comment choisir ma taille ?" },
+        {
+          "type": "richtext", "id": "reponse", "label": "Réponse",
+          "default": "<p>Chaque fiche affiche les mesures du vêtement à plat. Comparez-les à une pièce que vous portez déjà : c'est plus fiable qu'une correspondance générale.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Questions", "blocks": [{ "type": "question" }, { "type": "question" }, { "type": "question" }] }
+  ]
+}
+{% endschema %}

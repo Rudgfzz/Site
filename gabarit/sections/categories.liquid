@@ -1,0 +1,86 @@
+{%- comment -%} Les univers du catalogue, en vignettes cotées. {%- endcomment -%}
+
+<section class="bloc{% if section.settings.fond == 'teinte' %} bloc--teinte{% endif %}">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ section.settings.reference }}</span>
+      <div>
+        <h2 class="titre-l" data-anim>{{ section.settings.titre }}</h2>
+        {%- if section.settings.texte != blank -%}
+          <p class="entete-bloc__texte" data-anim>{{ section.settings.texte }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="grille" style="--colonnes:{{ section.settings.colonnes }}"
+         data-groupe="{{ settings.anim_decalage }}">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign col = block.settings.collection
+          assign titre = block.settings.titre | default: col.title
+          assign lien = block.settings.lien | default: col.url
+          assign image = block.settings.image | default: col.featured_image
+        -%}
+        <a class="categorie" href="{{ lien | default: routes.all_products_collection_url }}"
+           data-anim {{ block.shopify_attributes }}>
+          {%- if image != blank -%}
+            {%- assign grande = image | image_url: width: 900 -%}
+            <img src="{{ grande }}" width="900" height="1200" loading="lazy"
+                 alt="{{ image.alt | default: titre | escape }}">
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder' }}
+          {%- endif -%}
+          <span class="categorie__legende">
+            <span class="categorie__nom">{{ titre | default: 'Collection' }}</span>
+            {%- if section.settings.afficher_nombre and col != blank -%}
+              <span class="cote">{{ col.products_count }}</span>
+            {%- endif -%}
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Univers",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "reference", "label": "Référence", "default": "03" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Les univers" },
+    { "type": "text", "id": "texte", "label": "Texte", "default": "Reliez chaque vignette à une collection de la boutique." },
+    { "type": "range", "id": "colonnes", "min": 2, "max": 6, "step": 1, "label": "Colonnes", "default": 3 },
+    { "type": "checkbox", "id": "afficher_nombre", "label": "Afficher le nombre d'articles", "default": true },
+    {
+      "type": "select",
+      "id": "fond",
+      "label": "Fond",
+      "options": [
+        { "value": "normal", "label": "Papier" },
+        { "value": "teinte", "label": "Papier teinté" }
+      ],
+      "default": "teinte"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "univers",
+      "name": "Univers",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "titre", "label": "Titre affiché", "info": "Vide = nom de la collection." },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Vide = image de la collection." },
+        { "type": "url", "id": "lien", "label": "Lien", "info": "Vide = page de la collection." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Univers",
+      "blocks": [{ "type": "univers" }, { "type": "univers" }, { "type": "univers" },
+                 { "type": "univers" }, { "type": "univers" }, { "type": "univers" }]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,126 @@
+{%- comment -%}
+  Vignette produit.
+
+  Elle embarque la liste des tailles proposées et celle des tailles
+  épuisées. C'est ce qui permet au navigateur de dire immédiatement,
+  sans aucune requête, si la pièce existe dans la taille du visiteur.
+
+  Paramètres :
+    produit    (obligatoire)
+    marques    booléen — pastilles Nouveau / Soldé / Épuisé
+    tailles    booléen — afficher la rangée de tailles sous le prix
+    index      entier — décalage d'animation
+{%- endcomment -%}
+
+{%- liquid
+  assign v = produit.selected_or_first_available_variant
+  assign solde = false
+  if v.compare_at_price > v.price
+    assign solde = true
+  endif
+
+  assign nom_taille = settings.taille_option | default: 'Taille' | downcase
+  assign rang_taille = -1
+  for option in produit.options_with_values
+    assign nom_courant = option.name | downcase
+    if nom_courant contains nom_taille
+      assign rang_taille = forloop.index0
+    endif
+  endfor
+-%}
+
+{%- comment -%}
+  Deux listes séparées par des barres verticales : les tailles existantes
+  et, parmi elles, celles qui ne sont plus disponibles.
+{%- endcomment -%}
+{%- capture tailles_offertes -%}
+  {%- if rang_taille >= 0 -%}
+    {%- for option in produit.options_with_values -%}
+      {%- if forloop.index0 == rang_taille -%}
+        {%- for valeur in option.values -%}{{ valeur }}|{%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture tailles_epuisees -%}
+  {%- if rang_taille >= 0 -%}
+    {%- for option in produit.options_with_values -%}
+      {%- if forloop.index0 == rang_taille -%}
+        {%- for valeur in option.values -%}
+          {%- assign dispo = false -%}
+          {%- for variante in produit.variants -%}
+            {%- if variante.options[rang_taille] == valeur and variante.available -%}
+              {%- assign dispo = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- unless dispo -%}{{ valeur }}|{%- endunless -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+<article class="piece"
+         data-anim
+         data-tailles="{{ tailles_offertes | strip | escape }}"
+         data-tailles-epuisees="{{ tailles_epuisees | strip | escape }}">
+  <a class="piece__vue" href="{{ produit.url }}" aria-label="{{ produit.title | escape }}">
+    {%- if marques -%}
+      {%- if produit.available == false -%}
+        <span class="marque">{{ 'produits.produit.epuise' | t }}</span>
+      {%- elsif solde -%}
+        <span class="marque marque--alerte">{{ 'produits.produit.solde' | t }}</span>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if produit.featured_media -%}
+      {%- assign grand = produit.featured_media | image_url: width: 900 -%}
+      {%- assign moyen = produit.featured_media | image_url: width: 550 -%}
+      <img class="premiere" src="{{ grand }}"
+           srcset="{{ moyen }} 550w, {{ grand }} 900w"
+           sizes="(min-width: 1000px) 25vw, 50vw"
+           width="900" height="1200" loading="lazy"
+           alt="{{ produit.featured_media.alt | default: produit.title | escape }}">
+
+      {%- if settings.anim_photo_survol and produit.media[1] -%}
+        {%- assign seconde = produit.media[1] | image_url: width: 900 -%}
+        <img class="seconde" src="{{ seconde }}" width="900" height="1200"
+             loading="lazy" aria-hidden="true" alt="">
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+    {%- endif -%}
+  </a>
+
+  <div class="piece__corps">
+    <h3 class="piece__nom"><a href="{{ produit.url }}">{{ produit.title }}</a></h3>
+
+    <p class="piece__prix">
+      {%- if solde -%}<s>{{ v.compare_at_price | money }}</s>{%- endif -%}
+      {{ v.price | money }}
+    </p>
+
+    {%- if tailles and rang_taille >= 0 -%}
+      <div class="piece__tailles">
+        {%- for option in produit.options_with_values -%}
+          {%- if forloop.index0 == rang_taille -%}
+            {%- for valeur in option.values -%}
+              {%- assign dispo = false -%}
+              {%- for variante in produit.variants -%}
+                {%- if variante.options[rang_taille] == valeur and variante.available -%}
+                  {%- assign dispo = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              <span class="piece__taille"
+                    data-valeur="{{ valeur | escape }}"
+                    data-epuisee="{% unless dispo %}true{% else %}false{% endunless %}">{{ valeur }}</span>
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>

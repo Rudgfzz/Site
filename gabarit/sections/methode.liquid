@@ -1,0 +1,84 @@
+{%- comment -%}
+  Explication du principe : pourquoi la taille d'abord. Chaque bloc est
+  une étape numérotée, avec une cote chiffrée facultative.
+{%- endcomment -%}
+
+<section class="bloc{% if section.settings.fond == 'encre' %} bloc--encre{% elsif section.settings.fond == 'teinte' %} bloc--teinte{% endif %}">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ section.settings.reference }}</span>
+      <div>
+        <h2 class="titre-l" data-anim>{{ section.settings.titre }}</h2>
+        {%- if section.settings.texte != blank -%}
+          <p class="entete-bloc__texte" data-anim>{{ section.settings.texte }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="grille" style="--colonnes:{{ section.blocks.size | at_most: 4 | at_least: 1 }}"
+         data-groupe="{{ settings.anim_decalage }}">
+      {%- for block in section.blocks -%}
+        <div data-anim {{ block.shopify_attributes }}
+             style="padding-top:16px;border-top:var(--filet)">
+          <span class="cote">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <h3 class="titre-m" style="margin:10px 0 8px">{{ block.settings.titre }}</h3>
+          <p class="douce" style="margin:0;font-size:.9rem">{{ block.settings.texte }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.lien_texte != blank -%}
+      <p style="margin-top:30px" data-anim>
+        <a class="lien-souligne" href="{{ section.settings.lien }}">{{ section.settings.lien_texte }}</a>
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Méthode",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "reference", "label": "Référence", "default": "04" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Pourquoi la taille d'abord" },
+    {
+      "type": "text",
+      "id": "texte",
+      "label": "Texte",
+      "default": "Parce que rien n'est plus frustrant que de trouver la bonne pièce dans la mauvaise taille."
+    },
+    { "type": "text", "id": "lien_texte", "label": "Texte du lien" },
+    { "type": "url", "id": "lien", "label": "Lien" },
+    {
+      "type": "select",
+      "id": "fond",
+      "label": "Fond",
+      "options": [
+        { "value": "normal", "label": "Papier" },
+        { "value": "teinte", "label": "Papier teinté" },
+        { "value": "encre", "label": "Encre (sombre)" }
+      ],
+      "default": "encre"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "etape",
+      "name": "Étape",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre", "default": "Vous donnez votre taille" },
+        {
+          "type": "textarea",
+          "id": "texte",
+          "label": "Texte",
+          "default": "Une fois, en un clic. Elle reste enregistrée dans votre navigateur."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Méthode", "blocks": [{ "type": "etape" }, { "type": "etape" }, { "type": "etape" }] }
+  ]
+}
+{% endschema %}

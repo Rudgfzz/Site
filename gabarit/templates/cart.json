@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "principal": {
+      "type": "main-panier",
+      "settings": {}
+    }
+  },
+  "order": ["principal"]
+}

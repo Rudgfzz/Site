@@ -1,0 +1,148 @@
+{
+  "general": {
+    "nav": {
+      "contenu": "Skip to content",
+      "menu": "Menu",
+      "fermer": "Close",
+      "accueil": "Home",
+      "boutique": "Shop",
+      "echap": "Esc",
+      "precedent": "Previous",
+      "suivant": "Next",
+      "page": "Page"
+    },
+    "recherche": {
+      "titre": "Search",
+      "ouvrir": "Open search",
+      "label": "Search for an item",
+      "placeholder": "A piece, a size, a colour…",
+      "aucun": "No results.",
+      "conseil": "Try a shorter word.",
+      "tout": "See all results",
+      "resultats": "results"
+    },
+    "lettre": {
+      "placeholder": "Your email address",
+      "bouton": "Sign up",
+      "merci": "Thanks, you're on the list.",
+      "erreur": "This address could not be saved."
+    }
+  },
+  "taille": {
+    "gabarit": {
+      "titre": "What's your size?",
+      "texte": "Set it once. We'll then tell you, on every piece, what actually exists in your size.",
+      "choisir": "Set my size",
+      "modifier": "Change",
+      "ma_taille": "My size",
+      "aucune": "Not set",
+      "plus_tard": "Later",
+      "valider": "Confirm",
+      "filtre": "Only show my size",
+      "disponible": "Available in your size",
+      "indisponible": "Sold out in your size",
+      "non_proposee": "This size isn't offered on this item",
+      "reglee": "Size saved",
+      "effacer": "Forget my size",
+      "aide": "Not sure? Check the measurements guide."
+    }
+  },
+  "produits": {
+    "produit": {
+      "ajouter": "Add to cart",
+      "ajout": "Adding…",
+      "epuise": "Sold out",
+      "indisponible": "Unavailable",
+      "en_stock": "In stock",
+      "rupture": "Out of stock",
+      "quantite": "Quantity",
+      "diminuer": "Decrease quantity",
+      "augmenter": "Increase quantity",
+      "choisir": "Choose a version",
+      "mesures": "Measurements",
+      "description": "Description",
+      "sans_description": "A description for this item is coming soon.",
+      "nouveau": "New",
+      "solde": "On sale",
+      "taxes": "VAT included, shipping calculated at checkout.",
+      "cote": "Measure",
+      "unite": "cm"
+    },
+    "facettes": {
+      "filtrer": "Filter",
+      "trier": "Sort",
+      "effacer": "Clear all",
+      "aucun": "No item matches.",
+      "articles": "items"
+    }
+  },
+  "panier": {
+    "general": {
+      "titre": "Cart",
+      "ouvrir": "Open cart",
+      "fermer": "Close cart",
+      "vide_titre": "Your cart is empty",
+      "vide_texte": "The wardrobe is waiting.",
+      "vide_bouton": "Browse the shop",
+      "sous_total": "Subtotal",
+      "commander": "Checkout",
+      "voir": "View cart",
+      "continuer": "Continue shopping",
+      "retirer": "Remove",
+      "ajoute": "Item added to cart",
+      "echec": "This item could not be added.",
+      "franco_ok": "Free shipping unlocked",
+      "franco_avant": "Only",
+      "franco_apres": "away from free shipping",
+      "taxes": "Shipping and taxes calculated at checkout."
+    }
+  },
+  "clients": {
+    "compte": {
+      "titre": "My account",
+      "connexion": "Log in",
+      "deconnexion": "Log out",
+      "inscription": "Create an account",
+      "commandes": "My orders",
+      "aucune": "No orders yet.",
+      "adresses": "My addresses",
+      "email": "Email address",
+      "mot_de_passe": "Password",
+      "oubli": "Forgot your password?",
+      "prenom": "First name",
+      "nom": "Last name",
+      "valider": "Submit",
+      "retour": "Back to account",
+      "commande": "Order",
+      "date": "Date",
+      "statut": "Status",
+      "total": "Total"
+    }
+  },
+  "blog": {
+    "general": {
+      "titre": "Journal",
+      "lire": "Read",
+      "par": "by",
+      "aucun": "No article published yet."
+    }
+  },
+  "contact": {
+    "form": {
+      "nom": "Your name",
+      "email": "Your email address",
+      "telephone": "Phone (optional)",
+      "message": "Your message",
+      "envoyer": "Send",
+      "merci": "Message sent. We reply within one business day."
+    }
+  },
+  "erreur": {
+    "404": {
+      "titre": "Page not found",
+      "texte": "This address leads nowhere.",
+      "bouton": "Back to home",
+      "adresse": "Requested address:"
+    }
+  }
+}

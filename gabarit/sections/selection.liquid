@@ -1,0 +1,94 @@
+{%- comment -%}
+  Grille de pièces avec la bascule « ne montrer que ma taille ».
+  C'est la section qui matérialise le concept sur la page d'accueil.
+{%- endcomment -%}
+
+{%- assign col = section.settings.collection -%}
+{%- assign pieces = col.products -%}
+{%- if pieces == blank or pieces.size == 0 -%}
+  {%- assign pieces = collections.all.products -%}
+{%- endif -%}
+
+<section class="bloc{% if section.settings.fond == 'teinte' %} bloc--teinte{% endif %}">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ section.settings.reference }}</span>
+      <div>
+        <h2 class="titre-l" data-anim>{{ section.settings.titre }}</h2>
+        {%- if section.settings.texte != blank -%}
+          <p class="entete-bloc__texte" data-anim>{{ section.settings.texte }}</p>
+        {%- endif -%}
+        {%- if section.settings.lien_texte != blank -%}
+          <p class="entete-bloc__lien" data-anim>
+            <a class="lien-souligne" href="{{ section.settings.lien | default: col.url | default: routes.all_products_collection_url }}">
+              {{ section.settings.lien_texte }}
+            </a>
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if settings.taille_active and settings.taille_filtre and section.settings.afficher_filtre -%}
+      <div class="filtre-taille">
+        <div class="filtre-taille__gauche">
+          <span class="jeton-taille" data-jeton-taille data-vide="true">
+            {% render 'icone', nom: 'regle' %}
+            <strong data-jeton-valeur>{{ 'taille.gabarit.aucune' | t }}</strong>
+          </span>
+          <button class="lien-souligne" type="button" data-ouvrir-taille>
+            {{ 'taille.gabarit.modifier' | t }}
+          </button>
+        </div>
+        <label class="bascule-taille">
+          <input type="checkbox" data-bascule-filtre>
+          {{ 'taille.gabarit.filtre' | t }}
+        </label>
+      </div>
+    {%- endif -%}
+
+    {%- if pieces.size > 0 -%}
+      <div class="grille" style="--colonnes:{{ section.settings.colonnes }}"
+           data-groupe="{{ settings.anim_decalage }}">
+        {%- for produit in pieces limit: section.settings.nombre -%}
+          {% render 'carte-piece',
+             produit: produit,
+             marques: section.settings.marques,
+             tailles: section.settings.afficher_tailles %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="douce">{{ 'produits.facettes.aucun' | t }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sélection de pièces",
+  "tag": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "text", "id": "reference", "label": "Référence", "default": "02" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Le vestiaire" },
+    { "type": "text", "id": "texte", "label": "Texte", "default": "Chaque pièce indique les tailles réellement disponibles." },
+    { "type": "text", "id": "lien_texte", "label": "Texte du lien", "default": "Tout voir" },
+    { "type": "url", "id": "lien", "label": "Lien", "info": "Vide = page de la collection." },
+    { "type": "range", "id": "nombre", "min": 2, "max": 16, "step": 1, "label": "Nombre de pièces", "default": 8 },
+    { "type": "range", "id": "colonnes", "min": 2, "max": 5, "step": 1, "label": "Colonnes", "default": 4 },
+    { "type": "checkbox", "id": "afficher_tailles", "label": "Afficher la rangée de tailles", "default": true },
+    { "type": "checkbox", "id": "afficher_filtre", "label": "Afficher la bascule « ma taille »", "default": true },
+    { "type": "checkbox", "id": "marques", "label": "Pastilles Soldé / Épuisé", "default": true },
+    {
+      "type": "select",
+      "id": "fond",
+      "label": "Fond",
+      "options": [
+        { "value": "normal", "label": "Papier" },
+        { "value": "teinte", "label": "Papier teinté" }
+      ],
+      "default": "normal"
+    }
+  ],
+  "presets": [{ "name": "Sélection de pièces" }]
+}
+{% endschema %}

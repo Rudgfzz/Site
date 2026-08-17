@@ -1,0 +1,39 @@
+<section class="bloc bloc--serre">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ blog.articles_count }}</span>
+      <div><h1 class="titre-l" data-anim>{{ blog.title }}</h1></div>
+    </div>
+
+    {%- paginate blog.articles by 9 -%}
+      {%- if blog.articles_count > 0 -%}
+        <div class="grille" style="--colonnes:3" data-groupe="{{ settings.anim_decalage }}">
+          {%- for billet in blog.articles -%}
+            <article data-anim>
+              <a href="{{ billet.url }}">
+                <div class="billet__vue">
+                  {%- if billet.image -%}
+                    <img src="{{ billet.image | image_url: width: 800 }}" width="800" height="600" loading="lazy"
+                         alt="{{ billet.image.alt | default: billet.title | escape }}">
+                  {%- else -%}
+                    {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder' }}
+                  {%- endif -%}
+                </div>
+                <p class="billet__date">{{ billet.published_at | date: '%d.%m.%Y' }}</p>
+                <h2 class="billet__titre titre-m">{{ billet.title }}</h2>
+                <p class="billet__extrait">{{ billet.excerpt_or_content | strip_html | truncate: 130 }}</p>
+              </a>
+            </article>
+          {%- endfor -%}
+        </div>
+        {% render 'pagination', paginate: paginate %}
+      {%- else -%}
+        <div class="rien"><h2 class="titre-m">{{ 'blog.general.aucun' | t }}</h2></div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Page blog" }
+{% endschema %}

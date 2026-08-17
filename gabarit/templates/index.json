@@ -1,0 +1,147 @@
+{
+  "sections": {
+    "accroche": {
+      "type": "accroche",
+      "blocks": {
+        "c1": { "type": "cote", "settings": { "valeur": "24", "suffixe": " h", "libelle": "Expédition" } },
+        "c2": { "type": "cote", "settings": { "valeur": "14", "suffixe": " j", "libelle": "Retour gratuit" } },
+        "c3": { "type": "cote", "settings": { "valeur": "6", "suffixe": "", "libelle": "Tailles cotées" } }
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": {
+        "reference": "Collection été — planche 01",
+        "titre": "Votre taille, d'abord.",
+        "texte": "<p>Indiquez votre taille une fois. Le catalogue vous dira, pièce par pièce, ce qui existe vraiment pour vous — avant que vous ne tombiez amoureux d'un modèle épuisé.</p>",
+        "legende": "fig. 1 — coupe droite, coton 220 g",
+        "lien_1_texte": "Voir le vestiaire",
+        "bouton_taille": true
+      }
+    },
+    "vestiaire": {
+      "type": "selection",
+      "settings": {
+        "reference": "02",
+        "titre": "Le vestiaire",
+        "texte": "Chaque pièce indique les tailles réellement disponibles.",
+        "lien_texte": "Tout voir",
+        "nombre": 8,
+        "colonnes": 4,
+        "afficher_tailles": true,
+        "afficher_filtre": true,
+        "marques": true,
+        "fond": "normal"
+      }
+    },
+    "univers": {
+      "type": "categories",
+      "blocks": {
+        "u1": { "type": "univers", "settings": { "titre": "T-shirts" } },
+        "u2": { "type": "univers", "settings": { "titre": "Chaussures" } },
+        "u3": { "type": "univers", "settings": { "titre": "Casquettes" } },
+        "u4": { "type": "univers", "settings": { "titre": "Sacs" } },
+        "u5": { "type": "univers", "settings": { "titre": "Claquettes" } },
+        "u6": { "type": "univers", "settings": { "titre": "Pulls" } }
+      },
+      "block_order": ["u1", "u2", "u3", "u4", "u5", "u6"],
+      "settings": {
+        "reference": "03",
+        "titre": "Les univers",
+        "texte": "Reliez chaque vignette à une collection de la boutique.",
+        "colonnes": 3,
+        "afficher_nombre": true,
+        "fond": "teinte"
+      }
+    },
+    "methode": {
+      "type": "methode",
+      "blocks": {
+        "e1": {
+          "type": "etape",
+          "settings": {
+            "titre": "Vous donnez votre taille",
+            "texte": "Une fois, en un clic. Elle reste enregistrée dans votre navigateur, jamais sur nos serveurs."
+          }
+        },
+        "e2": {
+          "type": "etape",
+          "settings": {
+            "titre": "Le catalogue vous répond",
+            "texte": "Chaque pièce indique si elle existe dans votre taille, et vous pouvez masquer tout le reste d'un geste."
+          }
+        },
+        "e3": {
+          "type": "etape",
+          "settings": {
+            "titre": "Vous commandez sans surprise",
+            "texte": "Les mesures réelles sont sur la fiche, prises à plat. Si la coupe ne va pas, le retour est gratuit."
+          }
+        }
+      },
+      "block_order": ["e1", "e2", "e3"],
+      "settings": {
+        "reference": "04",
+        "titre": "Pourquoi la taille d'abord",
+        "texte": "Parce que rien n'est plus frustrant que de trouver la bonne pièce dans la mauvaise taille.",
+        "fond": "encre"
+      }
+    },
+    "questions": {
+      "type": "questions",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Comment choisir ma taille ?",
+            "reponse": "<p>Chaque fiche affiche les mesures du vêtement à plat. Comparez-les à une pièce que vous portez déjà : c'est plus fiable qu'une correspondance générale.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Ma taille est-elle enregistrée quelque part ?",
+            "reponse": "<p>Uniquement dans votre navigateur. Elle n'est transmise à personne et disparaît si vous effacez vos données de navigation.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Quels sont les délais de livraison ?",
+            "reponse": "<p>Les commandes passées avant 15 h partent le jour ouvré suivant. Comptez ensuite 2 à 4 jours ouvrés en France métropolitaine.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Comment retourner un article ?",
+            "reponse": "<p>Vous disposez de 14 jours après réception. L'article doit être non porté, étiquette attachée. L'étiquette de retour est prépayée.</p>"
+          }
+        }
+      },
+      "block_order": ["q1", "q2", "q3", "q4"],
+      "settings": { "reference": "05", "titre": "Questions fréquentes", "ouvrir_premiere": true, "fond": "normal" }
+    },
+    "journal": {
+      "type": "journal",
+      "settings": {
+        "reference": "06",
+        "titre": "Le journal",
+        "texte": "Matières, coupes, entretien.",
+        "lien_texte": "Tous les articles",
+        "nombre": 3,
+        "fond": "teinte"
+      }
+    },
+    "lettre": {
+      "type": "lettre",
+      "settings": {
+        "reference": "07",
+        "titre": "Les arrivages, avant tout le monde",
+        "texte": "<p>Un message quand une pièce arrive ou qu'une taille est réapprovisionnée. Rien d'autre.</p>",
+        "bouton": "Je m'inscris",
+        "mention": "Désinscription en un clic.",
+        "fond": "normal"
+      }
+    }
+  },
+  "order": ["accroche", "vestiaire", "univers", "methode", "questions", "journal", "lettre"]
+}

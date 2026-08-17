@@ -1,0 +1,49 @@
+<section class="bloc bloc--serre">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ section.settings.reference }}</span>
+      <div>
+        <h1 class="titre-l" data-anim>{{ section.settings.titre }}</h1>
+        {%- if section.settings.texte != blank -%}
+          <div class="entete-bloc__texte prose" data-anim>{{ section.settings.texte }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div style="max-width:560px">
+      {%- form 'contact' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="avis-message">{{ 'contact.form.merci' | t }}</p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="avis-message">{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+
+        <label class="champ"><span>{{ 'contact.form.nom' | t }}</span>
+          <input type="text" name="contact[name]" required></label>
+        <label class="champ"><span>{{ 'contact.form.email' | t }}</span>
+          <input type="email" name="contact[email]" required></label>
+        <label class="champ"><span>{{ 'contact.form.telephone' | t }}</span>
+          <input type="tel" name="contact[phone]"></label>
+        <label class="champ"><span>{{ 'contact.form.message' | t }}</span>
+          <textarea name="contact[body]" required></textarea></label>
+
+        <button class="bouton" type="submit">{{ 'contact.form.envoyer' | t }}</button>
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [
+    { "type": "text", "id": "reference", "label": "Référence", "default": "—" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Nous écrire" },
+    {
+      "type": "richtext", "id": "texte", "label": "Texte",
+      "default": "<p>Une question sur une taille, une commande, un retour ? Nous répondons sous un jour ouvré.</p>"
+    }
+  ]
+}
+{% endschema %}

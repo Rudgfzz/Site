@@ -1,0 +1,32 @@
+<article class="bloc bloc--serre">
+  <div class="zone zone--etroite">
+    <p class="billet__date" data-anim>{{ article.published_at | date: '%d.%m.%Y' }}</p>
+    <h1 class="titre-l" style="margin:10px 0 18px" data-anim>{{ article.title }}</h1>
+  </div>
+
+  {%- if article.image -%}
+    <div class="zone" style="margin-block:30px">
+      <img src="{{ article.image | image_url: width: 1600 }}" width="1600" height="1067"
+           alt="{{ article.image.alt | default: article.title | escape }}"
+           style="width:100%;border:var(--filet);border-radius:var(--arrondi)">
+    </div>
+  {%- endif -%}
+
+  <div class="zone zone--etroite">
+    <div class="prose">{{ article.content }}</div>
+    {%- if blog.next_article or blog.previous_article -%}
+      <nav class="pagination" style="justify-content:space-between">
+        {%- if blog.previous_article -%}
+          <a class="lien-souligne" href="{{ blog.previous_article.url }}">{{ 'general.nav.precedent' | t }}</a>
+        {%- else -%}<span></span>{%- endif -%}
+        {%- if blog.next_article -%}
+          <a class="lien-souligne" href="{{ blog.next_article.url }}">{{ 'general.nav.suivant' | t }}</a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{ "name": "Article" }
+{% endschema %}

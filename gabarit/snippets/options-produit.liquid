@@ -1,0 +1,85 @@
+{%- comment -%}
+  Sélecteur de variantes.
+
+  Le groupe correspondant à la taille porte data-option-nom : c'est ce
+  qui permet au script de mettre en évidence la taille du visiteur, et
+  d'enregistrer son choix quand il en sélectionne une autre.
+{%- endcomment -%}
+
+{%- unless produit.has_only_default_variant -%}
+  {%- assign cible = option_pastilles | default: '' | downcase | strip -%}
+
+  {%- for option in produit.options_with_values -%}
+    {%- liquid
+      assign nom_option = option.name | downcase
+      assign index = forloop.index0
+      assign en_pastilles = false
+      if cible != blank
+        if nom_option contains cible
+          assign en_pastilles = true
+        endif
+      else
+        if nom_option contains 'couleur' or nom_option contains 'coloris' or nom_option contains 'color'
+          assign en_pastilles = true
+        endif
+      endif
+    -%}
+
+    <div class="option" data-option-nom="{{ option.name | escape }}">
+      <div class="option__tete">
+        <span class="etiquette-technique">{{ option.name }}</span>
+        <span class="cote" data-choisie="{{ index }}">{{ option.selected_value }}</span>
+      </div>
+
+      <div class="{% if en_pastilles %}pastilles{% else %}choix{% endif %}">
+        {%- for valeur in option.values -%}
+          {%- liquid
+            assign nom_valeur = valeur | strip
+            assign choisie = false
+            if valeur.selected
+              assign choisie = true
+            elsif nom_valeur == option.selected_value
+              assign choisie = true
+            endif
+          -%}
+
+          {%- if en_pastilles -%}
+            {%- assign fond = '' -%}
+            {%- if valeur.swatch.color -%}{%- assign fond = valeur.swatch.color -%}{%- endif -%}
+            {%- capture repli -%}{% render 'teinte', valeur: nom_valeur %}{%- endcapture -%}
+            {%- if fond == blank -%}{%- assign fond = repli | strip -%}{%- endif -%}
+
+            <button class="pastille" type="button"
+                    data-option-index="{{ index }}"
+                    data-valeur="{{ nom_valeur | escape }}"
+                    aria-pressed="{{ choisie }}"
+                    style="background-color:{{ fond }}
+                      {%- if valeur.swatch.image %};background-image:url({{ valeur.swatch.image | image_url: width: 80 }}){% endif -%}"
+                    title="{{ nom_valeur | escape }}"
+                    aria-label="{{ option.name | escape }} : {{ nom_valeur | escape }}"></button>
+          {%- else -%}
+            <button type="button"
+                    data-option-index="{{ index }}"
+                    data-valeur="{{ nom_valeur | escape }}"
+                    aria-pressed="{{ choisie }}">{{ nom_valeur }}</button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endfor -%}
+
+  <noscript>
+    <label class="champ">
+      <span>{{ 'produits.produit.choisir' | t }}</span>
+      <select name="id">
+        {%- for variante in produit.variants -%}
+          <option value="{{ variante.id }}"
+                  {% if variante == produit.selected_or_first_available_variant %}selected{% endif %}
+                  {% unless variante.available %}disabled{% endunless %}>
+            {{ variante.title }} — {{ variante.price | money }}
+          </option>
+        {%- endfor -%}
+      </select>
+    </label>
+  </noscript>
+{%- endunless -%}

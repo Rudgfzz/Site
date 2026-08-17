@@ -1,0 +1,97 @@
+<section class="bloc bloc--serre">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ collection.products_count }}</span>
+      <div>
+        {%- capture repli_titre -%}{{ 'produits.facettes.articles' | t }}{%- endcapture -%}
+        <h1 class="titre-l" data-anim>{{ collection.title | default: repli_titre }}</h1>
+        {%- if collection.description != blank and section.settings.afficher_description -%}
+          <div class="entete-bloc__texte prose" data-anim>{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if settings.taille_active and settings.taille_filtre -%}
+      <div class="filtre-taille">
+        <div class="filtre-taille__gauche">
+          <span class="jeton-taille" data-jeton-taille data-vide="true">
+            {% render 'icone', nom: 'regle' %}
+            <strong data-jeton-valeur>{{ 'taille.gabarit.aucune' | t }}</strong>
+          </span>
+          <button class="lien-souligne" type="button" data-ouvrir-taille>{{ 'taille.gabarit.modifier' | t }}</button>
+        </div>
+        <label class="bascule-taille">
+          <input type="checkbox" data-bascule-filtre>
+          {{ 'taille.gabarit.filtre' | t }}
+        </label>
+      </div>
+    {%- endif -%}
+
+    {%- paginate collection.products by section.settings.par_page -%}
+      {%- if section.settings.afficher_filtres and collection.filters.size > 0 -%}
+        <form class="barre" id="filtres">
+          <div class="filtres-groupe">
+            {%- for filtre in collection.filters -%}
+              {%- if filtre.type == 'list' and filtre.values.size > 0 -%}
+                <details>
+                  <summary>{{ filtre.label }}{% if filtre.active_values.size > 0 %} ({{ filtre.active_values.size }}){% endif %}</summary>
+                  <div class="barre__menu">
+                    {%- for valeur in filtre.values -%}
+                      <label>
+                        <input type="checkbox" name="{{ valeur.param_name }}" value="{{ valeur.value }}"
+                               {% if valeur.active %}checked{% endif %}
+                               {% if valeur.count == 0 and valeur.active == false %}disabled{% endif %}
+                               onchange="this.form.submit()">
+                        <span>{{ valeur.label }} ({{ valeur.count }})</span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </details>
+              {%- endif -%}
+            {%- endfor -%}
+            <a class="lien-souligne" href="{{ collection.url }}">{{ 'produits.facettes.effacer' | t }}</a>
+          </div>
+
+          <label>
+            <span class="lecteur-seul">{{ 'produits.facettes.trier' | t }}</span>
+            <select name="sort_by" onchange="this.form.submit()"
+                    style="border:0;background:none;font:inherit;text-transform:uppercase;letter-spacing:.1em">
+              {%- assign tri = collection.sort_by | default: collection.default_sort_by -%}
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}" {% if option.value == tri %}selected{% endif %}>{{ option.name }}</option>
+              {%- endfor -%}
+            </select>
+          </label>
+        </form>
+      {%- endif -%}
+
+      {%- if collection.products.size > 0 -%}
+        <div class="grille" style="--colonnes:{{ section.settings.colonnes }}"
+             data-groupe="{{ settings.anim_decalage }}">
+          {%- for produit in collection.products -%}
+            {% render 'carte-piece', produit: produit, marques: true, tailles: section.settings.afficher_tailles %}
+          {%- endfor -%}
+        </div>
+        {% render 'pagination', paginate: paginate %}
+      {%- else -%}
+        <div class="rien">
+          <h2 class="titre-m">{{ 'produits.facettes.aucun' | t }}</h2>
+          <a class="bouton" href="{{ collection.url }}">{{ 'produits.facettes.effacer' | t }}</a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page collection",
+  "settings": [
+    { "type": "checkbox", "id": "afficher_description", "label": "Afficher la description", "default": true },
+    { "type": "checkbox", "id": "afficher_filtres", "label": "Filtres et tri", "default": true },
+    { "type": "checkbox", "id": "afficher_tailles", "label": "Rangée de tailles sur les vignettes", "default": true },
+    { "type": "range", "id": "colonnes", "min": 2, "max": 5, "step": 1, "label": "Colonnes", "default": 4 },
+    { "type": "range", "id": "par_page", "min": 8, "max": 48, "step": 4, "label": "Produits par page", "default": 24 }
+  ]
+}
+{% endschema %}

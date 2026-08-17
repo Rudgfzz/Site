@@ -1,0 +1,31 @@
+<section class="bloc bloc--serre">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ collections.size }}</span>
+      <div><h1 class="titre-l" data-anim>{{ section.settings.titre }}</h1></div>
+    </div>
+    <div class="grille" style="--colonnes:3" data-groupe="{{ settings.anim_decalage }}">
+      {%- for col in collections -%}
+        <a class="categorie" href="{{ col.url }}" data-anim>
+          {%- if col.featured_image -%}
+            <img src="{{ col.featured_image | image_url: width: 900 }}" width="900" height="1200" loading="lazy"
+                 alt="{{ col.featured_image.alt | default: col.title | escape }}">
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'placeholder' }}
+          {%- endif -%}
+          <span class="categorie__legende">
+            <span class="categorie__nom">{{ col.title }}</span>
+            <span class="cote">{{ col.products_count }}</span>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Liste des collections",
+  "settings": [{ "type": "text", "id": "titre", "label": "Titre", "default": "Toutes les collections" }]
+}
+{% endschema %}

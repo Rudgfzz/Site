@@ -1,0 +1,67 @@
+{%- assign blog_choisi = blogs[section.settings.blog] -%}
+
+<section class="bloc{% if section.settings.fond == 'teinte' %} bloc--teinte{% endif %}">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ section.settings.reference }}</span>
+      <div>
+        <h2 class="titre-l" data-anim>{{ section.settings.titre }}</h2>
+        {%- if section.settings.texte != blank -%}
+          <p class="entete-bloc__texte" data-anim>{{ section.settings.texte }}</p>
+        {%- endif -%}
+        {%- if blog_choisi.articles_count > 0 -%}
+          <p class="entete-bloc__lien" data-anim>
+            <a class="lien-souligne" href="{{ blog_choisi.url }}">{{ section.settings.lien_texte }}</a>
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if blog_choisi.articles_count > 0 -%}
+      <div class="grille" style="--colonnes:3" data-groupe="{{ settings.anim_decalage }}">
+        {%- for billet in blog_choisi.articles limit: section.settings.nombre -%}
+          <article data-anim>
+            <a href="{{ billet.url }}">
+              <div class="billet__vue">
+                {%- if billet.image -%}
+                  {%- assign i = billet.image | image_url: width: 800 -%}
+                  <img src="{{ i }}" width="800" height="600" loading="lazy"
+                       alt="{{ billet.image.alt | default: billet.title | escape }}">
+                {%- else -%}
+                  {{ 'blog-apparel-1' | placeholder_svg_tag: 'placeholder' }}
+                {%- endif -%}
+              </div>
+              <p class="billet__date">{{ billet.published_at | date: '%d.%m.%Y' }}</p>
+              <h3 class="billet__titre titre-m">{{ billet.title }}</h3>
+              <p class="billet__extrait">{{ billet.excerpt_or_content | strip_html | truncate: 110 }}</p>
+            </a>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="douce">{{ section.settings.texte_vide }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Journal",
+  "tag": "section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "text", "id": "reference", "label": "Référence", "default": "06" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Le journal" },
+    { "type": "text", "id": "texte", "label": "Texte", "default": "Matières, coupes, entretien." },
+    { "type": "text", "id": "lien_texte", "label": "Texte du lien", "default": "Tous les articles" },
+    { "type": "range", "id": "nombre", "min": 2, "max": 6, "step": 1, "label": "Nombre d'articles", "default": 3 },
+    { "type": "text", "id": "texte_vide", "label": "Message si aucun article", "default": "Choisissez un blog dans les réglages de cette section." },
+    {
+      "type": "select", "id": "fond", "label": "Fond",
+      "options": [{ "value": "normal", "label": "Papier" }, { "value": "teinte", "label": "Papier teinté" }],
+      "default": "normal"
+    }
+  ],
+  "presets": [{ "name": "Journal" }]
+}
+{% endschema %}

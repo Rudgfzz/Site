@@ -1,0 +1,16 @@
+<section class="bloc bloc--serre"><div class="zone zone--etroite">
+  <h1 class="titre-l" style="margin-bottom:22px">{{ 'clients.compte.inscription' | t }}</h1>
+  {%- form 'create_customer' -%}
+    {%- if form.errors -%}<p class="avis-message">{{ form.errors | default_errors }}</p>{%- endif -%}
+    <label class="champ"><span>{{ 'clients.compte.prenom' | t }}</span>
+      <input type="text" name="customer[first_name]" autocomplete="given-name"></label>
+    <label class="champ"><span>{{ 'clients.compte.nom' | t }}</span>
+      <input type="text" name="customer[last_name]" autocomplete="family-name"></label>
+    <label class="champ"><span>{{ 'clients.compte.email' | t }}</span>
+      <input type="email" name="customer[email]" autocomplete="email" required></label>
+    <label class="champ"><span>{{ 'clients.compte.mot_de_passe' | t }}</span>
+      <input type="password" name="customer[password]" autocomplete="new-password" required></label>
+    <button class="bouton" type="submit">{{ 'clients.compte.inscription' | t }}</button>
+  {%- endform -%}
+  <p style="margin-top:20px"><a class="lien-souligne" href="{{ routes.account_login_url }}">{{ 'clients.compte.connexion' | t }}</a></p>
+</div></section>

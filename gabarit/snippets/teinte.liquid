@@ -1,0 +1,49 @@
+{%- comment -%}
+  Nom de couleur → code hexadécimal, pour les boutiques dont les options
+  sont de simples textes. Le snippet ÉCRIT sa valeur : « render » isole
+  les variables, un « assign » serait invisible côté appelant.
+{%- endcomment -%}
+{%- liquid
+  assign v = valeur | downcase | strip
+  if v contains 'blanc' or v contains 'white' or v contains 'ecru' or v contains 'écru'
+    echo '#f2efe8'
+  elsif v contains 'noir' or v contains 'black'
+    echo '#16161a'
+  elsif v contains 'sable' or v contains 'beige' or v contains 'creme' or v contains 'crème'
+    echo '#ddd0b8'
+  elsif v contains 'terracotta' or v contains 'brique' or v contains 'rouille'
+    echo '#b8563a'
+  elsif v contains 'rouge' or v contains 'red'
+    echo '#b3352f'
+  elsif v contains 'rose' or v contains 'pink'
+    echo '#e2a2ab'
+  elsif v contains 'orange' or v contains 'abricot'
+    echo '#d4703a'
+  elsif v contains 'jaune' or v contains 'moutarde' or v contains 'yellow'
+    echo '#d8a839'
+  elsif v contains 'kaki' or v contains 'olive'
+    echo '#6f7350'
+  elsif v contains 'vert' or v contains 'green'
+    echo '#4a7c59'
+  elsif v contains 'marine' or v contains 'navy'
+    echo '#1f2c46'
+  elsif v contains 'ciel' or v contains 'azur'
+    echo '#a8c6dd'
+  elsif v contains 'bleu' or v contains 'blue'
+    echo '#3a5a86'
+  elsif v contains 'violet' or v contains 'lilas' or v contains 'mauve'
+    echo '#7a5d9c'
+  elsif v contains 'gris' or v contains 'grey' or v contains 'gray'
+    echo '#9a978f'
+  elsif v contains 'taupe'
+    echo '#8c7d69'
+  elsif v contains 'marron' or v contains 'brun' or v contains 'camel' or v contains 'chocolat'
+    echo '#7a5533'
+  elsif v contains 'argent'
+    echo '#c9ccd1'
+  elsif v contains 'or' or v contains 'dore' or v contains 'doré'
+    echo '#c9a227'
+  else
+    echo '#c8c3b8'
+  endif
+-%}

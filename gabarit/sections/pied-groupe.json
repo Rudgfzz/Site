@@ -1,0 +1,17 @@
+{
+  "type": "footer",
+  "name": "Pied de page",
+  "sections": {
+    "pied": {
+      "type": "pied",
+      "blocks": {
+        "c1": { "type": "menu", "settings": { "titre": "Boutique" } },
+        "c2": { "type": "menu", "settings": { "titre": "Aide" } },
+        "c3": { "type": "menu", "settings": { "titre": "Maison" } }
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": {}
+    }
+  },
+  "order": ["pied"]
+}

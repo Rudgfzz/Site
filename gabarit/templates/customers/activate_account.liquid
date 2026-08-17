@@ -1,0 +1,9 @@
+<section class="bloc bloc--serre"><div class="zone zone--etroite">
+  <h1 class="titre-l" style="margin-bottom:22px">{{ 'clients.compte.inscription' | t }}</h1>
+  {%- form 'activate_customer_password' -%}
+    {%- if form.errors -%}<p class="avis-message">{{ form.errors | default_errors }}</p>{%- endif -%}
+    <label class="champ"><span>{{ 'clients.compte.mot_de_passe' | t }}</span>
+      <input type="password" name="customer[password]" autocomplete="new-password" required></label>
+    <button class="bouton" type="submit">{{ 'clients.compte.valider' | t }}</button>
+  {%- endform -%}
+</div></section>

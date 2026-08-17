@@ -1,0 +1,36 @@
+{%- comment -%}
+  Invitation à renseigner sa taille.
+
+  Apparaît une seule fois, en bas d'écran, jamais pendant le tunnel de
+  commande. Le choix est conservé dans le navigateur du visiteur.
+{%- endcomment -%}
+
+{%- assign tailles = settings.tailles_liste | default: 'XS, S, M, L, XL, XXL' | split: ',' -%}
+
+<div class="panneau-taille" data-panneau-taille role="dialog" aria-modal="false"
+     aria-label="{{ 'taille.gabarit.titre' | t }}" hidden>
+  <span class="repere repere--ht"></span>
+  <span class="repere repere--bd"></span>
+
+  <span class="etiquette-technique">{{ 'taille.gabarit.ma_taille' | t }}</span>
+  <h2 class="titre-m">{{ 'taille.gabarit.titre' | t }}</h2>
+  <p>{{ 'taille.gabarit.texte' | t }}</p>
+
+  <div class="panneau-taille__choix">
+    {%- for taille in tailles -%}
+      {%- assign nom = taille | strip -%}
+      {%- if nom != blank -%}
+        <button type="button" data-taille-valeur="{{ nom | escape }}" aria-pressed="false">{{ nom }}</button>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="panneau-taille__pied">
+    <button class="lien-souligne" type="button" data-fermer-taille>
+      {{ 'taille.gabarit.plus_tard' | t }}
+    </button>
+    <button class="bouton bouton--petit" type="button" data-fermer-taille>
+      {{ 'taille.gabarit.valider' | t }}
+    </button>
+  </div>
+</div>

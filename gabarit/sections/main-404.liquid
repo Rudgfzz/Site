@@ -1,0 +1,29 @@
+<section class="bloc">
+  <div class="zone" style="text-align:center">
+    <span class="cote" data-anim>404</span>
+    <h1 class="titre-xl" style="margin:14px 0" data-anim>{{ section.settings.titre }}</h1>
+    <p class="douce" style="max-width:44ch;margin:0 auto 26px" data-anim>{{ section.settings.texte }}</p>
+    <a class="bouton" href="{{ routes.root_url }}" data-anim>{{ section.settings.bouton }}</a>
+
+    {%- if section.settings.afficher_adresse -%}
+      <p class="douce" style="margin-top:36px;font-size:.72rem">
+        {{ 'erreur.404.adresse' | t }} <code class="cote">{{ request.path }}</code>
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page 404",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Page introuvable" },
+    { "type": "text", "id": "texte", "label": "Texte", "default": "Cette adresse ne mène nulle part." },
+    { "type": "text", "id": "bouton", "label": "Bouton", "default": "Retour à l'accueil" },
+    {
+      "type": "checkbox", "id": "afficher_adresse", "label": "Afficher l'adresse demandée",
+      "info": "Utile pour diagnostiquer. À décocher avant l'ouverture.", "default": true
+    }
+  ]
+}
+{% endschema %}

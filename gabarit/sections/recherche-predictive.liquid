@@ -1,0 +1,26 @@
+{%- comment -%}
+  Résultats de la recherche instantanée, appelés seuls par gabarit.js
+  via l'API de rendu de section.
+{%- endcomment -%}
+<div data-resultats-predictifs>
+  {%- assign trouves = predictive_search.resources.products -%}
+  {%- if predictive_search.performed and trouves.size > 0 -%}
+    <div class="grille" style="--colonnes:6">
+      {%- for produit in trouves -%}
+        {% render 'carte-piece', produit: produit, marques: false, tailles: true %}
+      {%- endfor -%}
+    </div>
+    <p style="margin-top:20px">
+      <a class="lien-souligne" href="{{ routes.search_url }}?q={{ predictive_search.terms | escape }}">
+        {{ 'general.recherche.tout' | t }}
+      </a>
+    </p>
+  {%- elsif predictive_search.performed -%}
+    <p class="douce">{{ 'general.recherche.aucun' | t }}</p>
+    <p class="douce" style="font-size:.85rem">{{ 'general.recherche.conseil' | t }}</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Recherche instantanée" }
+{% endschema %}

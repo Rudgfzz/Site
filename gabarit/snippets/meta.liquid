@@ -1,0 +1,22 @@
+{%- comment -%} Métadonnées de partage. {%- endcomment -%}
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta property="og:title" content="{{ page_title | default: shop.name | escape }}">
+<meta property="og:type" content="{% if request.page_type == 'product' %}product{% elsif request.page_type == 'article' %}article{% else %}website{% endif %}">
+<meta property="og:description" content="{{ page_description | default: shop.description | default: shop.name | escape }}">
+
+{%- if request.page_type == 'product' and product.featured_media -%}
+  {%- assign visuel = product.featured_media | image_url: width: 1200 -%}
+{%- elsif request.page_type == 'article' and article.image -%}
+  {%- assign visuel = article.image | image_url: width: 1200 -%}
+{%- elsif settings.image_partage != blank -%}
+  {%- assign visuel = settings.image_partage | image_url: width: 1200 -%}
+{%- endif -%}
+
+{%- if visuel -%}
+  <meta property="og:image" content="http:{{ visuel }}">
+  <meta property="og:image:secure_url" content="https:{{ visuel }}">
+{%- endif -%}
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ page_title | default: shop.name | escape }}">

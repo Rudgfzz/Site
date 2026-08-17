@@ -1,0 +1,23 @@
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" aria-label="{{ 'general.nav.page' | t }}">
+    {%- if paginate.previous -%}
+      <a href="{{ paginate.previous.url }}" aria-label="{{ 'general.nav.precedent' | t }}">
+        {% render 'icone', nom: 'gauche' %}
+      </a>
+    {%- endif -%}
+    {%- for partie in paginate.parts -%}
+      {%- if partie.is_link -%}
+        <a href="{{ partie.url }}">{{ partie.title }}</a>
+      {%- elsif partie.title == paginate.current_page -%}
+        <span aria-current="page">{{ partie.title }}</span>
+      {%- else -%}
+        <span aria-hidden="true">{{ partie.title }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if paginate.next -%}
+      <a href="{{ paginate.next.url }}" aria-label="{{ 'general.nav.suivant' | t }}">
+        {% render 'icone', nom: 'droite' %}
+      </a>
+    {%- endif -%}
+  </nav>
+{%- endif -%}

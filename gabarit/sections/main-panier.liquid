@@ -1,0 +1,62 @@
+<section class="bloc bloc--serre">
+  <div class="zone">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ cart.item_count }}</span>
+      <div><h1 class="titre-l">{{ section.settings.titre }}</h1></div>
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      {%- form 'cart', cart -%}
+        {%- for item in cart.items -%}
+          <div class="ligne" style="grid-template-columns:90px 1fr">
+            {%- if item.image -%}
+              <img src="{{ item.image | image_url: width: 220 }}" width="90" height="120" loading="lazy"
+                   alt="{{ item.title | escape }}">
+            {%- else -%}<span></span>{%- endif -%}
+            <div>
+              <a class="ligne__nom" href="{{ item.url }}">{{ item.product.title }}</a>
+              {%- unless item.variant.title contains 'Default' -%}
+                <p class="ligne__meta">{{ item.variant.title }}</p>
+              {%- endunless -%}
+              <div class="ligne__bas">
+                <span class="quantite">
+                  <label class="lecteur-seul" for="q{{ forloop.index }}">{{ 'produits.produit.quantite' | t }}</label>
+                  <input id="q{{ forloop.index }}" type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+                </span>
+                <span>{{ item.final_line_price | money }}</span>
+              </div>
+              <p style="margin:8px 0 0"><a class="retirer" href="{{ item.url_to_remove }}">{{ 'panier.general.retirer' | t }}</a></p>
+            </div>
+          </div>
+        {%- endfor -%}
+
+        <div style="display:flex;justify-content:flex-end;margin-top:28px">
+          <div style="min-width:min(320px,100%)">
+            <div class="total">
+              <span>{{ 'panier.general.sous_total' | t }}</span>
+              <strong>{{ cart.total_price | money }}</strong>
+            </div>
+            <p class="franco">{{ 'panier.general.taxes' | t }}</p>
+            <button class="bouton bouton--large" type="submit" name="checkout">{{ 'panier.general.commander' | t }}</button>
+            <p style="text-align:center;margin-top:14px">
+              <a class="lien-souligne" href="{{ routes.all_products_collection_url }}">{{ 'panier.general.continuer' | t }}</a>
+            </p>
+          </div>
+        </div>
+      {%- endform -%}
+    {%- else -%}
+      <div class="rien">
+        <h2 class="titre-m">{{ 'panier.general.vide_titre' | t }}</h2>
+        <p>{{ 'panier.general.vide_texte' | t }}</p>
+        <a class="bouton" href="{{ routes.all_products_collection_url }}">{{ 'panier.general.vide_bouton' | t }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page panier",
+  "settings": [{ "type": "text", "id": "titre", "label": "Titre", "default": "Votre panier" }]
+}
+{% endschema %}

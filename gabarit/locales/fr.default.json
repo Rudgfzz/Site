@@ -1,0 +1,148 @@
+{
+  "general": {
+    "nav": {
+      "contenu": "Aller au contenu",
+      "menu": "Menu",
+      "fermer": "Fermer",
+      "accueil": "Accueil",
+      "boutique": "Boutique",
+      "echap": "Échap",
+      "precedent": "Précédent",
+      "suivant": "Suivant",
+      "page": "Page"
+    },
+    "recherche": {
+      "titre": "Rechercher",
+      "ouvrir": "Ouvrir la recherche",
+      "label": "Rechercher un article",
+      "placeholder": "Une pièce, une taille, une couleur…",
+      "aucun": "Aucun résultat.",
+      "conseil": "Essayez un mot plus court.",
+      "tout": "Voir tous les résultats",
+      "resultats": "résultats"
+    },
+    "lettre": {
+      "placeholder": "Votre adresse e-mail",
+      "bouton": "Je m'inscris",
+      "merci": "Merci, votre inscription est enregistrée.",
+      "erreur": "Cette adresse n'a pas pu être enregistrée."
+    }
+  },
+  "taille": {
+    "gabarit": {
+      "titre": "Quelle est votre taille ?",
+      "texte": "Indiquez-la une fois. Nous vous signalerons ensuite, sur chaque pièce, ce qui existe réellement dans votre taille.",
+      "choisir": "Choisir ma taille",
+      "modifier": "Changer",
+      "ma_taille": "Ma taille",
+      "aucune": "Non renseignée",
+      "plus_tard": "Plus tard",
+      "valider": "Valider",
+      "filtre": "Ne montrer que ma taille",
+      "disponible": "Disponible dans votre taille",
+      "indisponible": "Épuisé dans votre taille",
+      "non_proposee": "Cette taille n'existe pas sur cet article",
+      "reglee": "Taille enregistrée",
+      "effacer": "Oublier ma taille",
+      "aide": "Vous hésitez ? Consultez le guide des mesures."
+    }
+  },
+  "produits": {
+    "produit": {
+      "ajouter": "Ajouter au panier",
+      "ajout": "Ajout…",
+      "epuise": "Épuisé",
+      "indisponible": "Indisponible",
+      "en_stock": "En stock",
+      "rupture": "Rupture de stock",
+      "quantite": "Quantité",
+      "diminuer": "Diminuer la quantité",
+      "augmenter": "Augmenter la quantité",
+      "choisir": "Choisir une version",
+      "mesures": "Mesures",
+      "description": "Description",
+      "sans_description": "La description de cet article sera bientôt disponible.",
+      "nouveau": "Nouveau",
+      "solde": "Soldé",
+      "taxes": "TVA incluse, frais de port calculés au paiement.",
+      "cote": "Cote",
+      "unite": "cm"
+    },
+    "facettes": {
+      "filtrer": "Filtrer",
+      "trier": "Trier",
+      "effacer": "Tout effacer",
+      "aucun": "Aucun article ne correspond.",
+      "articles": "articles"
+    }
+  },
+  "panier": {
+    "general": {
+      "titre": "Panier",
+      "ouvrir": "Ouvrir le panier",
+      "fermer": "Fermer le panier",
+      "vide_titre": "Votre panier est vide",
+      "vide_texte": "Le vestiaire vous attend.",
+      "vide_bouton": "Parcourir la boutique",
+      "sous_total": "Sous-total",
+      "commander": "Passer commande",
+      "voir": "Voir le panier",
+      "continuer": "Continuer mes achats",
+      "retirer": "Retirer",
+      "ajoute": "Article ajouté au panier",
+      "echec": "Cet article n'a pas pu être ajouté.",
+      "franco_ok": "Livraison offerte",
+      "franco_avant": "Plus que",
+      "franco_apres": "pour la livraison offerte",
+      "taxes": "Frais de port et taxes calculés au paiement."
+    }
+  },
+  "clients": {
+    "compte": {
+      "titre": "Mon compte",
+      "connexion": "Se connecter",
+      "deconnexion": "Se déconnecter",
+      "inscription": "Créer un compte",
+      "commandes": "Mes commandes",
+      "aucune": "Aucune commande pour le moment.",
+      "adresses": "Mes adresses",
+      "email": "Adresse e-mail",
+      "mot_de_passe": "Mot de passe",
+      "oubli": "Mot de passe oublié ?",
+      "prenom": "Prénom",
+      "nom": "Nom",
+      "valider": "Valider",
+      "retour": "Retour au compte",
+      "commande": "Commande",
+      "date": "Date",
+      "statut": "Statut",
+      "total": "Total"
+    }
+  },
+  "blog": {
+    "general": {
+      "titre": "Journal",
+      "lire": "Lire",
+      "par": "par",
+      "aucun": "Aucun article publié pour l'instant."
+    }
+  },
+  "contact": {
+    "form": {
+      "nom": "Votre nom",
+      "email": "Votre adresse e-mail",
+      "telephone": "Téléphone (facultatif)",
+      "message": "Votre message",
+      "envoyer": "Envoyer",
+      "merci": "Message envoyé. Nous répondons sous un jour ouvré."
+    }
+  },
+  "erreur": {
+    "404": {
+      "titre": "Page introuvable",
+      "texte": "Cette adresse ne mène nulle part.",
+      "bouton": "Retour à l'accueil",
+      "adresse": "Adresse demandée :"
+    }
+  }
+}

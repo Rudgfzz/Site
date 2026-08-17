@@ -1,0 +1,21 @@
+<section class="bloc bloc--serre"><div class="zone">
+  <div class="entete-bloc" data-filet>
+    <span class="cote">{{ order.name }}</span>
+    <div>
+      <h1 class="titre-l">{{ 'clients.compte.commande' | t }}</h1>
+      <p class="entete-bloc__texte">{{ order.created_at | date: '%d.%m.%Y' }} — {{ order.financial_status_label }}</p>
+    </div>
+  </div>
+  <table class="cotes"><tbody>
+    {%- for ligne in order.line_items -%}
+      <tr><th scope="row">{{ ligne.title }} <span class="douce">× {{ ligne.quantity }}</span></th>
+      <td style="text-align:right">{{ ligne.final_line_price | money }}</td></tr>
+    {%- endfor -%}
+  </tbody></table>
+  <div style="display:flex;justify-content:flex-end;margin-top:22px">
+    <div style="min-width:min(300px,100%)">
+      <div class="total"><span>{{ 'clients.compte.total' | t }}</span><strong>{{ order.total_price | money }}</strong></div>
+    </div>
+  </div>
+  <p style="margin-top:22px"><a class="lien-souligne" href="{{ routes.account_url }}">{{ 'clients.compte.retour' | t }}</a></p>
+</div></section>

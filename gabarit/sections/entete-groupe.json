@@ -1,0 +1,18 @@
+{
+  "type": "header",
+  "name": "En-tête",
+  "sections": {
+    "notice": {
+      "type": "notice",
+      "settings": {},
+      "blocks": {
+        "n1": { "type": "mention", "settings": { "reference": "01", "texte": "Livraison offerte dès 100 €" } },
+        "n2": { "type": "mention", "settings": { "reference": "02", "texte": "Retours gratuits sous 14 jours" } },
+        "n3": { "type": "mention", "settings": { "reference": "03", "texte": "Mesures réelles sur chaque fiche" } }
+      },
+      "block_order": ["n1", "n2", "n3"]
+    },
+    "entete": { "type": "entete", "settings": {} }
+  },
+  "order": ["notice", "entete"]
+}

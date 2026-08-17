@@ -1,0 +1,70 @@
+<header class="entete" data-entete style="--logo-largeur:{{ settings.logo_largeur | default: 130 }}px">
+  <div class="zone entete__grille">
+    <nav class="menu" data-menu aria-label="{{ section.settings.nom_menu | escape }}">
+      <button class="bouton-icone burger" type="button" data-burger
+              aria-label="{{ 'general.nav.fermer' | t }}" aria-expanded="false"
+              style="position:absolute;top:12px;right:var(--marge)">
+        {% render 'icone', nom: 'croix' %}
+      </button>
+      {%- for lien in section.settings.menu.links -%}
+        <a href="{{ lien.url }}" {% if lien.active %}aria-current="page"{% endif %}>{{ lien.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <button class="bouton-icone burger" type="button" data-burger
+            aria-label="{{ 'general.nav.menu' | t }}" aria-expanded="false">
+      {% render 'icone', nom: 'menu' %}
+    </button>
+
+    <a class="entete__logo" href="{{ routes.root_url }}">
+      {%- if settings.logo != blank -%}
+        <img src="{{ settings.logo | image_url: width: 400 }}" width="400" height="100"
+             alt="{{ shop.name | escape }}">
+      {%- else -%}
+        {{ settings.logo_texte | default: shop.name }}
+      {%- endif -%}
+    </a>
+
+    <div class="entete__actions">
+      {%- if settings.taille_active and section.settings.afficher_taille -%}
+        {%- comment -%} Le jeton rappelle en permanence la taille retenue. {%- endcomment -%}
+        <button class="jeton-taille" type="button" data-ouvrir-taille data-jeton-taille data-vide="true">
+          {% render 'icone', nom: 'regle' %}
+          <strong data-jeton-valeur>{{ 'taille.gabarit.aucune' | t }}</strong>
+        </button>
+      {%- endif -%}
+
+      {%- if section.settings.afficher_recherche -%}
+        <button class="bouton-icone" type="button" data-ouvrir-recherche
+                aria-label="{{ 'general.recherche.ouvrir' | t }}">
+          {% render 'icone', nom: 'loupe' %}
+        </button>
+      {%- endif -%}
+
+      {%- if section.settings.afficher_compte and shop.customer_accounts_enabled -%}
+        <a class="bouton-icone" href="{{ routes.account_url }}" aria-label="{{ 'clients.compte.titre' | t }}">
+          {% render 'icone', nom: 'compte' %}
+        </a>
+      {%- endif -%}
+
+      <button class="bouton-icone" type="button" data-ouvrir-panier
+              aria-label="{{ 'panier.general.ouvrir' | t }}">
+        {% render 'icone', nom: 'panier' %}
+        <span class="compteur" data-compteur {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "En-tête",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "text", "id": "nom_menu", "label": "Nom du menu (lecteurs d'écran)", "default": "Menu principal" },
+    { "type": "checkbox", "id": "afficher_taille", "label": "Afficher le jeton de taille", "default": true },
+    { "type": "checkbox", "id": "afficher_recherche", "label": "Bouton recherche", "default": true },
+    { "type": "checkbox", "id": "afficher_compte", "label": "Bouton compte client", "default": true }
+  ]
+}
+{% endschema %}

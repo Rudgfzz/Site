@@ -1,0 +1,105 @@
+{%- comment -%}
+  Accroche : image cadrée par des repères en croix, titre, et une rangée
+  de cotes chiffrées qui s'incrémentent à l'apparition.
+{%- endcomment -%}
+
+<section class="bloc bloc--serre">
+  <div class="zone">
+    <div class="accroche" data-reperes="{{ settings.anim_reperes }}" data-groupe="{{ settings.anim_decalage }}">
+      <div class="accroche__texte">
+        {%- if section.settings.reference != blank -%}
+          <span class="etiquette-technique" data-anim>{{ section.settings.reference }}</span>
+        {%- endif -%}
+
+        <h1 class="titre-xl" data-anim style="margin:14px 0 18px">{{ section.settings.titre }}</h1>
+
+        {%- if section.settings.texte != blank -%}
+          <div class="prose douce" data-anim>{{ section.settings.texte }}</div>
+        {%- endif -%}
+
+        <div class="btn-rangee" data-anim style="display:flex;flex-wrap:wrap;gap:9px;margin-top:26px">
+          {%- if section.settings.lien_1_texte != blank -%}
+            <a class="bouton" href="{{ section.settings.lien_1 }}">{{ section.settings.lien_1_texte }}</a>
+          {%- endif -%}
+          {%- if settings.taille_active and section.settings.bouton_taille -%}
+            <button class="bouton bouton--vide" type="button" data-ouvrir-taille>
+              {{ 'taille.gabarit.choisir' | t }}
+            </button>
+          {%- endif -%}
+        </div>
+
+        {%- if section.blocks.size > 0 -%}
+          <dl class="cotes-rangee" data-anim>
+            {%- for block in section.blocks -%}
+              <div {{ block.shopify_attributes }}>
+                <dt class="titre-l" data-chiffre="{{ block.settings.valeur }}"
+                    data-chiffre-suffixe="{{ block.settings.suffixe | escape }}">
+                  {{ block.settings.valeur }}{{ block.settings.suffixe }}
+                </dt>
+                <dd class="etiquette-technique etiquette-technique--nu">{{ block.settings.libelle }}</dd>
+              </div>
+            {%- endfor -%}
+          </dl>
+        {%- endif -%}
+      </div>
+
+      <figure class="accroche__vue" data-anim>
+        <span class="repere repere--ht"></span>
+        <span class="repere repere--hd"></span>
+        <span class="repere repere--bt"></span>
+        <span class="repere repere--bd"></span>
+
+        {%- if section.settings.image != blank -%}
+          {%- assign grande = section.settings.image | image_url: width: 1400 -%}
+          {%- assign petite = section.settings.image | image_url: width: 700 -%}
+          <img src="{{ grande }}" srcset="{{ petite }} 700w, {{ grande }} 1400w"
+               sizes="(min-width: 900px) 52vw, 100vw"
+               width="1400" height="1750" fetchpriority="high"
+               alt="{{ section.settings.image.alt | escape }}">
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder' }}
+        {%- endif -%}
+
+        {%- if section.settings.legende != blank -%}
+          <figcaption class="cote">{{ section.settings.legende }}</figcaption>
+        {%- endif -%}
+      </figure>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Accroche",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "reference", "label": "Référence", "default": "Collection été — planche 01" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Votre taille, d'abord." },
+    {
+      "type": "richtext",
+      "id": "texte",
+      "label": "Texte",
+      "default": "<p>Indiquez votre taille une fois. Le catalogue vous dira, pièce par pièce, ce qui existe vraiment pour vous — avant que vous ne tombiez amoureux d'un modèle épuisé.</p>"
+    },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "legende", "label": "Légende de l'image", "default": "fig. 1 — coupe droite, coton 220 g" },
+    { "type": "text", "id": "lien_1_texte", "label": "Bouton principal", "default": "Voir le vestiaire" },
+    { "type": "url", "id": "lien_1", "label": "Lien du bouton" },
+    { "type": "checkbox", "id": "bouton_taille", "label": "Bouton « choisir ma taille »", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "cote",
+      "name": "Cote chiffrée",
+      "settings": [
+        { "type": "text", "id": "valeur", "label": "Valeur", "info": "Un nombre : il s'incrémente à l'apparition.", "default": "24" },
+        { "type": "text", "id": "suffixe", "label": "Suffixe", "default": " h" },
+        { "type": "text", "id": "libelle", "label": "Libellé", "default": "Expédition" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Accroche", "blocks": [{ "type": "cote" }, { "type": "cote" }, { "type": "cote" }] }
+  ]
+}
+{% endschema %}

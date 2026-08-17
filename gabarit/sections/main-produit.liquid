@@ -1,0 +1,283 @@
+{%- comment -%}
+  Fiche produit.
+
+  Deux particularités :
+    • la taille du visiteur est mise en évidence dans le sélecteur et
+      dans le tableau de cotes ;
+    • les mesures se saisissent en métachamps, une ligne par taille, ce
+      qui évite de les recopier dans la description.
+{%- endcomment -%}
+
+{%- assign v = product.selected_or_first_available_variant -%}
+{%- assign solde = false -%}
+{%- if v.compare_at_price > v.price -%}{%- assign solde = true -%}{%- endif -%}
+
+<section class="bloc bloc--serre" data-fiche>
+  <div class="zone">
+    <div class="fiche">
+      {%- comment -%} ---------- Vues ---------- {%- endcomment -%}
+      <div class="fiche__vues" data-groupe="{{ settings.anim_decalage }}">
+        {%- if product.media.size > 0 -%}
+          {%- for media in product.media -%}
+            <div class="fiche__vue" {% if forloop.first %}data-vue-principale{% endif %} data-anim>
+              {%- if forloop.first -%}
+                <span class="repere repere--ht"></span>
+                <span class="repere repere--bd"></span>
+              {%- endif -%}
+              {%- assign grande = media | image_url: width: 1300 -%}
+              {%- assign moyenne = media | image_url: width: 800 -%}
+              <img src="{{ grande }}"
+                   srcset="{{ moyenne }} 800w, {{ grande }} 1300w"
+                   sizes="(min-width: 900px) 58vw, 100vw"
+                   width="1300" height="1733"
+                   {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                   alt="{{ media.alt | default: product.title | escape }}">
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="fiche__vue" data-vue-principale>
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ---------- Colonne d'achat ---------- {%- endcomment -%}
+      <div class="fiche__infos">
+        {%- if section.settings.afficher_marque and product.vendor != blank -%}
+          <span class="etiquette-technique">{{ product.vendor }}</span>
+        {%- endif -%}
+
+        <h1 class="titre-l" style="margin:8px 0 0">{{ product.title }}</h1>
+
+        <div class="fiche__prix">
+          <span data-prix>{{ v.price | money }}</span>
+          <s data-prix-barre {% unless solde %}hidden{% endunless %}>{{ v.compare_at_price | money }}</s>
+          {%- if solde and section.settings.afficher_remise -%}
+            {%- assign remise = v.compare_at_price | minus: v.price | times: 100.0 | divided_by: v.compare_at_price | round -%}
+            <span class="fiche__remise">−{{ remise }} %</span>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.mention_prix != blank -%}
+          <p class="douce" style="font-size:.76rem;margin:0">{{ section.settings.mention_prix }}</p>
+        {%- endif -%}
+
+        {%- form 'product', product, id: 'formulaire-produit' -%}
+          <input type="hidden" name="id" value="{{ v.id }}" data-variante-id>
+
+          {% render 'options-produit', produit: product, option_pastilles: section.settings.option_pastilles %}
+
+          <div class="achat">
+            {%- if section.settings.afficher_quantite -%}
+              <span class="quantite">
+                <button type="button" data-quantite="-1" aria-label="{{ 'produits.produit.diminuer' | t }}">−</button>
+                <label class="lecteur-seul" for="quantite">{{ 'produits.produit.quantite' | t }}</label>
+                <input id="quantite" name="quantity" type="number" value="1" min="1"
+                       inputmode="numeric" data-champ-quantite>
+                <button type="button" data-quantite="1" aria-label="{{ 'produits.produit.augmenter' | t }}">+</button>
+              </span>
+            {%- endif -%}
+
+            <button class="bouton" type="submit" name="add" data-ajouter
+                    {% unless product.available %}disabled{% endunless %}>
+              {%- if product.available -%}
+                {{ section.settings.texte_bouton | default: 'Ajouter au panier' }}
+              {%- else -%}
+                {{ 'produits.produit.epuise' | t }}
+              {%- endif -%}
+            </button>
+          </div>
+
+          {%- if section.settings.paiement_rapide -%}
+            <div style="margin-top:8px">{{ form | payment_button }}</div>
+          {%- endif -%}
+        {%- endform -%}
+
+        {%- if section.settings.afficher_etat -%}
+          <p class="etat" data-etat="{% if product.available %}ok{% else %}non{% endif %}">
+            {%- if product.available -%}
+              {{ 'produits.produit.en_stock' | t }}
+            {%- else -%}
+              {{ 'produits.produit.rupture' | t }}
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+
+        <div class="replis">
+          {%- for block in section.blocks -%}
+            <details class="repli" {% if block.settings.ouvert %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.titre }}</summary>
+              <div class="repli__corps prose">
+                {%- case block.type -%}
+                  {%- when 'description' -%}
+                    {%- if product.description != blank -%}
+                      {{ product.description }}
+                    {%- else -%}
+                      <p>{{ 'produits.produit.sans_description' | t }}</p>
+                    {%- endif -%}
+
+                  {%- when 'cotes' -%}
+                    {%- comment -%}
+                      Métachamp « custom.mesures » : une ligne par taille,
+                      cellules séparées par des points-virgules.
+                      Exemple : M; 104; 71; 46
+                    {%- endcomment -%}
+                    {%- assign lignes = product.metafields.custom.mesures.value -%}
+                    {%- if lignes == blank -%}
+                      {%- assign lignes = product.metafields.custom.mesures | split: '
+' -%}
+                    {%- endif -%}
+
+                    {%- if lignes != blank and lignes.size > 0 -%}
+                      {%- assign entetes = block.settings.colonnes | split: ';' -%}
+                      <table class="cotes">
+                        <thead>
+                          <tr>
+                            {%- for entete in entetes -%}
+                              <th scope="col">{{ entete | strip }}</th>
+                            {%- endfor -%}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {%- for ligne in lignes -%}
+                            {%- assign cellules = ligne | split: ';' -%}
+                            {%- assign taille_ligne = cellules[0] | strip -%}
+                            <tr data-cote-taille="{{ taille_ligne | escape }}">
+                              {%- for cellule in cellules -%}
+                                {%- if forloop.first -%}
+                                  <th scope="row">{{ cellule | strip }}</th>
+                                {%- else -%}
+                                  <td>{{ cellule | strip }}</td>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </tr>
+                          {%- endfor -%}
+                        </tbody>
+                      </table>
+                      {%- if block.settings.note != blank -%}
+                        <p class="douce" style="font-size:.8rem;margin-top:12px">{{ block.settings.note }}</p>
+                      {%- endif -%}
+                    {%- else -%}
+                      {{ block.settings.repli }}
+                    {%- endif -%}
+
+                  {%- else -%}
+                    {{ block.settings.texte }}
+                {%- endcase -%}
+              </div>
+            </details>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-variantes>
+    {{ product | json }}
+  </script>
+</section>
+
+{%- if section.settings.afficher_similaires -%}
+  {%- assign source = collections[product.collections.first.handle].products | default: collections.all.products -%}
+  <section class="bloc bloc--teinte">
+    <div class="zone">
+      <div class="entete-bloc" data-filet>
+        <span class="cote">{{ section.settings.reference_similaires }}</span>
+        <div><h2 class="titre-l" data-anim>{{ section.settings.titre_similaires }}</h2></div>
+      </div>
+      <div class="grille" style="--colonnes:4" data-groupe="{{ settings.anim_decalage }}">
+        {%- assign compte = 0 -%}
+        {%- for autre in source -%}
+          {%- if autre.id != product.id and compte < section.settings.nombre_similaires -%}
+            {% render 'carte-piece', produit: autre, marques: true, tailles: true %}
+            {%- assign compte = compte | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Fiche produit",
+  "settings": [
+    { "type": "header", "content": "Achat" },
+    { "type": "text", "id": "texte_bouton", "label": "Texte du bouton", "default": "Ajouter au panier" },
+    { "type": "checkbox", "id": "afficher_quantite", "label": "Sélecteur de quantité", "default": true },
+    { "type": "checkbox", "id": "paiement_rapide", "label": "Paiement accéléré", "default": true },
+    { "type": "checkbox", "id": "afficher_etat", "label": "Mention de disponibilité", "default": true },
+    { "type": "header", "content": "Informations" },
+    { "type": "checkbox", "id": "afficher_marque", "label": "Afficher la marque", "default": true },
+    { "type": "checkbox", "id": "afficher_remise", "label": "Afficher la remise en pourcentage", "default": true },
+    {
+      "type": "text", "id": "mention_prix", "label": "Mention sous le prix",
+      "default": "TVA incluse, frais de port calculés au paiement."
+    },
+    {
+      "type": "text", "id": "option_pastilles", "label": "Option affichée en pastilles",
+      "info": "Nom exact de l'option de couleur. Vide = détection automatique.",
+      "default": "Couleur"
+    },
+    { "type": "header", "content": "Pièces similaires" },
+    { "type": "checkbox", "id": "afficher_similaires", "label": "Afficher la section", "default": true },
+    { "type": "text", "id": "reference_similaires", "label": "Référence", "default": "—" },
+    { "type": "text", "id": "titre_similaires", "label": "Titre", "default": "Dans le même esprit" },
+    { "type": "range", "id": "nombre_similaires", "min": 2, "max": 12, "step": 1, "label": "Nombre", "default": 4 }
+  ],
+  "blocks": [
+    {
+      "type": "description",
+      "name": "Description",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre du repli", "default": "Description" },
+        { "type": "checkbox", "id": "ouvert", "label": "Ouvert par défaut", "default": true }
+      ]
+    },
+    {
+      "type": "cotes",
+      "name": "Tableau de mesures",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre du repli", "default": "Mesures" },
+        {
+          "type": "text", "id": "colonnes", "label": "En-têtes des colonnes",
+          "info": "Séparées par des points-virgules.",
+          "default": "Taille; Poitrine; Longueur; Épaules"
+        },
+        {
+          "type": "text", "id": "note", "label": "Note sous le tableau",
+          "default": "Mesures prises à plat, en centimètres. Tolérance de 1 à 2 cm."
+        },
+        {
+          "type": "richtext", "id": "repli", "label": "Texte si aucune mesure n'est saisie",
+          "default": "<p>Renseignez le métachamp « custom.mesures » sur la fiche du produit : une ligne par taille, cellules séparées par des points-virgules.</p>"
+        },
+        { "type": "checkbox", "id": "ouvert", "label": "Ouvert par défaut", "default": false }
+      ]
+    },
+    {
+      "type": "texte",
+      "name": "Texte libre",
+      "settings": [
+        { "type": "text", "id": "titre", "label": "Titre du repli", "default": "Livraison & retours" },
+        {
+          "type": "richtext", "id": "texte", "label": "Contenu",
+          "default": "<p>Expédition sous 24 h ouvrées. Retours gratuits sous 14 jours, article non porté et étiquette attachée.</p>"
+        },
+        { "type": "checkbox", "id": "ouvert", "label": "Ouvert par défaut", "default": false }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "description", "settings": { "titre": "Description", "ouvert": true } },
+      { "type": "cotes", "settings": { "titre": "Mesures", "ouvert": false } },
+      { "type": "texte", "settings": { "titre": "Livraison & retours", "ouvert": false } }
+    ]
+  }
+}
+{% endschema %}

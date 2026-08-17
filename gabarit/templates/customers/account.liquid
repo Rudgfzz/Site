@@ -1,0 +1,34 @@
+<section class="bloc bloc--serre"><div class="zone">
+  <div class="entete-bloc" data-filet>
+    <span class="cote">{{ customer.orders_count }}</span>
+    <div>
+      <h1 class="titre-l">{{ 'clients.compte.titre' | t }}</h1>
+      <p class="entete-bloc__lien">
+        <a class="lien-souligne" href="{{ routes.account_addresses_url }}">{{ 'clients.compte.adresses' | t }}</a>
+        &nbsp;·&nbsp;
+        <a class="lien-souligne" href="{{ routes.account_logout_url }}">{{ 'clients.compte.deconnexion' | t }}</a>
+      </p>
+    </div>
+  </div>
+
+  {%- if customer.orders.size > 0 -%}
+    <table class="cotes">
+      <thead><tr>
+        <th>{{ 'clients.compte.commande' | t }}</th><th>{{ 'clients.compte.date' | t }}</th>
+        <th>{{ 'clients.compte.statut' | t }}</th><th>{{ 'clients.compte.total' | t }}</th>
+      </tr></thead>
+      <tbody>
+        {%- for commande in customer.orders -%}
+          <tr>
+            <th scope="row"><a href="{{ commande.customer_url }}">{{ commande.name }}</a></th>
+            <td>{{ commande.created_at | date: '%d.%m.%Y' }}</td>
+            <td>{{ commande.fulfillment_status_label }}</td>
+            <td>{{ commande.total_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  {%- else -%}
+    <div class="rien"><p>{{ 'clients.compte.aucune' | t }}</p></div>
+  {%- endif -%}
+</div></section>

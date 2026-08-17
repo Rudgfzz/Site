@@ -1,0 +1,29 @@
+{%- comment -%} Jeu d'icônes : {% render 'icone', nom: 'panier' %} {%- endcomment -%}
+{%- capture a -%}fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"{%- endcapture -%}
+
+{%- case nom -%}
+  {%- when 'panier' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><path d="M5 7.5h14l-1 12H6l-1-12Z"/><path d="M9 7.5V6a3 3 0 0 1 6 0v1.5"/></svg>
+  {%- when 'loupe' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+  {%- when 'croix' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  {%- when 'menu' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><path d="M3 8h18M3 16h18"/></svg>
+  {%- when 'compte' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+  {%- when 'regle' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><rect x="2.5" y="9" width="19" height="6" rx="1"/><path d="M7 9v2.5M11 9v3.5M15 9v2.5M19 9v3.5"/></svg>
+  {%- when 'droite' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  {%- when 'gauche' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+  {%- when 'instagram' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="3.5"/><circle cx="17.2" cy="6.8" r=".8" fill="currentColor" stroke="none"/></svg>
+  {%- when 'tiktok' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><path d="M14 4v10.2a3.4 3.4 0 1 1-2.8-3.35"/><path d="M14 4c.4 2.2 1.9 3.7 4.2 3.9"/></svg>
+  {%- when 'pinterest' -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M10.4 20.2 12.6 12"/><path d="M9.4 11.2c-.5-1.9.6-3.6 2.5-3.9 1.9-.3 3.4.8 3.6 2.6.2 2.2-1 4.2-2.9 4.3-1 .1-1.8-.6-1.6-1.6"/></svg>
+  {%- else -%}
+    <svg viewBox="0 0 24 24" {{ a }} aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg>
+{%- endcase -%}

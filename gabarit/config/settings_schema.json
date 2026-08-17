@@ -1,0 +1,154 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Gabarit",
+    "theme_version": "1.0.0",
+    "theme_author": "Thème sur mesure",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/manual/online-store/themes"
+  },
+  {
+    "name": "Identité",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo" },
+      { "type": "range", "id": "logo_largeur", "min": 60, "max": 300, "step": 10, "unit": "px", "label": "Largeur du logo", "default": 130 },
+      { "type": "text", "id": "logo_texte", "label": "Logo en toutes lettres", "info": "Utilisé si aucune image n'est chargée. Vide = nom de la boutique." },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
+      { "type": "image_picker", "id": "image_partage", "label": "Image de partage" }
+    ]
+  },
+  {
+    "name": "La taille d'abord",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Le client indique sa taille une fois. Le catalogue lui signale ensuite, produit par produit, ce qui existe dans cette taille."
+      },
+      { "type": "checkbox", "id": "taille_active", "label": "Activer le choix de taille", "default": true },
+      {
+        "type": "text",
+        "id": "taille_option",
+        "label": "Nom de l'option de taille",
+        "info": "Nom exact tel qu'il figure sur vos produits : Taille, Pointure, Size…",
+        "default": "Taille"
+      },
+      {
+        "type": "text",
+        "id": "tailles_liste",
+        "label": "Tailles proposées",
+        "info": "Séparées par des virgules. Elles doivent correspondre aux valeurs de vos produits.",
+        "default": "XS, S, M, L, XL, XXL"
+      },
+      { "type": "checkbox", "id": "taille_invite", "label": "Proposer le choix à la première visite", "default": true },
+      { "type": "range", "id": "taille_delai", "min": 0, "max": 20, "step": 1, "unit": "s", "label": "Délai avant l'invitation", "default": 4 },
+      { "type": "checkbox", "id": "taille_filtre", "label": "Proposer « ne montrer que ma taille »", "default": true },
+      { "type": "checkbox", "id": "taille_pastille", "label": "Marquer les produits indisponibles dans la taille", "default": true }
+    ]
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      { "type": "color", "id": "c_papier", "label": "Papier (fond)", "default": "#f7f5f0" },
+      { "type": "color", "id": "c_papier_2", "label": "Papier teinté", "default": "#eeebe3" },
+      { "type": "color", "id": "c_encre", "label": "Encre (texte et filets)", "default": "#14161a" },
+      { "type": "color", "id": "c_encre_douce", "label": "Encre atténuée", "default": "#6d7078" },
+      { "type": "color", "id": "c_trace", "label": "Trait technique", "default": "#2f6fd0" },
+      { "type": "color", "id": "c_alerte", "label": "Signal (rupture, promo)", "default": "#c8452b" },
+      { "type": "range", "id": "filet_opacite", "min": 5, "max": 100, "step": 5, "unit": "%", "label": "Opacité des filets", "default": 18 },
+      { "type": "checkbox", "id": "afficher_quadrillage", "label": "Quadrillage de fond", "default": true },
+      { "type": "range", "id": "quadrillage_pas", "min": 16, "max": 120, "step": 4, "unit": "px", "label": "Pas du quadrillage", "default": 48 }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      { "type": "font_picker", "id": "police_titres", "label": "Police des titres", "default": "assistant_n4" },
+      { "type": "font_picker", "id": "police_texte", "label": "Police du texte", "default": "assistant_n4" },
+      { "type": "range", "id": "titre_taille", "min": 3, "max": 12, "step": 0.5, "unit": "vw", "label": "Taille des grands titres", "default": 6 },
+      { "type": "range", "id": "titre_graisse", "min": 300, "max": 900, "step": 100, "label": "Graisse des titres", "default": 700 },
+      { "type": "range", "id": "titre_interligne", "min": 80, "max": 140, "step": 2, "unit": "%", "label": "Interligne des titres", "default": 96 },
+      { "type": "range", "id": "titre_espacement", "min": -40, "max": 60, "step": 5, "label": "Espacement des titres (millièmes)", "default": -20 },
+      {
+        "type": "select",
+        "id": "titre_casse",
+        "label": "Casse des titres",
+        "options": [
+          { "value": "none", "label": "Normale" },
+          { "value": "uppercase", "label": "Majuscules" }
+        ],
+        "default": "none"
+      },
+      { "type": "range", "id": "texte_taille", "min": 14, "max": 20, "step": 1, "unit": "px", "label": "Taille du texte", "default": 16 },
+      { "type": "range", "id": "texte_interligne", "min": 130, "max": 190, "step": 5, "unit": "%", "label": "Interligne du texte", "default": 160 }
+    ]
+  },
+  {
+    "name": "Animations",
+    "settings": [
+      { "type": "paragraph", "content": "Coupées automatiquement pour les visiteurs qui demandent à réduire les animations." },
+      { "type": "checkbox", "id": "anim_apparition", "label": "Apparition des blocs", "default": true },
+      { "type": "checkbox", "id": "anim_filets", "label": "Filets qui se tracent", "default": true },
+      { "type": "checkbox", "id": "anim_chiffres", "label": "Chiffres qui s'incrémentent", "default": true },
+      { "type": "checkbox", "id": "anim_reperes", "label": "Repères en croix animés", "default": true },
+      { "type": "checkbox", "id": "anim_photo_survol", "label": "Deuxième photo au survol", "default": true },
+      { "type": "range", "id": "anim_duree", "min": 200, "max": 1600, "step": 50, "unit": "ms", "label": "Durée", "default": 700 },
+      { "type": "range", "id": "anim_decalage", "min": 0, "max": 250, "step": 10, "unit": "ms", "label": "Décalage entre éléments", "default": 70 }
+    ]
+  },
+  {
+    "name": "Mise en page",
+    "settings": [
+      { "type": "range", "id": "largeur_max", "min": 1100, "max": 1800, "step": 20, "unit": "px", "label": "Largeur du contenu", "default": 1400 },
+      { "type": "range", "id": "marge", "min": 12, "max": 72, "step": 2, "unit": "px", "label": "Marge latérale", "default": 28 },
+      { "type": "range", "id": "espace", "min": 40, "max": 180, "step": 10, "unit": "px", "label": "Espace entre sections", "default": 96 },
+      { "type": "range", "id": "arrondi", "min": 0, "max": 20, "step": 2, "unit": "px", "label": "Arrondi", "default": 2 },
+      {
+        "type": "select",
+        "id": "ratio_produit",
+        "label": "Format des photos",
+        "options": [
+          { "value": "3 / 4", "label": "Portrait (3:4)" },
+          { "value": "2 / 3", "label": "Portrait allongé (2:3)" },
+          { "value": "1 / 1", "label": "Carré" }
+        ],
+        "default": "3 / 4"
+      },
+      {
+        "type": "select",
+        "id": "ajustement_produit",
+        "label": "Cadrage",
+        "options": [
+          { "value": "cover", "label": "Remplir (recadre)" },
+          { "value": "contain", "label": "Entier (marges)" }
+        ],
+        "default": "cover"
+      },
+      { "type": "color", "id": "c_fond_photo", "label": "Fond des photos", "default": "#eeebe3" }
+    ]
+  },
+  {
+    "name": "Panier",
+    "settings": [
+      {
+        "type": "select",
+        "id": "type_panier",
+        "label": "Au clic sur « Ajouter »",
+        "options": [
+          { "value": "tiroir", "label": "Ouvrir le panier latéral" },
+          { "value": "page", "label": "Aller à la page panier" },
+          { "value": "rien", "label": "Rester sur la page" }
+        ],
+        "default": "tiroir"
+      },
+      { "type": "number", "id": "seuil_franco", "label": "Livraison offerte à partir de (0 = désactivé)", "default": 100 }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      { "type": "url", "id": "rs_instagram", "label": "Instagram" },
+      { "type": "url", "id": "rs_tiktok", "label": "TikTok" },
+      { "type": "url", "id": "rs_pinterest", "label": "Pinterest" }
+    ]
+  }
+]

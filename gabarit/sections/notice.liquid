@@ -1,0 +1,41 @@
+{%- comment -%}
+  Bandeau de mentions, présenté comme une nomenclature : une référence
+  chiffrée, un libellé. Statique, sans défilement : lisible d'un coup d'œil.
+{%- endcomment -%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="notice" style="border-bottom:var(--filet);background:{% if section.settings.teinte %}var(--papier-2){% else %}transparent{% endif %}">
+    <div class="zone" style="display:flex;flex-wrap:wrap;gap:8px 28px;justify-content:center;padding-block:9px">
+      {%- for block in section.blocks -%}
+        <span class="etiquette-technique etiquette-technique--nu" {{ block.shopify_attributes }}>
+          {%- if block.settings.reference != blank -%}
+            <span class="cote">{{ block.settings.reference }}</span>
+          {%- endif -%}
+          {{ block.settings.texte }}
+        </span>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Bandeau de mentions",
+  "settings": [
+    { "type": "checkbox", "id": "teinte", "label": "Fond teinté", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "mention",
+      "name": "Mention",
+      "settings": [
+        { "type": "text", "id": "reference", "label": "Référence", "default": "01" },
+        { "type": "text", "id": "texte", "label": "Texte", "default": "Livraison offerte dès 100 €" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Bandeau de mentions", "blocks": [{ "type": "mention" }, { "type": "mention" }, { "type": "mention" }] }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,29 @@
+<section class="bloc" style="min-height:78svh;display:grid;place-items:center;text-align:center">
+  <div class="zone zone--etroite">
+    <h1 class="titre-l" style="margin-bottom:14px">{{ section.settings.titre }}</h1>
+    {%- if section.settings.texte != blank -%}
+      <div class="prose douce" style="margin-inline:auto">{{ section.settings.texte }}</div>
+    {%- endif -%}
+
+    {%- form 'storefront_password' -%}
+      {%- if form.errors -%}<p class="avis-message" style="margin-top:20px">{{ form.errors | default_errors }}</p>{%- endif -%}
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:24px">
+        <label class="lecteur-seul" for="mdp">{{ 'clients.compte.mot_de_passe' | t }}</label>
+        <input id="mdp" type="password" name="password" required
+               style="padding:14px;border:var(--filet);background:var(--papier);font:inherit;min-width:220px">
+        <button class="bouton" type="submit">{{ section.settings.bouton }}</button>
+      </div>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Mot de passe",
+  "settings": [
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Bientôt ouvert" },
+    { "type": "richtext", "id": "texte", "label": "Texte", "default": "<p>La boutique ouvre très prochainement.</p>" },
+    { "type": "text", "id": "bouton", "label": "Bouton", "default": "Entrer" }
+  ]
+}
+{% endschema %}

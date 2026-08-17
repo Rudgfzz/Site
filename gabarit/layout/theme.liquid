@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64 }}">
+  {%- endif -%}
+
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} — {{ current_tags | join: ', ' }}{% endif -%}
+    {%- if current_page != 1 %} — {{ 'general.nav.page' | t }} {{ current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} — {{ shop.name }}{% endunless -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {% render 'meta' %}
+
+  {{ 'gabarit.css' | asset_url | stylesheet_tag }}
+
+  {{ settings.police_titres | font_face: font_display: 'swap' }}
+  {{ settings.police_texte | font_face: font_display: 'swap' }}
+  {%- assign titres_gras = settings.police_titres | font_modify: 'weight', 'bolder' -%}
+  {%- if titres_gras -%}{{ titres_gras | font_face: font_display: 'swap' }}{%- endif -%}
+
+  {%- comment -%}
+    Chaque réglage devient une variable CSS. Tous passent par « default » :
+    un réglage vide sort à 0 en Liquid, ce qui suffirait à annuler un
+    interligne ou une largeur.
+  {%- endcomment -%}
+  {% style %}
+    :root {
+      --papier: {{ settings.c_papier | default: '#f7f5f0' }};
+      --papier-2: {{ settings.c_papier_2 | default: '#eeebe3' }};
+      --encre: {{ settings.c_encre | default: '#14161a' }};
+      --encre-douce: {{ settings.c_encre_douce | default: '#6d7078' }};
+      --trace: {{ settings.c_trace | default: '#2f6fd0' }};
+      --alerte: {{ settings.c_alerte | default: '#c8452b' }};
+      --filet-couleur: {{ settings.c_encre | default: '#14161a' | color_modify: 'alpha', 0.18 }};
+      --filet: 1px solid var(--filet-couleur);
+      --fond-photo: {{ settings.c_fond_photo | default: '#eeebe3' }};
+      --quadrillage: {{ settings.quadrillage_pas | default: 48 }}px;
+
+      {%- if settings.police_titres.family != blank -%}
+        --police-titres: {{ settings.police_titres.family }}, {{ settings.police_titres.fallback_families }};
+      {%- endif -%}
+      {%- if settings.police_texte.family != blank -%}
+        --police-texte: {{ settings.police_texte.family }}, {{ settings.police_texte.fallback_families }};
+      {%- endif -%}
+
+      --titre-taille: {{ settings.titre_taille | default: 6 }}vw;
+      --titre-graisse: {{ settings.titre_graisse | default: 700 }};
+      --titre-interligne: {{ settings.titre_interligne | default: 96 | divided_by: 100.0 }};
+      --titre-espacement: {{ settings.titre_espacement | default: -20 | divided_by: 1000.0 }}em;
+      --titre-casse: {{ settings.titre_casse | default: 'none' }};
+      --texte-taille: {{ settings.texte_taille | default: 16 }}px;
+      --texte-interligne: {{ settings.texte_interligne | default: 160 | divided_by: 100.0 }};
+
+      --largeur: {{ settings.largeur_max | default: 1400 }}px;
+      --marge: {{ settings.marge | default: 28 }}px;
+      --espace: {{ settings.espace | default: 96 }}px;
+      --arrondi: {{ settings.arrondi | default: 2 }}px;
+      --ratio-produit: {{ settings.ratio_produit | default: '3 / 4' }};
+      --ajustement: {{ settings.ajustement_produit | default: 'cover' }};
+
+      --duree: {{ settings.anim_duree | default: 700 }}ms;
+      --decalage: {{ settings.anim_decalage | default: 70 }}ms;
+    }
+    {%- if settings.afficher_quadrillage -%}
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(to right, var(--filet-couleur) 1px, transparent 1px),
+          linear-gradient(to bottom, var(--filet-couleur) 1px, transparent 1px);
+        background-size: var(--quadrillage) var(--quadrillage);
+        opacity: .28;
+      }
+    {%- endif -%}
+  {% endstyle %}
+
+  <script>
+    window.GABARIT = {
+      routes: {
+        panier: {{ routes.cart_url | json }},
+        ajout: {{ routes.cart_add_url | json }},
+        modifier: {{ routes.cart_change_url | json }},
+        recherche: {{ routes.search_url | json }},
+        predictif: {{ routes.predictive_search_url | json }},
+        catalogue: {{ routes.all_products_collection_url | json }}
+      },
+      monnaie: {{ shop.money_format | json }},
+      panierType: {{ settings.type_panier | default: 'tiroir' | json }},
+      franco: {{ settings.seuil_franco | default: 0 | times: 100 }},
+      taille: {
+        active: {{ settings.taille_active | json }},
+        option: {{ settings.taille_option | default: 'Taille' | json }},
+        liste: {{ settings.tailles_liste | default: 'XS, S, M, L, XL, XXL' | json }},
+        invite: {{ settings.taille_invite | json }},
+        delai: {{ settings.taille_delai | default: 4 | times: 1000 }},
+        filtre: {{ settings.taille_filtre | json }},
+        pastille: {{ settings.taille_pastille | json }}
+      },
+      anim: {
+        apparition: {{ settings.anim_apparition | json }},
+        filets: {{ settings.anim_filets | json }},
+        chiffres: {{ settings.anim_chiffres | json }},
+        reperes: {{ settings.anim_reperes | json }},
+        photo: {{ settings.anim_photo_survol | json }}
+      },
+      textes: {
+        maTaille: {{ 'taille.gabarit.ma_taille' | t | json }},
+        aucune: {{ 'taille.gabarit.aucune' | t | json }},
+        reglee: {{ 'taille.gabarit.reglee' | t | json }},
+        dispo: {{ 'taille.gabarit.disponible' | t | json }},
+        indispo: {{ 'taille.gabarit.indisponible' | t | json }},
+        nonProposee: {{ 'taille.gabarit.non_proposee' | t | json }},
+        ajouter: {{ 'produits.produit.ajouter' | t | json }},
+        ajout: {{ 'produits.produit.ajout' | t | json }},
+        epuise: {{ 'produits.produit.epuise' | t | json }},
+        indisponible: {{ 'produits.produit.indisponible' | t | json }},
+        enStock: {{ 'produits.produit.en_stock' | t | json }},
+        rupture: {{ 'produits.produit.rupture' | t | json }},
+        ajoute: {{ 'panier.general.ajoute' | t | json }},
+        echec: {{ 'panier.general.echec' | t | json }},
+        videTitre: {{ 'panier.general.vide_titre' | t | json }},
+        videTexte: {{ 'panier.general.vide_texte' | t | json }},
+        videBouton: {{ 'panier.general.vide_bouton' | t | json }},
+        sousTotal: {{ 'panier.general.sous_total' | t | json }},
+        commander: {{ 'panier.general.commander' | t | json }},
+        voir: {{ 'panier.general.voir' | t | json }},
+        retirer: {{ 'panier.general.retirer' | t | json }},
+        francoOk: {{ 'panier.general.franco_ok' | t | json }},
+        francoAvant: {{ 'panier.general.franco_avant' | t | json }},
+        francoApres: {{ 'panier.general.franco_apres' | t | json }},
+        taxes: {{ 'panier.general.taxes' | t | json }},
+        aucunResultat: {{ 'general.recherche.aucun' | t | json }},
+        conseil: {{ 'general.recherche.conseil' | t | json }}
+      }
+    };
+  </script>
+
+  <script src="{{ 'gabarit.js' | asset_url }}" defer></script>
+
+  {{ content_for_header }}
+</head>
+
+<body class="modele-{{ template.name | handle }}">
+  <a class="saut" href="#contenu">{{ 'general.nav.contenu' | t }}</a>
+
+  {% sections 'entete-groupe' %}
+
+  <main id="contenu">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'pied-groupe' %}
+
+  <div class="voile" data-voile hidden></div>
+
+  <aside class="tiroir" data-tiroir aria-label="{{ 'panier.general.titre' | t }}" hidden>
+    <header class="tiroir__tete">
+      <span class="etiquette-technique">{{ 'panier.general.titre' | t }}</span>
+      <button class="bouton-icone" type="button" data-fermer aria-label="{{ 'panier.general.fermer' | t }}">
+        {% render 'icone', nom: 'croix' %}
+      </button>
+    </header>
+    <div class="tiroir__corps" data-panier-corps></div>
+    <footer class="tiroir__pied" data-panier-pied></footer>
+  </aside>
+
+  <div class="recherche" data-recherche role="dialog" aria-modal="true"
+       aria-label="{{ 'general.recherche.titre' | t }}" hidden>
+    <form class="recherche__champ" action="{{ routes.search_url }}" method="get" role="search">
+      <input type="hidden" name="type" value="product">
+      {% render 'icone', nom: 'loupe' %}
+      <label class="lecteur-seul" for="champ-recherche">{{ 'general.recherche.label' | t }}</label>
+      <input id="champ-recherche" type="search" name="q" autocomplete="off"
+             placeholder="{{ 'general.recherche.placeholder' | t | escape }}" data-champ-recherche>
+      <button class="bouton-icone" type="button" data-fermer aria-label="{{ 'general.nav.fermer' | t }}">
+        <span class="touche">{{ 'general.nav.echap' | t }}</span>
+      </button>
+    </form>
+    <div class="recherche__resultats" data-resultats></div>
+  </div>
+
+  {%- if settings.taille_active -%}
+    {% render 'panneau-taille' %}
+  {%- endif -%}
+
+  <div class="notifications" role="status" aria-live="polite" data-notifications></div>
+</body>
+</html>

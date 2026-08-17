@@ -1,0 +1,54 @@
+<section class="bloc{% if section.settings.fond == 'teinte' %} bloc--teinte{% endif %}">
+  <div class="zone zone--etroite" style="text-align:center">
+    <span class="etiquette-technique etiquette-technique--nu" data-anim>{{ section.settings.reference }}</span>
+    <h2 class="titre-l" style="margin:12px 0 14px" data-anim>{{ section.settings.titre }}</h2>
+    {%- if section.settings.texte != blank -%}
+      <div class="prose douce" style="margin-inline:auto" data-anim>{{ section.settings.texte }}</div>
+    {%- endif -%}
+
+    {%- form 'customer' -%}
+      <input type="hidden" name="contact[tags]" value="infolettre">
+      {%- if form.posted_successfully? -%}
+        <p class="avis-message" style="margin-top:22px">{{ 'general.lettre.merci' | t }}</p>
+      {%- else -%}
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:26px" data-anim>
+          <label class="lecteur-seul" for="lettre-email">{{ 'general.lettre.placeholder' | t }}</label>
+          <input id="lettre-email" type="email" name="contact[email]" required
+                 placeholder="{{ 'general.lettre.placeholder' | t | escape }}"
+                 style="flex:1;min-width:230px;max-width:340px;padding:14px;border:var(--filet);background:var(--papier);color:inherit;font:inherit">
+          <button class="bouton" type="submit">{{ section.settings.bouton }}</button>
+        </div>
+        {%- if form.errors -%}
+          <p class="avis-message" style="margin-top:16px">{{ 'general.lettre.erreur' | t }}</p>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endform -%}
+
+    {%- if section.settings.mention != blank -%}
+      <p class="douce" style="margin-top:14px;font-size:.76rem">{{ section.settings.mention }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Infolettre",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "reference", "label": "Référence", "default": "07" },
+    { "type": "text", "id": "titre", "label": "Titre", "default": "Les arrivages, avant tout le monde" },
+    {
+      "type": "richtext", "id": "texte", "label": "Texte",
+      "default": "<p>Un message quand une pièce arrive ou qu'une taille est réapprovisionnée. Rien d'autre.</p>"
+    },
+    { "type": "text", "id": "bouton", "label": "Bouton", "default": "Je m'inscris" },
+    { "type": "text", "id": "mention", "label": "Mention", "default": "Désinscription en un clic." },
+    {
+      "type": "select", "id": "fond", "label": "Fond",
+      "options": [{ "value": "normal", "label": "Papier" }, { "value": "teinte", "label": "Papier teinté" }],
+      "default": "teinte"
+    }
+  ],
+  "presets": [{ "name": "Infolettre" }]
+}
+{% endschema %}

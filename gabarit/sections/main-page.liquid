@@ -1,0 +1,19 @@
+<section class="bloc bloc--serre">
+  <div class="zone{% if section.settings.etroite %} zone--etroite{% endif %}">
+    <div class="entete-bloc" data-filet>
+      <span class="cote">{{ section.settings.reference }}</span>
+      <div><h1 class="titre-l" data-anim>{{ page.title }}</h1></div>
+    </div>
+    <div class="prose" data-anim>{{ page.content }}</div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Page",
+  "settings": [
+    { "type": "text", "id": "reference", "label": "Référence" },
+    { "type": "checkbox", "id": "etroite", "label": "Colonne étroite (lecture)", "default": true }
+  ]
+}
+{% endschema %}
