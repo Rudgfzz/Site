@@ -38,6 +38,13 @@
       "ouvrir": "Search",
       "placeholder": "Search for a product, a brand…",
       "label": "Search for a product"
+    },
+    "decompte": {
+      "jours": "days",
+      "heures": "hours",
+      "minutes": "min",
+      "secondes": "sec",
+      "offre_terminee": "This offer has ended."
     }
   },
   "products": {

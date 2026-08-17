@@ -56,7 +56,7 @@
             "label": "Suivre le réglage de l'appareil"
           }
         ],
-        "default": "sombre"
+        "default": "clair"
       }
     ]
   },
@@ -65,41 +65,93 @@
     "settings": [
       {
         "type": "header",
-        "content": "Thème sombre"
+        "content": "Mode clair"
       },
       {
         "type": "color",
         "id": "color_accent",
-        "label": "Accent principal",
-        "default": "#6d8cff"
+        "label": "Couleur principale",
+        "default": "#b4654a"
       },
       {
         "type": "color",
         "id": "color_accent_2",
-        "label": "Accent secondaire (dégradé)",
-        "default": "#b06cff"
+        "label": "Couleur secondaire",
+        "default": "#d9a05b"
       },
       {
         "type": "color",
         "id": "color_accent_ink",
-        "label": "Texte sur les boutons",
+        "label": "Texte sur la couleur principale",
         "default": "#ffffff"
       },
       {
         "type": "header",
-        "content": "Thème clair"
+        "content": "Mode sombre"
       },
       {
         "type": "color",
-        "id": "color_accent_light",
-        "label": "Accent principal",
-        "default": "#4361ee"
+        "id": "color_accent_sombre",
+        "label": "Couleur principale",
+        "default": "#d98366"
       },
       {
         "type": "color",
-        "id": "color_accent_2_light",
-        "label": "Accent secondaire (dégradé)",
-        "default": "#8b3dff"
+        "id": "color_accent_2_sombre",
+        "label": "Couleur secondaire",
+        "default": "#e8bb7c"
+      }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "font_titres",
+        "label": "Police des titres",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_texte",
+        "label": "Police du texte",
+        "default": "assistant_n4"
+      },
+      {
+        "type": "select",
+        "id": "titres_casse",
+        "label": "Casse des titres",
+        "options": [
+          {
+            "value": "none",
+            "label": "Normale"
+          },
+          {
+            "value": "uppercase",
+            "label": "Majuscules"
+          }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "range",
+        "id": "titres_espacement",
+        "min": -2,
+        "max": 6,
+        "step": 0.5,
+        "unit": "px",
+        "label": "Espacement des titres",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "titres_graisse",
+        "min": 400,
+        "max": 800,
+        "step": 100,
+        "label": "Graisse des titres",
+        "default": 700
       }
     ]
   },
@@ -114,7 +166,7 @@
         "step": 2,
         "unit": "px",
         "label": "Arrondi des cartes",
-        "default": 18
+        "default": 8
       },
       {
         "type": "select",
@@ -134,7 +186,7 @@
             "label": "Portrait 3:4"
           }
         ],
-        "default": "4 / 3"
+        "default": "3 / 4"
       },
       {
         "type": "header",
@@ -163,7 +215,7 @@
             "label": "Portrait"
           }
         ],
-        "default": "auto"
+        "default": "3 / 4"
       },
       {
         "type": "select",
@@ -186,7 +238,7 @@
         "type": "color",
         "id": "fiche_fond",
         "label": "Fond derrière les images",
-        "default": "#eef0f4"
+        "default": "#f6f2ec"
       }
     ]
   },

@@ -71,7 +71,12 @@
   "name": "Bandeau d'accueil",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "titre", "label": "Titre", "default": "L'écosystème mobile," },
+    {
+      "type": "text",
+      "id": "titre",
+      "label": "Titre",
+      "default": "L'écosystème mobile,"
+    },
     {
       "type": "text",
       "id": "titre_accent",
@@ -84,12 +89,36 @@
       "label": "Texte",
       "default": "<p>Une sélection resserrée de smartphones, tablettes, montres et audio. Seulement les modèles que nous recommanderions à un proche.</p>"
     },
-    { "type": "image_picker", "id": "image", "label": "Image" },
-    { "type": "header", "content": "Boutons" },
-    { "type": "text", "id": "bouton_1_texte", "label": "Bouton principal", "default": "Découvrir la boutique" },
-    { "type": "url", "id": "bouton_1_lien", "label": "Lien du bouton principal" },
-    { "type": "text", "id": "bouton_2_texte", "label": "Bouton secondaire" },
-    { "type": "url", "id": "bouton_2_lien", "label": "Lien du bouton secondaire" }
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Boutons"
+    },
+    {
+      "type": "text",
+      "id": "bouton_1_texte",
+      "label": "Bouton principal",
+      "default": "Découvrir la boutique"
+    },
+    {
+      "type": "url",
+      "id": "bouton_1_lien",
+      "label": "Lien du bouton principal"
+    },
+    {
+      "type": "text",
+      "id": "bouton_2_texte",
+      "label": "Bouton secondaire"
+    },
+    {
+      "type": "url",
+      "id": "bouton_2_lien",
+      "label": "Lien du bouton secondaire"
+    }
   ],
   "blocks": [
     {
@@ -102,14 +131,55 @@
           "id": "icone",
           "label": "Icône",
           "options": [
-            { "value": "camion", "label": "Livraison" },
-            { "value": "retour", "label": "Retour" },
-            { "value": "bouclier", "label": "Garantie" },
-            { "value": "etincelle", "label": "Nouveauté" }
+            {
+              "value": "camion",
+              "label": "Livraison"
+            },
+            {
+              "value": "retour",
+              "label": "Retour"
+            },
+            {
+              "value": "bouclier",
+              "label": "Garantie"
+            },
+            {
+              "value": "etincelle",
+              "label": "Nouveauté"
+            },
+            {
+              "value": "regle",
+              "label": "Mesures"
+            },
+            {
+              "value": "carte",
+              "label": "Paiement"
+            },
+            {
+              "value": "panier",
+              "label": "Panier"
+            },
+            {
+              "value": "coeur",
+              "label": "Coup de cœur"
+            },
+            {
+              "value": "cintre",
+              "label": "Vêtement"
+            },
+            {
+              "value": "loupe",
+              "label": "Recherche"
+            }
           ],
           "default": "camion"
         },
-        { "type": "text", "id": "texte", "label": "Texte", "default": "Livraison offerte dès 60 €" }
+        {
+          "type": "text",
+          "id": "texte",
+          "label": "Texte",
+          "default": "Livraison offerte dès 60 €"
+        }
       ]
     },
     {
@@ -117,8 +187,18 @@
       "name": "Chiffre clé",
       "limit": 4,
       "settings": [
-        { "type": "text", "id": "chiffre", "label": "Chiffre", "default": "24 h" },
-        { "type": "text", "id": "libelle", "label": "Libellé", "default": "expédition" }
+        {
+          "type": "text",
+          "id": "chiffre",
+          "label": "Chiffre",
+          "default": "24 h"
+        },
+        {
+          "type": "text",
+          "id": "libelle",
+          "label": "Libellé",
+          "default": "expédition"
+        }
       ]
     }
   ],
@@ -126,8 +206,18 @@
     {
       "name": "Bandeau d'accueil",
       "blocks": [
-        { "type": "puce" },
-        { "type": "stat" }, { "type": "stat" }, { "type": "stat" }
+        {
+          "type": "puce"
+        },
+        {
+          "type": "stat"
+        },
+        {
+          "type": "stat"
+        },
+        {
+          "type": "stat"
+        }
       ]
     }
   ]

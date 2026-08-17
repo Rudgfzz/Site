@@ -1,12 +1,16 @@
-# Thème Shopify « ORBIT » — guide d'installation
+# Thème Shopify prêt-à-porter — guide d'installation
 
-Le dossier `shopify-theme/` contient le design ORBIT converti en thème Shopify
-(Liquid). Il s'installe dans une boutique existante : les produits, le panier
-et le paiement sont gérés par Shopify, pas par le code.
+Le dossier `shopify-theme/` contient le thème Shopify (Liquid) dans son
+registre actuel : mode d'été, palette claire et chaude, mise en page aérée.
+Il s'installe dans une boutique existante : les produits, le panier et le
+paiement sont gérés par Shopify, pas par le code.
+
+Tout le contenu du thème (textes, visuels, exemples de produits) est original
+et rédigé pour cette boutique. Aucun élément n'est repris d'un site tiers.
 
 ## 1. Installer
 
-1. Récupérez **`orbit-shopify.zip`** (envoyé dans la conversation, ou
+1. Récupérez **`orbit-shopify-v10.zip`** (envoyé dans la conversation, ou
    regénérez-le depuis `shopify-theme/`).
 2. Admin Shopify → **Boutique en ligne → Thèmes**.
 3. **Ajouter un thème → Importer un thème → Importer depuis un fichier**.
@@ -179,3 +183,46 @@ sans JavaScript** : les formulaires classiques prennent le relais.
 
 Ces contrôles sont statiques : je n'ai pas pu téléverser le thème dans une
 boutique réelle. Prévisualisez avant de publier.
+
+
+## 8. Importer le fichier produits
+
+`produits-shopify.csv` est un **squelette d'import**, pas un catalogue réel :
+la structure est prête (12 modèles répartis sur les six catégories, variantes
+taille × couleur, SEO, catégories Google), mais les données commerciales
+doivent venir de votre fournisseur.
+
+À remplacer avant toute mise en ligne :
+
+| Colonne | À renseigner |
+|---|---|
+| `Vendor` | le nom réel du fournisseur |
+| `Variant Price` | vos prix de vente |
+| `Variant SKU` / `Variant Barcode` | les références et EAN du fournisseur |
+| `Variant Grams` | le poids réel, il détermine les frais de port |
+| `Cost per item` | votre prix d'achat, pour le suivi de marge |
+| `Image Src` / `Variant Image` | **vos** photos, hébergées ou déjà chargées dans Shopify |
+| `Body (HTML)` | les mesures et la composition exactes |
+
+Chaque ligne sort volontairement en `Status: draft` et `Published: FALSE` :
+un import accidentel ne peut donc pas publier des fiches incomplètes. Une fois
+les données réelles saisies, passez les produits en `active`.
+
+Import : **Produits → Importer → Ajouter un fichier**, puis cochez l'aperçu
+avant de valider.
+
+Pour régénérer le fichier après avoir modifié la liste des modèles :
+
+```bash
+python3 outils/generer_produits.py > produits-shopify.csv
+```
+
+### Photos produits
+
+Le thème affiche les visuels en portrait (ratio 3/4 par défaut, réglable dans
+**Personnaliser → Réglages du thème → Mise en forme**). Prévoyez des photos
+d'au moins 1200 px de large, cadrées de la même façon d'un produit à l'autre :
+c'est ce qui donne une grille régulière.
+
+N'utilisez que des photos dont vous détenez les droits — les vôtres, ou celles
+que votre fournisseur vous autorise explicitement à diffuser.

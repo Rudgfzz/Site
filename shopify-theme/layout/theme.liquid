@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}" data-theme="dark">
+<html lang="{{ request.locale.iso_code }}" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,23 +26,40 @@
   {{ 'theme.css' | asset_url | stylesheet_tag }}
 
   {%- comment -%} Les réglages du thème pilotent les variables CSS. {%- endcomment -%}
+  {{ settings.font_titres | font_face: font_display: 'swap' }}
+  {{ settings.font_texte | font_face: font_display: 'swap' }}
+  {%- assign titres_gras = settings.font_titres | font_modify: 'weight', 'bolder' -%}
+  {%- if titres_gras -%}{{ titres_gras | font_face: font_display: 'swap' }}{%- endif -%}
+
   {% style %}
     :root {
       --accent: {{ settings.color_accent }};
       --accent-2: {{ settings.color_accent_2 }};
       --accent-ink: {{ settings.color_accent_ink }};
-      --accent-soft: {{ settings.color_accent | color_modify: 'alpha', 0.14 }};
-      --ring: 0 0 0 3px {{ settings.color_accent | color_modify: 'alpha', 0.35 }};
+      --accent-soft: {{ settings.color_accent | color_modify: 'alpha', 0.12 }};
+      --ring: 0 0 0 3px {{ settings.color_accent | color_modify: 'alpha', 0.32 }};
       --r: {{ settings.radius }}px;
-      --r-sm: {{ settings.radius | minus: 6 | at_least: 4 }}px;
-      --r-lg: {{ settings.radius | plus: 8 }}px;
-      --r-xl: {{ settings.radius | plus: 16 }}px;
+      --r-xs: {{ settings.radius | divided_by: 2 | at_least: 2 }}px;
+      --r-sm: {{ settings.radius | minus: 3 | at_least: 3 }}px;
+      --r-lg: {{ settings.radius | plus: 6 }}px;
+      --r-xl: {{ settings.radius | plus: 12 }}px;
       --ratio-produit: {{ settings.product_ratio }};
+      --font: {{ settings.font_texte.family }}, {{ settings.font_texte.fallback_families }};
+      --font-titres: {{ settings.font_titres.family }}, {{ settings.font_titres.fallback_families }};
     }
-    [data-theme="light"] {
-      --accent: {{ settings.color_accent_light }};
-      --accent-2: {{ settings.color_accent_2_light }};
-      --accent-soft: {{ settings.color_accent_light | color_modify: 'alpha', 0.10 }};
+    [data-theme="dark"] {
+      --accent: {{ settings.color_accent_sombre }};
+      --accent-2: {{ settings.color_accent_2_sombre }};
+      --accent-soft: {{ settings.color_accent_sombre | color_modify: 'alpha', 0.16 }};
+      --ring: 0 0 0 3px {{ settings.color_accent_sombre | color_modify: 'alpha', 0.35 }};
+    }
+    h1, h2, h3, h4, .titre-section, .eyebrow {
+      font-family: var(--font-titres);
+    }
+    h1, h2, h3, h4 {
+      font-weight: {{ settings.titres_graisse }};
+      text-transform: {{ settings.titres_casse }};
+      letter-spacing: {{ settings.titres_espacement }}px;
     }
     .produit__media { aspect-ratio: var(--ratio-produit, 4 / 3); }
 
@@ -177,7 +194,12 @@
         favoriAjoute: {{ 'cart.general.favori_ajoute' | t | json }},
         favoriRetire: {{ 'cart.general.favori_retire' | t | json }},
         enStock: {{ 'products.product.en_stock' | t | json }},
-        rupture: {{ 'products.product.rupture' | t | json }}
+        rupture: {{ 'products.product.rupture' | t | json }},
+        decompteJours: {{ 'general.decompte.jours' | t | json }},
+        decompteHeures: {{ 'general.decompte.heures' | t | json }},
+        decompteMinutes: {{ 'general.decompte.minutes' | t | json }},
+        decompteSecondes: {{ 'general.decompte.secondes' | t | json }},
+        offreTerminee: {{ 'general.decompte.offre_terminee' | t | json }}
       }
     };
   </script>

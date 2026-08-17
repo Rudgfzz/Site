@@ -298,7 +298,7 @@
       "type": "text",
       "id": "mention_prix",
       "label": "Mention sous le prix",
-      "default": "TVA incluse"
+      "default": "TVA incluse. Frais de port calculés au paiement."
     },
     {
       "type": "header",
@@ -308,7 +308,8 @@
       "type": "text",
       "id": "option_pastilles",
       "label": "Option affichée en pastilles",
-      "info": "Nom exact de l'option, par exemple « Couleur ». Vide = détection automatique."
+      "info": "Nom exact de l'option, par exemple « Couleur ». Vide = détection automatique.",
+      "default": "Couleur"
     },
     {
       "type": "header",
@@ -346,6 +347,18 @@
         {
           "value": "carte",
           "label": "Paiement"
+        },
+        {
+          "value": "regle",
+          "label": "Mesures"
+        },
+        {
+          "value": "cintre",
+          "label": "Vêtement"
+        },
+        {
+          "value": "coeur",
+          "label": "Coup de cœur"
         }
       ],
       "default": "camion"
@@ -354,13 +367,13 @@
       "type": "text",
       "id": "service_1",
       "label": "Service 1",
-      "default": "Expédition sous 24 h"
+      "default": "Livraison offerte dès 100 €"
     },
     {
       "type": "text",
       "id": "detail_1",
       "label": "Détail 1",
-      "default": "Depuis notre entrepôt en France"
+      "default": "Expédition sous 24 h ouvrées"
     },
     {
       "type": "select",
@@ -394,6 +407,18 @@
         {
           "value": "carte",
           "label": "Paiement"
+        },
+        {
+          "value": "regle",
+          "label": "Mesures"
+        },
+        {
+          "value": "cintre",
+          "label": "Vêtement"
+        },
+        {
+          "value": "coeur",
+          "label": "Coup de cœur"
         }
       ],
       "default": "retour"
@@ -402,13 +427,13 @@
       "type": "text",
       "id": "service_2",
       "label": "Service 2",
-      "default": "30 jours pour changer d'avis"
+      "default": "Retours gratuits sous 14 jours"
     },
     {
       "type": "text",
       "id": "detail_2",
       "label": "Détail 2",
-      "default": "Retour gratuit"
+      "default": "Étiquette prépayée incluse"
     },
     {
       "type": "select",
@@ -442,21 +467,33 @@
         {
           "value": "carte",
           "label": "Paiement"
+        },
+        {
+          "value": "regle",
+          "label": "Mesures"
+        },
+        {
+          "value": "cintre",
+          "label": "Vêtement"
+        },
+        {
+          "value": "coeur",
+          "label": "Coup de cœur"
         }
       ],
-      "default": "bouclier"
+      "default": "regle"
     },
     {
       "type": "text",
       "id": "service_3",
       "label": "Service 3",
-      "default": "Garantie 2 ans"
+      "default": "Mesures réelles du vêtement"
     },
     {
       "type": "text",
       "id": "detail_3",
       "label": "Détail 3",
-      "default": "Extension possible"
+      "default": "Prises à plat, article par article"
     },
     {
       "type": "header",
@@ -478,7 +515,7 @@
       "type": "text",
       "id": "onglet_2",
       "label": "Onglet 2",
-      "default": "Caractéristiques"
+      "default": "Composition & entretien"
     },
     {
       "type": "text",
@@ -490,7 +527,7 @@
       "type": "richtext",
       "id": "texte_livraison",
       "label": "Contenu de l'onglet 3",
-      "default": "<p>Les commandes passées avant 15 h partent le jour même. Vous disposez de 30 jours pour retourner un produit, avec une étiquette prépayée fournie.</p>"
+      "default": "<p>Expédition sous 24 h ouvrées. Livraison offerte dès 100 € d'achat, sinon les frais s'affichent au panier. Vous disposez de 14 jours pour retourner un article non porté, étiquette attachée, avec une étiquette de retour prépayée.</p>"
     },
     {
       "type": "header",
@@ -512,7 +549,7 @@
       "type": "text",
       "id": "titre_lies",
       "label": "Titre",
-      "default": "Dans la même catégorie"
+      "default": "Dans le même esprit"
     },
     {
       "type": "range",

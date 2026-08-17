@@ -760,26 +760,80 @@
     cibles.forEach(function (el) { obs.observe(el); });
   }
 
+  var minuteries = [];
+
+  /* Convertit « 2026-09-15 23:59 » en date. Safari refuse l'espace comme
+     séparateur, d'où le T ajouté avant l'analyse. */
+  function lireEcheance(texte) {
+    if (!texte) return null;
+    var d = new Date(String(texte).trim().replace(' ', 'T'));
+    return isNaN(d) ? null : d;
+  }
+
   function initCompteARebours() {
-    var zone = $('#compte-rebours');
-    if (!zone) return;
-    var cible = zone.dataset.fin ? new Date(zone.dataset.fin) : null;
-    if (!cible || isNaN(cible)) {
-      cible = new Date();
-      cible.setDate(cible.getDate() + ((7 - cible.getDay()) % 7 || 7));
-      cible.setHours(23, 59, 59, 0);
-    }
-    var unites = [['jours', 86400000], ['heures', 3600000], ['min', 60000], ['sec', 1000]];
-    function tic() {
-      var reste = Math.max(0, cible - Date.now());
-      zone.innerHTML = unites.map(function (u) {
-        var v = Math.floor(reste / u[1]);
-        reste -= v * u[1];
-        return '<div><strong>' + String(v).padStart(2, '0') + '</strong><span>' + u[0] + '</span></div>';
-      }).join('');
-    }
-    tic();
-    setInterval(tic, 1000);
+    /* Les minuteries précédentes sont coupées : sans cela, une modification
+       dans l'éditeur de thème en empilerait une nouvelle à chaque rechargement
+       de section, et le décompte sauterait des secondes. */
+    minuteries.forEach(clearInterval);
+    minuteries = [];
+
+    var zones = $$('[data-compte-a-rebours]');
+    var ancienne = $('#compte-rebours');
+    if (ancienne) zones.push(ancienne);
+    zones.forEach(function (zone) {
+      var cible = lireEcheance(zone.dataset.fin);
+      if (!cible) {
+        /* Sans échéance valide, on vise la fin de la semaine en cours. */
+        cible = new Date();
+        cible.setDate(cible.getDate() + ((7 - cible.getDay()) % 7 || 7));
+        cible.setHours(23, 59, 59, 0);
+      }
+
+      var unites = [['jours', 86400000], ['heures', 3600000], ['minutes', 60000], ['secondes', 1000]];
+      var libelles = {
+        jours: t('decompteJours', 'jours'),
+        heures: t('decompteHeures', 'heures'),
+        minutes: t('decompteMinutes', 'min'),
+        secondes: t('decompteSecondes', 'sec')
+      };
+      var structure = zone.querySelector('[data-unite]');
+
+      function tic() {
+        var reste = cible - Date.now();
+
+        if (reste <= 0) {
+          zone.dataset.fini = 'true';
+          zone.innerHTML = '<p class="decompte__fini">' +
+            esc(zone.dataset.finiTexte || t('offreTerminee', 'Cette offre est terminée.')) + '</p>';
+          return true;
+        }
+
+        unites.forEach(function (u) {
+          var v = Math.floor(reste / u[1]);
+          reste -= v * u[1];
+          var valeur = String(v).padStart(2, '0');
+          if (structure) {
+            var champ = zone.querySelector('[data-unite="' + u[0] + '"]');
+            if (champ) champ.textContent = valeur;
+          }
+        });
+
+        if (!structure) {
+          var restant = cible - Date.now();
+          zone.innerHTML = unites.map(function (u) {
+            var v = Math.floor(restant / u[1]);
+            restant -= v * u[1];
+            return '<div><strong>' + String(v).padStart(2, '0') + '</strong>' +
+                   '<span>' + esc(libelles[u[0]]) + '</span></div>';
+          }).join('');
+        }
+        return false;
+      }
+
+      if (tic()) return;
+      var id = setInterval(function () { if (tic()) clearInterval(id); }, 1000);
+      minuteries.push(id);
+    });
   }
 
   function demarrer() {

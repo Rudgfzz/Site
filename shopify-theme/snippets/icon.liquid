@@ -66,6 +66,16 @@
     <svg viewBox="0 0 24 24" {{ t }} aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
   {%- when 'valide' -%}
     <svg viewBox="0 0 24 24" {{ t }} aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.5 2.5 4.5-5"/></svg>
+  {%- when 'regle' -%}
+    <svg viewBox="0 0 24 24" {{ t }} aria-hidden="true">
+      <rect x="2.5" y="8" width="19" height="8" rx="1.5"/>
+      <path d="M7 8v3M11 8v4M15 8v3M19 8v4"/>
+    </svg>
+  {%- when 'cintre' -%}
+    <svg viewBox="0 0 24 24" {{ t }} aria-hidden="true">
+      <path d="M12 9.5V8a2 2 0 1 1 2-2"/>
+      <path d="M12 9.5 3.6 15.4a1.2 1.2 0 0 0 .7 2.2h15.4a1.2 1.2 0 0 0 .7-2.2L12 9.5Z"/>
+    </svg>
   {%- when 'instagram' -%}
     <svg viewBox="0 0 24 24" {{ t }} aria-hidden="true">
       <rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="12" cy="12" r="3.4"/>
